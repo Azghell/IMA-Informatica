@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de PSeInt Completo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #2c3e50, #1a2a6c);
+      color: #333;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .pseint-container {
+      width: 100%;
+      max-width: 1200px;
+      background: #f0f0f0;
+      border-radius: 8px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 90vh;
+    }
+    
+    /* Barra de título */
+    .title-bar {
+      background: #2c3e50;
+      color: white;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1a252f;
+    }
+    
+    .title-bar .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .title-bar .logo i {
+      color: #3498db;
+      font-size: 24px;
+    }
+    
+    .title-bar .window-controls {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .window-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .minimize { background: #f39c12; }
+    .maximize { background: #27ae60; }
+    .close { background: #e74c3c; }
+    
+    .window-btn:hover {
+      filter: brightness(1.2);
+    }
+    
+    /* Barra de menú */
+    .menu-bar {
+      background: #34495e;
+      color: white;
+      display: flex;
+      padding: 0 10px;
+      border-bottom: 1px solid #2c3e50;
+    }
+    
+    .menu-item {
+      padding: 10px 15px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.3s;
+    }
+    
+    .menu-item:hover {
+      background: #2c3e50;
+    }
+    
+    .menu-item:hover .submenu {
+      display: block;
+    }
+    
+    .submenu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      color: #333;
+      min-width: 200px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 100;
+      border-radius: 0 0 5px 5px;
+      overflow: hidden;
+    }
+    
+    .submenu-item {
+      padding: 10px 15px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    
+    .submenu-item:hover {
+      background: #3498db;
+      color: white;
+    }
+    
+    .submenu-item i {
+      width: 20px;
+      text-align: center;
+    }
+    
+    /* Barra de herramientas */
+    .toolbar {
+      background: #ecf0f1;
+      padding: 8px 15px;
+      display: flex;
+      gap: 12px;
+      border-bottom: 1px solid #d0d3d4;
+    }
+    
+    .tool-btn {
+      padding: 8px 12px;
+      background: white;
+      border: 1px solid #bdc3c7;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+    
+    .tool-btn:hover {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    
+    /* Área principal */
+    .main-content {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    
+    /* Editor */
+    .editor-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #d0d3d4;
+      position: relative;
+    }
+    
+    .editor-header {
+      background: #2c3e50;
+      color: white;
+      padding: 8px 15px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .editor-tabs {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .editor-tab {
+      padding: 5px 15px;
+      background: #34495e;
+      border-radius: 4px 4px 0 0;
+      cursor: pointer;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .editor-tab.active {
+      background: #ecf0f1;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+    
+    #code {
+      width: 100%;
+      flex: 1;
+      padding: 15px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 16px;
+      border: none;
+      resize: none;
+      white-space: pre;
+      overflow: auto;
+      tab-size: 4;
+      background: #1e1e1e;
+      color: #d4d4d4;
+    }
+    
+    /* Consola de salida */
+    .output-container {
+      width: 35%;
+      display: flex;
+      flex-direction: column;
+      background: #1e1e1e;
+    }
+    
+    .output-header {
+      background: #2c3e50;
+      color: white;
+      padding: 8px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .output-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .output-btn {
+      background: #34495e;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      padding: 4px 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+    }
+    
+    .output-btn:hover {
+      background: #3d566e;
+    }
+    
+    #output {
+      flex: 1;
+      padding: 15px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 15px;
+      color: #d4d4d4;
+      white-space: pre-wrap;
+      overflow: auto;
+      line-height: 1.5;
+    }
+    
+    #output.error {
+      color: #ff6b6b;
+    }
+    
+    /* Barra de estado */
+    .status-bar {
+      background: #2c3e50;
+      color: white;
+      padding: 8px 15px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      border-top: 1px solid #1a252f;
+    }
+    
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .status-item i {
+      color: #3498db;
+    }
+    
+    /* Resaltado de sintaxis */
+    .keyword { color: #569cd6; }
+    .string { color: #ce9178; }
+    .comment { color: #6a9955; }
+    .function { color: #dcdcaa; }
+    .number { color: #b5cea8; }
+    
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+    
+    .modal-title {
+      color: #2c3e50;
+      font-size: 1.5rem;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #7f8c8d;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #bdc3c7;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    .btn-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary {
+      background: #3498db;
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: #95a5a6;
+      color: white;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+      }
+      
+      .output-container {
+        width: 100%;
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="pseint-container">
+    <!-- Barra de título -->
+    <div class="title-bar">
+      <div class="logo">
+        <i class="fas fa-code"></i>
+        <span>Simulador de PSeInt</span>
+      </div>
+      <div class="window-controls">
+        <div class="window-btn minimize"><i class="fas fa-minus"></i></div>
+        <div class="window-btn maximize"><i class="fas fa-square"></i></div>
+        <div class="window-btn close"><i class="fas fa-times"></i></div>
+      </div>
+    </div>
+    
+    <!-- Barra de menú -->
+    <div class="menu-bar">
+      <div class="menu-item">Archivo
+        <div class="submenu">
+          <div class="submenu-item" id="new-file-btn">
+            <i class="fas fa-file"></i> Nuevo
+          </div>
+          <div class="submenu-item" id="open-file-btn">
+            <i class="fas fa-folder-open"></i> Abrir
+          </div>
+          <div class="submenu-item" id="save-file-btn">
+            <i class="fas fa-save"></i> Guardar
+          </div>
+          <div class="submenu-item" id="save-as-file-btn">
+            <i class="fas fa-save"></i> Guardar como
+          </div>
+          <div class="submenu-item" id="print-btn">
+            <i class="fas fa-print"></i> Imprimir
+          </div>
+          <div class="submenu-item" id="exit-btn">
+            <i class="fas fa-times"></i> Salir
+          </div>
+        </div>
+      </div>
+      <div class="menu-item">Editar
+        <div class="submenu">
+          <div class="submenu-item"><i class="fas fa-undo"></i> Deshacer</div>
+          <div class="submenu-item"><i class="fas fa-redo"></i> Rehacer</div>
+          <div class="submenu-item"><i class="fas fa-cut"></i> Cortar</div>
+          <div class="submenu-item"><i class="fas fa-copy"></i> Copiar</div>
+          <div class="submenu-item"><i class="fas fa-paste"></i> Pegar</div>
+          <div class="submenu-item"><i class="fas fa-search"></i> Buscar</div>
+          <div class="submenu-item"><i class="fas fa-search-plus"></i> Reemplazar</div>
+        </div>
+      </div>
+      <div class="menu-item">Ejecutar
+        <div class="submenu">
+          <div class="submenu-item" id="run-btn">
+            <i class="fas fa-play"></i> Ejecutar
+          </div>
+          <div class="submenu-item" id="stop-btn">
+            <i class="fas fa-stop"></i> Detener
+          </div>
+          <div class="submenu-item"><i class="fas fa-bug"></i> Depurar</div>
+          <div class="submenu-item"><i class="fas fa-cog"></i> Opciones</div>
+        </div>
+      </div>
+      <div class="menu-item">Ayuda
+        <div class="submenu">
+          <div class="submenu-item"><i class="fas fa-book"></i> Documentación</div>
+          <div class="submenu-item"><i class="fas fa-info-circle"></i> Acerca de</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Barra de herramientas -->
+    <div class="toolbar">
+      <div class="tool-btn" id="run-tool-btn">
+        <i class="fas fa-play"></i>
+        <span>Ejecutar</span>
+      </div>
+      <div class="tool-btn" id="stop-tool-btn">
+        <i class="fas fa-stop"></i>
+        <span>Detener</span>
+      </div>
+      <div class="tool-btn" id="new-tool-btn">
+        <i class="fas fa-file"></i>
+        <span>Nuevo</span>
+      </div>
+      <div class="tool-btn" id="save-tool-btn">
+        <i class="fas fa-save"></i>
+        <span>Guardar</span>
+      </div>
+      <div class="tool-btn" id="theme-tool-btn">
+        <i class="fas fa-moon"></i>
+        <span>Tema Oscuro</span>
+      </div>
+    </div>
+    
+    <!-- Área principal -->
+    <div class="main-content">
+      <!-- Editor -->
+      <div class="editor-container">
+        <div class="editor-header">
+          <div class="editor-tabs">
+            <div class="editor-tab active" id="current-file">sin_título.psc</div>
+          </div>
+          <div>
+            <i class="fas fa-expand-arrows-alt"></i>
+          </div>
+        </div>
+        <textarea id="code" spellcheck="false">Algoritmo EjemploCompleto
+
+  // Programa de ejemplo con funciones de archivo
+  Definir nombre Como Cadena
+  Definir edad Como Entero
+  Definir altura Como Real
+  
+  Escribir "¡Bienvenido al simulador de PSeInt!"
+  Escribir "Por favor, ingresa tu nombre:"
+  Leer nombre
+  
+  Escribir "Ingresa tu edad:"
+  Leer edad
+  
+  Escribir "Ingresa tu altura (en metros):"
+  Leer altura
+  
+  Escribir "Hola ", nombre
+  Escribir "Tienes ", edad, " años y mides ", altura, " metros"
+  
+  // Estructura condicional
+  Si edad >= 18 Entonces
+    Escribir "Eres mayor de edad"
+  Sino
+    Escribir "Eres menor de edad"
+  FinSi
+  
+  // Estructura de repetición
+  Escribir "Contando hasta 3:"
+  Para i <- 1 Hasta 3 Hacer
+    Escribir "Número: ", i
+  FinPara
+  
+  Escribir "Operación matemática: 5 * 3 + 2 = ", 5 * 3 + 2
+  
+FinAlgoritmo</textarea>
+      </div>
+      
+      <!-- Consola de salida -->
+      <div class="output-container">
+        <div class="output-header">
+          <span>Consola de Salida</span>
+          <div class="output-actions">
+            <button class="output-btn" id="clear-output-btn">
+              <i class="fas fa-trash"></i> Limpiar
+            </button>
+            <button class="output-btn" id="copy-output-btn">
+              <i class="fas fa-copy"></i> Copiar
+            </button>
+          </div>
+        </div>
+        <pre id="output">La salida del programa aparecerá aquí...</pre>
+      </div>
+    </div>
+    
+    <!-- Barra de estado -->
+    <div class="status-bar">
+      <div class="status-item">
+        <i class="fas fa-code"></i>
+        <span>Modo: Pseudocódigo</span>
+      </div>
+      <div class="status-item">
+        <i class="fas fa-keyboard"></i>
+        <span>UTF-8</span>
+      </div>
+      <div class="status-item">
+        <i class="fas fa-bolt"></i>
+        <span>Listo</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal para guardar archivo -->
+  <div class="modal" id="save-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Guardar Archivo</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="form-group">
+        <label for="filename">Nombre del archivo:</label>
+        <input type="text" id="filename" class="form-control" value="mi_programa.psc">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" id="cancel-save-btn">Cancelar</button>
+        <button class="btn btn-primary" id="confirm-save-btn">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input oculto para abrir archivos -->
+  <input type="file" id="file-input" accept=".psc,.txt" style="display: none;">
+  
+  <script>
+    // Estado de la aplicación
+    const appState = {
+      currentFile: "sin_título.psc",
+      isModified: false,
+      theme: "dark"
+    };
+
+    // Elementos DOM
+    const codeElement = document.getElementById('code');
+    const outputElement = document.getElementById('output');
+    const currentFileElement = document.getElementById('current-file');
+    const fileInput = document.getElementById('file-input');
+    const saveModal = document.getElementById('save-modal');
+    const filenameInput = document.getElementById('filename');
+    
+    // Configurar eventos
+    document.getElementById('new-file-btn').addEventListener('click', newDocument);
+    document.getElementById('new-tool-btn').addEventListener('click', newDocument);
+    document.getElementById('open-file-btn').addEventListener('click', openFile);
+    document.getElementById('save-file-btn').addEventListener('click', saveFile);
+    document.getElementById('save-tool-btn').addEventListener('click', saveFile);
+    document.getElementById('save-as-file-btn').addEventListener('click', saveFileAs);
+    document.getElementById('run-btn').addEventListener('click', runCode);
+    document.getElementById('run-tool-btn').addEventListener('click', runCode);
+    document.getElementById('stop-btn').addEventListener('click', stopExecution);
+    document.getElementById('stop-tool-btn').addEventListener('click', stopExecution);
+    document.getElementById('clear-output-btn').addEventListener('click', clearOutput);
+    document.getElementById('copy-output-btn').addEventListener('click', copyOutput);
+    document.getElementById('theme-tool-btn').addEventListener('click', toggleTheme);
+    document.getElementById('exit-btn').addEventListener('click', exitApp);
+    document.getElementById('print-btn').addEventListener('click', printDocument);
+    
+    // Eventos del modal de guardar
+    document.querySelector('.close-modal').addEventListener('click', () => saveModal.style.display = 'none');
+    document.getElementById('cancel-save-btn').addEventListener('click', () => saveModal.style.display = 'none');
+    document.getElementById('confirm-save-btn').addEventListener('click', saveFileContent);
+    
+    // Evento para abrir archivos
+    fileInput.addEventListener('change', handleFileSelect);
+    
+    // Palabras reservadas para resaltado
+    const palabrasReservadas = [
+      "algoritmo", "finalgoritmo", "funcion", "finfuncion", "dimensionar",
+      "definir", "leer", "escribir", "si", "entonces", "finsi", "sino",
+      "mientras", "finmientras", "para", "finpara", "repetir", "hasta", "que",
+      "segun", "finsegun", "hacer", "caso", "de", "otro", "modo", "llamar",
+      "como", "cadena", "real", "entero", "logico", "verdadero", "falso"
+    ];
+
+    // Función para nuevo documento
+    function newDocument() {
+      if (appState.isModified) {
+        if (confirm("¿Desea guardar los cambios en el documento actual?")) {
+          saveFile();
+        }
+      }
+      codeElement.value = `Algoritmo MiPrograma
+  // Escribe tu pseudocódigo aquí
+  Escribir "¡Hola Mundo!"
+FinAlgoritmo`;
+      outputElement.textContent = "La salida del programa aparecerá aquí...";
+      appState.currentFile = "sin_título.psc";
+      currentFileElement.textContent = appState.currentFile;
+      appState.isModified = false;
+    }
+
+    // Función para abrir archivo
+    function openFile() {
+      fileInput.click();
+    }
+
+    // Manejar selección de archivo
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        codeElement.value = e.target.result;
+        appState.currentFile = file.name;
+        currentFileElement.textContent = appState.currentFile;
+        appState.isModified = false;
+      };
+      reader.readAsText(file);
+    }
+
+    // Función para guardar archivo
+    function saveFile() {
+      if (appState.currentFile === "sin_título.psc") {
+        saveFileAs();
+      } else {
+        saveFileContent();
+      }
+    }
+
+    // Función para guardar como
+    function saveFileAs() {
+      filenameInput.value = appState.currentFile;
+      saveModal.style.display = 'flex';
+    }
+
+    // Guardar contenido del archivo
+    function saveFileContent() {
+      const filename = filenameInput.value || "mi_programa.psc";
+      const content = codeElement.value;
+      
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+      
+      appState.currentFile = filename;
+      currentFileElement.textContent = filename;
+      saveModal.style.display = 'none';
+      appState.isModified = false;
+    }
+
+    // Función para ejecutar el código
+    async function runCode() {
+      const code = codeElement.value;
+      const lines = code.split('\n');
+      let output = "";
+      let variables = {};
+      let i = 0;
+      
+      // Limpiar salida previa
+      outputElement.textContent = "";
+      outputElement.className = "";
+      
+      try {
+        while (i < lines.length) {
+          let line = lines[i].trim();
+          const lowerLine = line.toLowerCase();
+          
+          if (line === "") {
+            i++;
+            continue;
+          }
+          
+          if (lowerLine.startsWith("algoritmo")) {
+            // No hacer nada
+          }
+          else if (lowerLine.startsWith("finalgoritmo")) {
+            break;
+          }
+          else if (lowerLine.startsWith("definir")) {
+            const parts = line.split(/\s+/);
+            if (parts.length < 2) {
+              throw `Error de sintaxis en Definir: ${line}`;
+            }
+            const varName = parts[1];
+            variables[varName] = 0;
+          }
+          else if (lowerLine.startsWith("escribir")) {
+            const content = line.substring(8).trim();
+            const args = content.split(',').map(arg => arg.trim());
+            let outputLine = "";
+            
+            for (const arg of args) {
+              const evaluated = evaluateExpression(arg, variables);
+              outputLine += evaluated;
+            }
+            
+            output += outputLine + "\n";
+          }
+          else if (lowerLine.startsWith("leer")) {
+            const varName = line.substring(4).trim();
+            
+            if (!varName) {
+              throw `Error de sintaxis en Leer: ${line}`;
+            }
+            
+            const userInput = await new Promise(resolve => {
+              resolve(prompt(`📝 Ingrese valor para '${varName}':`, ""));
+            });
+            
+            variables[varName] = isNaN(userInput) ? userInput : parseFloat(userInput);
+          }
+          else if (line.includes("<-")) {
+            const [varPart, expr] = line.split("<-").map(part => part.trim());
+            const varName = varPart;
+            
+            if (!varName) {
+              throw `Error de sintaxis en asignación: ${line}`;
+            }
+            
+            const value = evaluateExpression(expr, variables);
+            variables[varName] = value;
+          }
+          else if (lowerLine.startsWith("si")) {
+            // Implementación básica para estructura SI
+            const condition = line.match(/Si\s+(.*?)\s+Entonces/i);
+            if (condition) {
+              const condExpr = condition[1].trim();
+              const condValue = evaluateExpression(condExpr, variables);
+              
+              if (condValue === "si" || condValue === "verdadero" || condValue === true) {
+                // Continuar ejecución
+              } else {
+                // Saltar hasta el FinSi
+                while (i < lines.length && !lines[i].trim().toLowerCase().startsWith("finsi")) {
+                  i++;
+                }
+              }
+            }
+          }
+          else if (lowerLine.startsWith("para")) {
+            // Implementación básica para estructura PARA
+            const match = line.match(/Para\s+(\w+)\s+<-\s+(\d+)\s+Hasta\s+(\d+)\s+Hacer/i);
+            if (match) {
+              const varName = match[1];
+              const start = parseInt(match[2]);
+              const end = parseInt(match[3]);
+              
+              variables[varName] = start;
+              const loopStart = i;
+              
+              while (variables[varName] <= end) {
+                i = loopStart + 1;
+                while (i < lines.length && !lines[i].trim().toLowerCase().startsWith("finpara")) {
+                  // Ejecutar las líneas dentro del ciclo
+                  const innerLine = lines[i].trim();
+                  const innerLower = innerLine.toLowerCase();
+                  
+                  if (innerLower.startsWith("escribir")) {
+                    const content = innerLine.substring(8).trim();
+                    const args = content.split(',').map(arg => arg.trim());
+                    let outputLine = "";
+                    
+                    for (const arg of args) {
+                      const evaluated = evaluateExpression(arg, variables);
+                      outputLine += evaluated;
+                    }
+                    
+                    output += outputLine + "\n";
+                  }
+                  
+                  i++;
+                }
+                
+                variables[varName]++;
+              }
+              
+              // Saltar después del FinPara
+              while (i < lines.length && !lines[i].trim().toLowerCase().startsWith("finpara")) {
+                i++;
+              }
+            }
+          }
+          else if (line.startsWith("//")) {
+            // Ignorar comentarios
+          }
+          
+          i++;
+        }
+        
+        outputElement.textContent = output || "(El programa se ejecutó correctamente)";
+      } catch (err) {
+        outputElement.textContent = "⚠️ Error: " + err;
+        outputElement.className = "error";
+      }
+    }
+
+    // Función para evaluar expresiones
+    function evaluateExpression(expr, variables) {
+      expr = expr.trim();
+      
+      // Manejar cadenas
+      if (expr.startsWith('"') && expr.endsWith('"')) {
+        return expr.slice(1, -1);
+      }
+      
+      // Manejar números
+      if (!isNaN(expr)) {
+        return parseFloat(expr);
+      }
+      
+      // Manejar variables
+      if (variables[expr] !== undefined) {
+        return variables[expr];
+      }
+      
+      // Manejar operaciones aritméticas
+      const arithmeticRegex = /^(\d+(\.\d+)?)\s*([+\-*/])\s*(\d+(\.\d+)?)$/;
+      const arithmeticMatch = expr.match(arithmeticRegex);
+      if (arithmeticMatch) {
+        const [, num1Str, , operator, num2Str] = arithmeticMatch;
+        const num1 = parseFloat(num1Str);
+        const num2 = parseFloat(num2Str);
+        
+        switch (operator) {
+          case '+': return num1 + num2;
+          case '-': return num1 - num2;
+          case '*': return num1 * num2;
+          case '/': return num1 / num2;
+        }
+      }
+      
+      return expr;
+    }
+
+    // Limpiar la salida
+    function clearOutput() {
+      outputElement.textContent = "La salida del programa aparecerá aquí...";
+      outputElement.className = "";
+    }
+
+    // Copiar salida al portapapeles
+    function copyOutput() {
+      const textarea = document.createElement('textarea');
+      textarea.value = outputElement.textContent;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      
+      // Mostrar feedback
+      const originalText = outputElement.textContent;
+      outputElement.textContent = "¡Salida copiada al portapapeles!";
+      setTimeout(() => {
+        outputElement.textContent = originalText;
+      }, 2000);
+    }
+
+    // Cambiar tema
+    function toggleTheme() {
+      if (appState.theme === "dark") {
+        codeElement.style.backgroundColor = "#ffffff";
+        codeElement.style.color = "#000000";
+        appState.theme = "light";
+        document.getElementById('theme-tool-btn').innerHTML = '<i class="fas fa-sun"></i> Tema Claro';
+      } else {
+        codeElement.style.backgroundColor = "#1e1e1e";
+        codeElement.style.color = "#d4d4d4";
+        appState.theme = "dark";
+        document.getElementById('theme-tool-btn').innerHTML = '<i class="fas fa-moon"></i> Tema Oscuro';
+      }
+    }
+
+    // Salir de la aplicación
+    function exitApp() {
+      if (confirm("¿Está seguro de que desea salir del simulador?")) {
+        // En un entorno real, esto cerraría la aplicación
+        alert("Gracias por usar el simulador de PSeInt");
+      }
+    }
+
+    // Imprimir documento
+    function printDocument() {
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Imprimir Documento</title>
+            <style>
+              body { font-family: Arial, sans-serif; padding: 20px; }
+              pre { background: #f0f0f0; padding: 15px; border-radius: 5px; }
+              h1 { color: #2c3e50; margin-bottom: 20px; }
+            </style>
+          </head>
+          <body>
+            <h1>${appState.currentFile}</h1>
+            <pre>${codeElement.value}</pre>
+            <script>
+              window.onload = function() { window.print(); }
+            <\/script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
+
+    // Detener ejecución
+    function stopExecution() {
+      outputElement.textContent = "Ejecución detenida por el usuario";
+    }
+
+    // Marcar como modificado cuando cambia el contenido
+    codeElement.addEventListener('input', function() {
+      appState.isModified = true;
+    });
+  </script>
+</body>
+</html>

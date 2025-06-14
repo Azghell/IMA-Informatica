@@ -1,0 +1,23 @@
+[
+    {
+        "fecha": "14/06/2025",
+        "grado": "Décimo A",
+        "tipo": "Diapositiva agregada",
+        "descripcion": "Historia de la Computación",
+        "enlace": "Informatica_I/Historia_Computacion.htm"
+    },
+    {
+        "fecha": "13/06/2025",
+        "grado": "Undécimo A",
+        "tipo": "Contenido de clase agregado",
+        "descripcion": "Sistemas Operativos",
+        "enlace": "II_BTP_A/Informatica_Aplicada_I/sistemas_operativos.html"
+    },
+    {
+        "fecha": "12/06/2025",
+        "grado": "Duodécimo A",
+        "tipo": "Diapositiva agregada",
+        "descripcion": "Backend y Frontend",
+        "enlace": "III_BTP_A/dw_II/backend_frontend.html"
+    }
+]
