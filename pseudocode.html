@@ -1,1014 +1,1698 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulador de PSeInt Completo</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background: linear-gradient(135deg, #2c3e50, #1a2a6c);
-      color: #333;
-      min-height: 100vh;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .pseint-container {
-      width: 100%;
-      max-width: 1200px;
-      background: #f0f0f0;
-      border-radius: 8px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 90vh;
-    }
-    
-    /* Barra de título */
-    .title-bar {
-      background: #2c3e50;
-      color: white;
-      padding: 10px 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #1a252f;
-    }
-    
-    .title-bar .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .title-bar .logo i {
-      color: #3498db;
-      font-size: 24px;
-    }
-    
-    .title-bar .window-controls {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .window-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    
-    .minimize { background: #f39c12; }
-    .maximize { background: #27ae60; }
-    .close { background: #e74c3c; }
-    
-    .window-btn:hover {
-      filter: brightness(1.2);
-    }
-    
-    /* Barra de menú */
-    .menu-bar {
-      background: #34495e;
-      color: white;
-      display: flex;
-      padding: 0 10px;
-      border-bottom: 1px solid #2c3e50;
-    }
-    
-    .menu-item {
-      padding: 10px 15px;
-      cursor: pointer;
-      position: relative;
-      transition: background 0.3s;
-    }
-    
-    .menu-item:hover {
-      background: #2c3e50;
-    }
-    
-    .menu-item:hover .submenu {
-      display: block;
-    }
-    
-    .submenu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: white;
-      color: #333;
-      min-width: 200px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      z-index: 100;
-      border-radius: 0 0 5px 5px;
-      overflow: hidden;
-    }
-    
-    .submenu-item {
-      padding: 10px 15px;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-    }
-    
-    .submenu-item:hover {
-      background: #3498db;
-      color: white;
-    }
-    
-    .submenu-item i {
-      width: 20px;
-      text-align: center;
-    }
-    
-    /* Barra de herramientas */
-    .toolbar {
-      background: #ecf0f1;
-      padding: 8px 15px;
-      display: flex;
-      gap: 12px;
-      border-bottom: 1px solid #d0d3d4;
-    }
-    
-    .tool-btn {
-      padding: 8px 12px;
-      background: white;
-      border: 1px solid #bdc3c7;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.3s;
-    }
-    
-    .tool-btn:hover {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
-    }
-    
-    /* Área principal */
-    .main-content {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-    }
-    
-    /* Editor */
-    .editor-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid #d0d3d4;
-      position: relative;
-    }
-    
-    .editor-header {
-      background: #2c3e50;
-      color: white;
-      padding: 8px 15px;
-      font-size: 14px;
-      display: flex;
-      justify-content: space-between;
-    }
-    
-    .editor-tabs {
-      display: flex;
-      gap: 5px;
-    }
-    
-    .editor-tab {
-      padding: 5px 15px;
-      background: #34495e;
-      border-radius: 4px 4px 0 0;
-      cursor: pointer;
-      max-width: 200px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    
-    .editor-tab.active {
-      background: #ecf0f1;
-      color: #2c3e50;
-      font-weight: bold;
-    }
-    
-    #code {
-      width: 100%;
-      flex: 1;
-      padding: 15px;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 16px;
-      border: none;
-      resize: none;
-      white-space: pre;
-      overflow: auto;
-      tab-size: 4;
-      background: #1e1e1e;
-      color: #d4d4d4;
-    }
-    
-    /* Consola de salida */
-    .output-container {
-      width: 35%;
-      display: flex;
-      flex-direction: column;
-      background: #1e1e1e;
-    }
-    
-    .output-header {
-      background: #2c3e50;
-      color: white;
-      padding: 8px 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .output-actions {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .output-btn {
-      background: #34495e;
-      color: white;
-      border: none;
-      border-radius: 3px;
-      padding: 4px 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 13px;
-    }
-    
-    .output-btn:hover {
-      background: #3d566e;
-    }
-    
-    #output {
-      flex: 1;
-      padding: 15px;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 15px;
-      color: #d4d4d4;
-      white-space: pre-wrap;
-      overflow: auto;
-      line-height: 1.5;
-    }
-    
-    #output.error {
-      color: #ff6b6b;
-    }
-    
-    /* Barra de estado */
-    .status-bar {
-      background: #2c3e50;
-      color: white;
-      padding: 8px 15px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      border-top: 1px solid #1a252f;
-    }
-    
-    .status-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .status-item i {
-      color: #3498db;
-    }
-    
-    /* Resaltado de sintaxis */
-    .keyword { color: #569cd6; }
-    .string { color: #ce9178; }
-    .comment { color: #6a9955; }
-    .function { color: #dcdcaa; }
-    .number { color: #b5cea8; }
-    
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .modal-content {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-    
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 10px;
-    }
-    
-    .modal-title {
-      color: #2c3e50;
-      font-size: 1.5rem;
-    }
-    
-    .close-modal {
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: #7f8c8d;
-    }
-    
-    .form-group {
-      margin-bottom: 20px;
-    }
-    
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #bdc3c7;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    
-    .btn-group {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    .btn {
-      padding: 12px 25px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      transition: all 0.3s;
-    }
-    
-    .btn-primary {
-      background: #3498db;
-      color: white;
-    }
-    
-    .btn-secondary {
-      background: #95a5a6;
-      color: white;
-    }
-    
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    
-    /* Responsive */
-    @media (max-width: 900px) {
-      .main-content {
-        flex-direction: column;
-      }
-      
-      .output-container {
-        width: 100%;
-        height: 250px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de PSeInt Avanzado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2a5298); /* Degradado de azul oscuro a azul medio */
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .pseint-container {
+            width: 100%;
+            max-width: 1400px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: row; /* Dispuestos en fila */
+            min-height: 80vh; /* Altura mínima del contenedor principal */
+        }
+        
+        /* Panel principal del editor de código y consola */
+        .main-panel {
+            flex-grow: 1; /* Ocupa el espacio restante */
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 15px;
+            position: relative; /* Para el botón de colapsar */
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .header h1 {
+            color: #2c3e50; /* Color oscuro para el título */
+            font-size: 1.8em;
+            margin: 0;
+        }
+        
+        .buttons button {
+            background-color: #3498db; /* Azul claro */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-left: 10px;
+            white-space: nowrap; /* Evita que el texto del botón se rompa */
+        }
+        
+        .buttons button:hover {
+            background-color: #2980b9; /* Azul más oscuro al pasar el ratón */
+            transform: translateY(-2px);
+        }
+        
+        .buttons button:active {
+            transform: translateY(0);
+        }
+
+        .buttons button i {
+            margin-right: 8px;
+        }
+        
+        .code-editor, .console {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .code-editor textarea {
+            width: 100%;
+            height: 300px; /* Altura fija para el editor de código */
+            padding: 15px;
+            border: none;
+            resize: vertical; /* Permite redimensionar verticalmente */
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1.0em;
+            line-height: 1.5;
+            color: #333;
+            background-color: #f8f8f8; /* Fondo ligeramente gris para el editor */
+            outline: none;
+        }
+        
+        .console {
+            flex-grow: 1; /* Ocupa el espacio restante en la columna */
+            padding: 15px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            color: #2ecc71; /* Verde para la salida de éxito */
+            background-color: #222; /* Fondo oscuro para la consola */
+            overflow-y: auto; /* Scroll si el contenido es demasiado largo */
+            min-height: 150px; /* Altura mínima para la consola */
+            border-top: 1px solid #444;
+        }
+
+        .console > div {
+            padding: 2px 0;
+        }
+
+        .console-input {
+            width: calc(100% - 80px); /* Ajuste para el botón */
+            padding: 5px;
+            margin-right: 5px;
+            background-color: #333;
+            color: #eee;
+            border: 1px solid #555;
+            border-radius: 3px;
+        }
+
+        .console-input-btn {
+            padding: 5px 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* Panel lateral para variables, funciones y sugerencias */
+        .side-panel {
+            width: 300px; /* Ancho fijo para el panel lateral */
+            background-color: #e9ecef; /* Color de fondo más claro */
+            border-left: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease, min-width 0.3s ease;
+            overflow: hidden; /* Para ocultar contenido al colapsar */
+            min-width: 0; /* Permite colapsar completamente */
+        }
+
+        .side-panel.collapsed {
+            width: 50px; /* Ancho cuando está colapsado */
+            min-width: 50px;
+        }
+
+        .panel-header {
+            background-color: #2c3e50; /* Cabecera oscura para los paneles laterales */
+            color: white;
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .panel-content {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto; /* Scroll para el contenido si es largo */
+        }
+
+        .variable-list, .function-list, .suggestion-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .variable-item, .function-item, .suggestion-item {
+            background-color: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #555;
+            word-wrap: break-word; /* Wrap long content */
+        }
+
+        .function-item .function-name {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 3px;
+        }
+        .function-item .function-params {
+            font-size: 0.85em;
+            color: #7f8c8d;
+        }
+
+        .suggestion-item {
+            background-color: #eaf6ff; /* Color para sugerencias */
+            border-color: #b0d8ff;
+            color: #2a6496;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        .suggestion-item:hover {
+            background-color: #d4ecff;
+            transform: translateY(-1px);
+        }
+        .suggestion-item strong {
+            color: #1a4d7d;
+        }
+        .suggestion-item pre {
+            background-color: #f0f8ff;
+            padding: 5px;
+            border-radius: 3px;
+            margin-top: 5px;
+            font-size: 0.8em;
+            white-space: pre-wrap; /* Preserve whitespace and wrap */
+            word-break: break-all; /* Break long words */
+        }
+
+
+        .side-panel.collapsed .panel-content,
+        .side-panel.collapsed .panel-header span {
+            display: none; /* Oculta el contenido cuando colapsa */
+        }
+        .side-panel.collapsed .panel-header i {
+            margin: 0 !important; /* Elimina margen del icono cuando colapsa */
+        }
+
+        /* Botón de colapsar */
+        #toggle-side-panel-btn {
+            position: absolute;
+            top: 20px;
+            right: 0px; /* Posición inicial en el borde del main-panel */
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0; /* Solo lado derecho */
+            padding: 10px 10px 10px 10px;
+            cursor: pointer;
+            z-index: 10;
+            transition: right 0.3s ease;
+        }
+        
+        /* Media Queries para responsividad */
+        @media (max-width: 900px) {
+            .pseint-container {
+                flex-direction: column; /* Apila los paneles en pantallas pequeñas */
+                min-height: auto;
+                height: auto;
+            }
+            
+            .side-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid #ddd;
+                height: 250px; /* Altura fija para el panel lateral en móvil */
+            }
+
+            .side-panel.collapsed {
+                height: 50px; /* Altura colapsada en móvil */
+                width: 100%;
+            }
+
+            #toggle-side-panel-btn {
+                top: auto;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 8px 8px 0 0; /* Esquinas superiores */
+                right: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .pseint-container {
+                border-radius: 8px;
+            }
+            .header h1 {
+                font-size: 1.5em;
+            }
+            .buttons {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                gap: 5px;
+            }
+            .buttons button {
+                padding: 8px 10px;
+                font-size: 0.75em;
+                margin-left: 0; /* Eliminar margen para que se envuelvan mejor */
+            }
+            .code-editor textarea, .console {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+            .panel-header {
+                padding: 10px;
+                font-size: 1em;
+            }
+            .variable-item, .function-item, .suggestion-item {
+                padding: 8px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="pseint-container">
-    <!-- Barra de título -->
-    <div class="title-bar">
-      <div class="logo">
-        <i class="fas fa-code"></i>
-        <span>Simulador de PSeInt</span>
-      </div>
-      <div class="window-controls">
-        <div class="window-btn minimize"><i class="fas fa-minus"></i></div>
-        <div class="window-btn maximize"><i class="fas fa-square"></i></div>
-        <div class="window-btn close"><i class="fas fa-times"></i></div>
-      </div>
-    </div>
-    
-    <!-- Barra de menú -->
-    <div class="menu-bar">
-      <div class="menu-item">Archivo
-        <div class="submenu">
-          <div class="submenu-item" id="new-file-btn">
-            <i class="fas fa-file"></i> Nuevo
-          </div>
-          <div class="submenu-item" id="open-file-btn">
-            <i class="fas fa-folder-open"></i> Abrir
-          </div>
-          <div class="submenu-item" id="save-file-btn">
-            <i class="fas fa-save"></i> Guardar
-          </div>
-          <div class="submenu-item" id="save-as-file-btn">
-            <i class="fas fa-save"></i> Guardar como
-          </div>
-          <div class="submenu-item" id="print-btn">
-            <i class="fas fa-print"></i> Imprimir
-          </div>
-          <div class="submenu-item" id="exit-btn">
-            <i class="fas fa-times"></i> Salir
-          </div>
+    <div class="pseint-container">
+        <div class="main-panel">
+            <button id="toggle-side-panel-btn"><i class="fas fa-chevron-left"></i></button>
+
+            <div class="header">
+                <h1>Simulador de PSeInt</h1>
+                <div class="buttons">
+                    <button id="new-code-btn"><i class="fas fa-file-alt"></i> Nuevo</button>
+                    <button id="run-code-btn"><i class="fas fa-play"></i> Ejecutar</button>
+                    <button id="clear-console-btn"><i class="fas fa-eraser"></i> Limpiar</button>
+                    <button id="save-code-btn"><i class="fas fa-save"></i> Guardar</button>
+                    <input type="file" id="open-code-input" accept=".psc,.txt" style="display: none;">
+                    <button id="open-code-btn"><i class="fas fa-folder-open"></i> Abrir</button>
+                    <button id="run-example-btn"><i class="fas fa-code"></i> Ejemplo</button>
+                </div>
+            </div>
+
+            <div class="code-editor">
+                <textarea id="code-input" placeholder="Escribe tu pseudocódigo aquí..."></textarea>
+            </div>
+
+            <div class="console">
+                <div id="console-output">&gt; Consola lista.</div>
+            </div>
         </div>
-      </div>
-      <div class="menu-item">Editar
-        <div class="submenu">
-          <div class="submenu-item"><i class="fas fa-undo"></i> Deshacer</div>
-          <div class="submenu-item"><i class="fas fa-redo"></i> Rehacer</div>
-          <div class="submenu-item"><i class="fas fa-cut"></i> Cortar</div>
-          <div class="submenu-item"><i class="fas fa-copy"></i> Copiar</div>
-          <div class="submenu-item"><i class="fas fa-paste"></i> Pegar</div>
-          <div class="submenu-item"><i class="fas fa-search"></i> Buscar</div>
-          <div class="submenu-item"><i class="fas fa-search-plus"></i> Reemplazar</div>
+
+        <div class="side-panel">
+            <div class="panel-header">
+                <span>Variables</span>
+            </div>
+            <div class="panel-content">
+                <ul id="variable-list" class="variable-list">
+                    <li class="variable-item">No hay variables definidas</li>
+                </ul>
+            </div>
+
+            <div class="panel-header">
+                <span>Funciones</span>
+            </div>
+            <div class="panel-content">
+                <ul id="function-list" class="function-list">
+                    <li class="function-item">No hay funciones definidas</li>
+                </ul>
+            </div>
+
+            <div class="panel-header">
+                <span>Sugerencias y Tips</span>
+            </div>
+            <div class="panel-content">
+                <ul id="suggestion-list" class="suggestion-list">
+                    <li class="suggestion-item">Escribe para ver sugerencias...</li>
+                </ul>
+            </div>
         </div>
-      </div>
-      <div class="menu-item">Ejecutar
-        <div class="submenu">
-          <div class="submenu-item" id="run-btn">
-            <i class="fas fa-play"></i> Ejecutar
-          </div>
-          <div class="submenu-item" id="stop-btn">
-            <i class="fas fa-stop"></i> Detener
-          </div>
-          <div class="submenu-item"><i class="fas fa-bug"></i> Depurar</div>
-          <div class="submenu-item"><i class="fas fa-cog"></i> Opciones</div>
-        </div>
-      </div>
-      <div class="menu-item">Ayuda
-        <div class="submenu">
-          <div class="submenu-item"><i class="fas fa-book"></i> Documentación</div>
-          <div class="submenu-item"><i class="fas fa-info-circle"></i> Acerca de</div>
-        </div>
-      </div>
     </div>
-    
-    <!-- Barra de herramientas -->
-    <div class="toolbar">
-      <div class="tool-btn" id="run-tool-btn">
-        <i class="fas fa-play"></i>
-        <span>Ejecutar</span>
-      </div>
-      <div class="tool-btn" id="stop-tool-btn">
-        <i class="fas fa-stop"></i>
-        <span>Detener</span>
-      </div>
-      <div class="tool-btn" id="new-tool-btn">
-        <i class="fas fa-file"></i>
-        <span>Nuevo</span>
-      </div>
-      <div class="tool-btn" id="save-tool-btn">
-        <i class="fas fa-save"></i>
-        <span>Guardar</span>
-      </div>
-      <div class="tool-btn" id="theme-tool-btn">
-        <i class="fas fa-moon"></i>
-        <span>Tema Oscuro</span>
-      </div>
-    </div>
-    
-    <!-- Área principal -->
-    <div class="main-content">
-      <!-- Editor -->
-      <div class="editor-container">
-        <div class="editor-header">
-          <div class="editor-tabs">
-            <div class="editor-tab active" id="current-file">sin_título.psc</div>
-          </div>
-          <div>
-            <i class="fas fa-expand-arrows-alt"></i>
-          </div>
-        </div>
-        <textarea id="code" spellcheck="false">Algoritmo EjemploCompleto
 
-  // Programa de ejemplo con funciones de archivo
-  Definir nombre Como Cadena
-  Definir edad Como Entero
-  Definir altura Como Real
-  
-  Escribir "¡Bienvenido al simulador de PSeInt!"
-  Escribir "Por favor, ingresa tu nombre:"
-  Leer nombre
-  
-  Escribir "Ingresa tu edad:"
-  Leer edad
-  
-  Escribir "Ingresa tu altura (en metros):"
-  Leer altura
-  
-  Escribir "Hola ", nombre
-  Escribir "Tienes ", edad, " años y mides ", altura, " metros"
-  
-  // Estructura condicional
-  Si edad >= 18 Entonces
-    Escribir "Eres mayor de edad"
-  Sino
-    Escribir "Eres menor de edad"
-  FinSi
-  
-  // Estructura de repetición
-  Escribir "Contando hasta 3:"
-  Para i <- 1 Hasta 3 Hacer
-    Escribir "Número: ", i
-  FinPara
-  
-  Escribir "Operación matemática: 5 * 3 + 2 = ", 5 * 3 + 2
-  
-FinAlgoritmo</textarea>
-      </div>
-      
-      <!-- Consola de salida -->
-      <div class="output-container">
-        <div class="output-header">
-          <span>Consola de Salida</span>
-          <div class="output-actions">
-            <button class="output-btn" id="clear-output-btn">
-              <i class="fas fa-trash"></i> Limpiar
-            </button>
-            <button class="output-btn" id="copy-output-btn">
-              <i class="fas fa-copy"></i> Copiar
-            </button>
-          </div>
-        </div>
-        <pre id="output">La salida del programa aparecerá aquí...</pre>
-      </div>
-    </div>
-    
-    <!-- Barra de estado -->
-    <div class="status-bar">
-      <div class="status-item">
-        <i class="fas fa-code"></i>
-        <span>Modo: Pseudocódigo</span>
-      </div>
-      <div class="status-item">
-        <i class="fas fa-keyboard"></i>
-        <span>UTF-8</span>
-      </div>
-      <div class="status-item">
-        <i class="fas fa-bolt"></i>
-        <span>Listo</span>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Modal para guardar archivo -->
-  <div class="modal" id="save-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Guardar Archivo</h3>
-        <button class="close-modal">&times;</button>
-      </div>
-      <div class="form-group">
-        <label for="filename">Nombre del archivo:</label>
-        <input type="text" id="filename" class="form-control" value="mi_programa.psc">
-      </div>
-      <div class="btn-group">
-        <button class="btn btn-secondary" id="cancel-save-btn">Cancelar</button>
-        <button class="btn btn-primary" id="confirm-save-btn">Guardar</button>
-      </div>
-    </div>
-  </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeElement = document.getElementById('code-input');
+            const consoleOutput = document.getElementById('console-output');
+            const runCodeBtn = document.getElementById('run-code-btn');
+            const clearConsoleBtn = document.getElementById('clear-console-btn');
+            const newCodeBtn = document.getElementById('new-code-btn'); // Nuevo botón
+            const saveCodeBtn = document.getElementById('save-code-btn');
+            const openCodeBtn = document.getElementById('open-code-btn');
+            const openCodeInput = document.getElementById('open-code-input');
+            const runExampleBtn = document.getElementById('run-example-btn');
+            const variableList = document.getElementById('variable-list');
+            const functionList = document.getElementById('function-list');
+            const suggestionList = document.getElementById('suggestion-list'); // Nuevo
+            const sidePanel = document.querySelector('.side-panel');
+            const toggleSidePanelBtn = document.getElementById('toggle-side-panel-btn');
 
-  <!-- Input oculto para abrir archivos -->
-  <input type="file" id="file-input" accept=".psc,.txt" style="display: none;">
-  
-  <script>
-    // Estado de la aplicación
-    const appState = {
-      currentFile: "sin_título.psc",
-      isModified: false,
-      theme: "dark"
-    };
+            let appState = {
+                variables: {}, // Global variables
+                functions: {}, // Stored functions
+                outputQueue: [], // For future async operations if needed
+                inputQueue: [], // For future async operations if needed
+                haltExecution: false // Flag to stop execution on error
+            };
 
-    // Elementos DOM
-    const codeElement = document.getElementById('code');
-    const outputElement = document.getElementById('output');
-    const currentFileElement = document.getElementById('current-file');
-    const fileInput = document.getElementById('file-input');
-    const saveModal = document.getElementById('save-modal');
-    const filenameInput = document.getElementById('filename');
-    
-    // Configurar eventos
-    document.getElementById('new-file-btn').addEventListener('click', newDocument);
-    document.getElementById('new-tool-btn').addEventListener('click', newDocument);
-    document.getElementById('open-file-btn').addEventListener('click', openFile);
-    document.getElementById('save-file-btn').addEventListener('click', saveFile);
-    document.getElementById('save-tool-btn').addEventListener('click', saveFile);
-    document.getElementById('save-as-file-btn').addEventListener('click', saveFileAs);
-    document.getElementById('run-btn').addEventListener('click', runCode);
-    document.getElementById('run-tool-btn').addEventListener('click', runCode);
-    document.getElementById('stop-btn').addEventListener('click', stopExecution);
-    document.getElementById('stop-tool-btn').addEventListener('click', stopExecution);
-    document.getElementById('clear-output-btn').addEventListener('click', clearOutput);
-    document.getElementById('copy-output-btn').addEventListener('click', copyOutput);
-    document.getElementById('theme-tool-btn').addEventListener('click', toggleTheme);
-    document.getElementById('exit-btn').addEventListener('click', exitApp);
-    document.getElementById('print-btn').addEventListener('click', printDocument);
-    
-    // Eventos del modal de guardar
-    document.querySelector('.close-modal').addEventListener('click', () => saveModal.style.display = 'none');
-    document.getElementById('cancel-save-btn').addEventListener('click', () => saveModal.style.display = 'none');
-    document.getElementById('confirm-save-btn').addEventListener('click', saveFileContent);
-    
-    // Evento para abrir archivos
-    fileInput.addEventListener('change', handleFileSelect);
-    
-    // Palabras reservadas para resaltado
-    const palabrasReservadas = [
-      "algoritmo", "finalgoritmo", "funcion", "finfuncion", "dimensionar",
-      "definir", "leer", "escribir", "si", "entonces", "finsi", "sino",
-      "mientras", "finmientras", "para", "finpara", "repetir", "hasta", "que",
-      "segun", "finsegun", "hacer", "caso", "de", "otro", "modo", "llamar",
-      "como", "cadena", "real", "entero", "logico", "verdadero", "falso"
-    ];
+            // --- Utility Functions for Interpreter ---
 
-    // Función para nuevo documento
-    function newDocument() {
-      if (appState.isModified) {
-        if (confirm("¿Desea guardar los cambios en el documento actual?")) {
-          saveFile();
-        }
-      }
-      codeElement.value = `Algoritmo MiPrograma
-  // Escribe tu pseudocódigo aquí
-  Escribir "¡Hola Mundo!"
-FinAlgoritmo`;
-      outputElement.textContent = "La salida del programa aparecerá aquí...";
-      appState.currentFile = "sin_título.psc";
-      currentFileElement.textContent = appState.currentFile;
-      appState.isModified = false;
-    }
-
-    // Función para abrir archivo
-    function openFile() {
-      fileInput.click();
-    }
-
-    // Manejar selección de archivo
-    function handleFileSelect(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        codeElement.value = e.target.result;
-        appState.currentFile = file.name;
-        currentFileElement.textContent = appState.currentFile;
-        appState.isModified = false;
-      };
-      reader.readAsText(file);
-    }
-
-    // Función para guardar archivo
-    function saveFile() {
-      if (appState.currentFile === "sin_título.psc") {
-        saveFileAs();
-      } else {
-        saveFileContent();
-      }
-    }
-
-    // Función para guardar como
-    function saveFileAs() {
-      filenameInput.value = appState.currentFile;
-      saveModal.style.display = 'flex';
-    }
-
-    // Guardar contenido del archivo
-    function saveFileContent() {
-      const filename = filenameInput.value || "mi_programa.psc";
-      const content = codeElement.value;
-      
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 100);
-      
-      appState.currentFile = filename;
-      currentFileElement.textContent = filename;
-      saveModal.style.display = 'none';
-      appState.isModified = false;
-    }
-
-    // Función para ejecutar el código
-    async function runCode() {
-      const code = codeElement.value;
-      const lines = code.split('\n');
-      let output = "";
-      let variables = {};
-      let i = 0;
-      
-      // Limpiar salida previa
-      outputElement.textContent = "";
-      outputElement.className = "";
-      
-      try {
-        while (i < lines.length) {
-          let line = lines[i].trim();
-          const lowerLine = line.toLowerCase();
-          
-          if (line === "") {
-            i++;
-            continue;
-          }
-          
-          if (lowerLine.startsWith("algoritmo")) {
-            // No hacer nada
-          }
-          else if (lowerLine.startsWith("finalgoritmo")) {
-            break;
-          }
-          else if (lowerLine.startsWith("definir")) {
-            const parts = line.split(/\s+/);
-            if (parts.length < 2) {
-              throw `Error de sintaxis en Definir: ${line}`;
-            }
-            const varName = parts[1];
-            variables[varName] = 0;
-          }
-          else if (lowerLine.startsWith("escribir")) {
-            const content = line.substring(8).trim();
-            const args = content.split(',').map(arg => arg.trim());
-            let outputLine = "";
-            
-            for (const arg of args) {
-              const evaluated = evaluateExpression(arg, variables);
-              outputLine += evaluated;
-            }
-            
-            output += outputLine + "\n";
-          }
-          else if (lowerLine.startsWith("leer")) {
-            const varName = line.substring(4).trim();
-            
-            if (!varName) {
-              throw `Error de sintaxis en Leer: ${line}`;
-            }
-            
-            const userInput = await new Promise(resolve => {
-              resolve(prompt(`📝 Ingrese valor para '${varName}':`, ""));
-            });
-            
-            variables[varName] = isNaN(userInput) ? userInput : parseFloat(userInput);
-          }
-          else if (line.includes("<-")) {
-            const [varPart, expr] = line.split("<-").map(part => part.trim());
-            const varName = varPart;
-            
-            if (!varName) {
-              throw `Error de sintaxis en asignación: ${line}`;
-            }
-            
-            const value = evaluateExpression(expr, variables);
-            variables[varName] = value;
-          }
-          else if (lowerLine.startsWith("si")) {
-            // Implementación básica para estructura SI
-            const condition = line.match(/Si\s+(.*?)\s+Entonces/i);
-            if (condition) {
-              const condExpr = condition[1].trim();
-              const condValue = evaluateExpression(condExpr, variables);
-              
-              if (condValue === "si" || condValue === "verdadero" || condValue === true) {
-                // Continuar ejecución
-              } else {
-                // Saltar hasta el FinSi
-                while (i < lines.length && !lines[i].trim().toLowerCase().startsWith("finsi")) {
-                  i++;
+            function resetState() {
+                appState.variables = {};
+                appState.functions = {};
+                appState.outputQueue = [];
+                appState.inputQueue = [];
+                appState.haltExecution = false;
+                if (consoleOutput) {
+                    consoleOutput.innerHTML = '&gt; Consola lista para la siguiente ejecución.'; 
                 }
-              }
+                clearPanels();
             }
-          }
-          else if (lowerLine.startsWith("para")) {
-            // Implementación básica para estructura PARA
-            const match = line.match(/Para\s+(\w+)\s+<-\s+(\d+)\s+Hasta\s+(\d+)\s+Hacer/i);
-            if (match) {
-              const varName = match[1];
-              const start = parseInt(match[2]);
-              const end = parseInt(match[3]);
-              
-              variables[varName] = start;
-              const loopStart = i;
-              
-              while (variables[varName] <= end) {
-                i = loopStart + 1;
-                while (i < lines.length && !lines[i].trim().toLowerCase().startsWith("finpara")) {
-                  // Ejecutar las líneas dentro del ciclo
-                  const innerLine = lines[i].trim();
-                  const innerLower = innerLine.toLowerCase();
-                  
-                  if (innerLower.startsWith("escribir")) {
-                    const content = innerLine.substring(8).trim();
-                    const args = content.split(',').map(arg => arg.trim());
-                    let outputLine = "";
-                    
-                    for (const arg of args) {
-                      const evaluated = evaluateExpression(arg, variables);
-                      outputLine += evaluated;
+
+            // Mejorado para mensajes de error más amigables
+            function appendToConsole(message, isError = false) {
+                if (!consoleOutput) return;
+
+                const line = document.createElement('div');
+                line.innerHTML = `&gt; ${message}`;
+                if (isError) {
+                    line.style.color = '#e74c3c'; // Rojo para errores
+                    // Opcional: añadir un icono de error
+                    line.innerHTML = `<i class="fas fa-times-circle" style="margin-right: 5px;"></i> ${line.innerHTML}`;
+                } else {
+                    // Opcional: añadir un icono de éxito/información
+                    line.innerHTML = `<i class="fas fa-info-circle" style="margin-right: 5px; color: #3498db;"></i> ${line.innerHTML}`;
+                }
+                consoleOutput.appendChild(line);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            }
+
+            // Helper function to get default value for a PSeInt type
+            function getDefaultValueForType(type) {
+                switch (type) {
+                    case 'entero':
+                        return 0;
+                    case 'real':
+                        return 0.0;
+                    case 'cadena':
+                    case 'caracter': 
+                        return "";
+                    case 'logico':
+                        return false;
+                    default:
+                        console.warn("Tipo desconocido para valor por defecto:", type);
+                        return null; 
+                }
+            }
+
+            // Gets the PSeInt type from a JavaScript value
+            function getPSeIntType(jsValue) {
+                if (typeof jsValue === 'number') {
+                    return Number.isInteger(jsValue) ? 'entero' : 'real';
+                } else if (typeof jsValue === 'boolean') {
+                    return 'logico';
+                } else if (typeof jsValue === 'string') {
+                    return 'cadena'; // PSeInt treats single chars as strings too
+                } else if (jsValue === null || jsValue === undefined) {
+                    return 'desconocido'; // Or could imply an error or uninitialized state
+                }
+                return 'desconocido';
+            }
+
+
+            // Converts a value to a target PSeInt type
+            function convertValueToType(value, targetType, varNameForError = "") {
+                if (!targetType || targetType === 'desconocido') {
+                    return value; // If no specific target type, return as is (for type inference)
+                }
+
+                // Special handling for null/undefined input values
+                if (value === undefined || value === null) {
+                    return getDefaultValueForType(targetType);
+                }
+
+                switch (targetType) {
+                    case 'entero':
+                        const intVal = parseInt(value);
+                        if (isNaN(intVal)) {
+                            throw new Error(`El valor '${value}' no puede convertirse a un número entero.`);
+                        }
+                        return intVal;
+                    case 'real':
+                        const floatVal = parseFloat(value);
+                        if (isNaN(floatVal)) {
+                            throw new Error(`El valor '${value}' no puede convertirse a un número real.`);
+                        }
+                        return floatVal;
+                    case 'logico':
+                        const lowerVal = String(value).toLowerCase();
+                        if (lowerVal === 'verdadero' || lowerVal === 'true') return true;
+                        if (lowerVal === 'falso' || lowerVal === 'false') return false;
+                        throw new Error(`El valor '${value}' no es un valor lógico (esperado 'verdadero' o 'falso').`);
+                    case 'cadena':
+                    case 'caracter':
+                        return String(value);
+                    default:
+                        return value;
+                }
+            }
+
+            /**
+             * Evalúa una expresión PSeInt.
+             * @param {string} expr La expresión a evaluar.
+             * @param {Object} scope El objeto de alcance (scope) que contiene las variables.
+             * @returns {*} El resultado de la expresión.
+             * @throws {Error} Si hay un error de sintaxis o lógico en la expresión.
+             */
+            function evalExpression(expr, scope) {
+                scope = scope || {}; 
+                let processedExpr = expr.trim();
+                const originalExpr = processedExpr;
+
+                // Handle literal values first
+                if ((processedExpr.startsWith('"') && processedExpr.endsWith('"')) || (processedExpr.startsWith("'") && processedExpr.endsWith("'"))) {
+                    return processedExpr.substring(1, processedExpr.length - 1); // String literal
+                }
+                if (processedExpr.toLowerCase() === 'verdadero') return true; // Boolean literal
+                if (processedExpr.toLowerCase() === 'falso') return false; // Boolean literal
+                if (!isNaN(processedExpr) && !isNaN(parseFloat(processedExpr))) return parseFloat(processedExpr); // Numeric literal
+
+                // Step 1: Replace array accesses (e.g., nombres[i]) with a format that can be evaluated.
+                processedExpr = processedExpr.replace(/([a-zA-Z_]\w*)\s*\[(.*?)\]/g, (match, arrayName, indexExpr) => {
+                    const lowerArrayName = arrayName.toLowerCase();
+                    if (scope[lowerArrayName] && scope[lowerArrayName]._is_array) {
+                        try {
+                            const evaluatedIndex = evalExpression(indexExpr, scope); // Recursive call for index
+                            if (typeof evaluatedIndex !== 'number' || !Number.isInteger(evaluatedIndex)) {
+                                appState.haltExecution = true;
+                                throw new Error(`El índice para el arreglo '${arrayName}' debe ser un número entero. Se obtuvo: ${evaluatedIndex}`);
+                            }
+                            if (evaluatedIndex < 0 || evaluatedIndex >= scope[lowerArrayName].length) {
+                                appState.haltExecution = true;
+                                throw new Error(`El índice ${evaluatedIndex} está fuera de rango para el arreglo '${arrayName}' (tamaño: ${scope[lowerArrayName].length}).`);
+                            }
+                            return `__scope.${lowerArrayName}[${evaluatedIndex}]`; 
+                        } catch (e) {
+                            appState.haltExecution = true;
+                            throw new Error(`No se pudo evaluar el índice '${indexExpr}' del arreglo '${arrayName}'. Detalle: ${e.message}`);
+                        }
+                    } else {
+                        appState.haltExecution = true;
+                        throw new Error(`La variable '${arrayName}' no es un arreglo o no está definida.`);
                     }
-                    
-                    output += outputLine + "\n";
-                  }
-                  
-                  i++;
+                });
+
+                // Step 2: Replace PSeInt variable names with '__scope.variableName' for evaluation.
+                const sortedScopeKeys = Object.keys(scope).sort((a, b) => b.length - a.length);
+                for (const varName of sortedScopeKeys) {
+                    // Only replace if it's not a type metadata key and not followed by '[' (array access already handled)
+                    if (!varName.endsWith('__type')) { 
+                        processedExpr = processedExpr.replace(new RegExp(`\\b${varName}\\b(?!\\s*\\[)`, 'g'), `__scope.${varName}`);
+                    }
                 }
                 
-                variables[varName]++;
-              }
-              
-              // Saltar después del FinPara
-              while (i < lines.length && !lines[i].trim().toLowerCase().startsWith("finpara")) {
-                i++;
-              }
+                // Step 3: Replace PSeInt operators with JavaScript equivalents.
+                processedExpr = processedExpr.replace(/(\bMOD\b)/gi, '%'); 
+                processedExpr = processedExpr.replace(/(\bY\b)/gi, '&&'); 
+                processedExpr = processedExpr.replace(/(\bO\b)/gi, '||'); 
+                processedExpr = processedExpr.replace(/(\bNO\b)/gi, '!'); 
+                processedExpr = processedExpr.replace(/<=/g, '<=');
+                processedExpr = processedExpr.replace(/>=/g, '>=');
+                processedExpr = processedExpr.replace(/<>/g, '!=='); // PSeInt not equal is <>
+                processedExpr = processedExpr.replace(/=/g, '==='); // PSeInt equality check is =
+                processedExpr = processedExpr.replace(/</g, '<');
+                processedExpr = processedExpr.replace(/>/g, '>');
+
+                try {
+                    const func = new Function('__scope', `
+                        try {
+                            return ${processedExpr};
+                        } catch (e) {
+                            throw new Error(e.message); 
+                        }
+                    `);
+                    return func(scope);
+
+                } catch (e) {
+                    appState.haltExecution = true;
+                    throw new Error(`Error en la expresión "${originalExpr}". Detalle: ${e.message}`);
+                }
             }
-          }
-          else if (line.startsWith("//")) {
-            // Ignorar comentarios
-          }
-          
-          i++;
-        }
-        
-        outputElement.textContent = output || "(El programa se ejecutó correctamente)";
-      } catch (err) {
-        outputElement.textContent = "⚠️ Error: " + err;
-        outputElement.className = "error";
-      }
-    }
 
-    // Función para evaluar expresiones
-    function evaluateExpression(expr, variables) {
-      expr = expr.trim();
-      
-      // Manejar cadenas
-      if (expr.startsWith('"') && expr.endsWith('"')) {
-        return expr.slice(1, -1);
-      }
-      
-      // Manejar números
-      if (!isNaN(expr)) {
-        return parseFloat(expr);
-      }
-      
-      // Manejar variables
-      if (variables[expr] !== undefined) {
-        return variables[expr];
-      }
-      
-      // Manejar operaciones aritméticas
-      const arithmeticRegex = /^(\d+(\.\d+)?)\s*([+\-*/])\s*(\d+(\.\d+)?)$/;
-      const arithmeticMatch = expr.match(arithmeticRegex);
-      if (arithmeticMatch) {
-        const [, num1Str, , operator, num2Str] = arithmeticMatch;
-        const num1 = parseFloat(num1Str);
-        const num2 = parseFloat(num2Str);
-        
-        switch (operator) {
-          case '+': return num1 + num2;
-          case '-': return num1 - num2;
-          case '*': return num1 * num2;
-          case '/': return num1 / num2;
-        }
-      }
-      
-      return expr;
-    }
 
-    // Limpiar la salida
-    function clearOutput() {
-      outputElement.textContent = "La salida del programa aparecerá aquí...";
-      outputElement.className = "";
-    }
+            // --- Execution Functions for Interpreter ---
 
-    // Copiar salida al portapapeles
-    function copyOutput() {
-      const textarea = document.createElement('textarea');
-      textarea.value = outputElement.textContent;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      
-      // Mostrar feedback
-      const originalText = outputElement.textContent;
-      outputElement.textContent = "¡Salida copiada al portapapeles!";
-      setTimeout(() => {
-        outputElement.textContent = originalText;
-      }, 2000);
-    }
+            async function executeBlock(blockLines, currentScope, lineNumberOffset = 0) {
+                if (appState.haltExecution) return;
 
-    // Cambiar tema
-    function toggleTheme() {
-      if (appState.theme === "dark") {
-        codeElement.style.backgroundColor = "#ffffff";
-        codeElement.style.color = "#000000";
-        appState.theme = "light";
-        document.getElementById('theme-tool-btn').innerHTML = '<i class="fas fa-sun"></i> Tema Claro';
-      } else {
-        codeElement.style.backgroundColor = "#1e1e1e";
-        codeElement.style.color = "#d4d4d4";
-        appState.theme = "dark";
-        document.getElementById('theme-tool-btn').innerHTML = '<i class="fas fa-moon"></i> Tema Oscuro';
-      }
-    }
+                currentScope = currentScope || {};
 
-    // Salir de la aplicación
-    function exitApp() {
-      if (confirm("¿Está seguro de que desea salir del simulador?")) {
-        // En un entorno real, esto cerraría la aplicación
-        alert("Gracias por usar el simulador de PSeInt");
-      }
-    }
+                for (let i = 0; i < blockLines.length; i++) {
+                    if (appState.haltExecution) return;
 
-    // Imprimir documento
-    function printDocument() {
-      const printWindow = window.open('', '_blank');
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Imprimir Documento</title>
-            <style>
-              body { font-family: Arial, sans-serif; padding: 20px; }
-              pre { background: #f0f0f0; padding: 15px; border-radius: 5px; }
-              h1 { color: #2c3e50; margin-bottom: 20px; }
-            </style>
-          </head>
-          <body>
-            <h1>${appState.currentFile}</h1>
-            <pre>${codeElement.value}</pre>
-            <script>
-              window.onload = function() { window.print(); }
-            <\/script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
-    }
+                    const originalLine = blockLines[i];
+                    const currentLineNumber = lineNumberOffset + i + 1;
+                    let line = originalLine.trim();
 
-    // Detener ejecución
-    function stopExecution() {
-      outputElement.textContent = "Ejecución detenida por el usuario";
-    }
+                    const commentIndex = line.indexOf('//');
+                    if (commentIndex !== -1) {
+                        line = line.substring(0, commentIndex).trim();
+                    }
+                    if (line === '') continue;
 
-    // Marcar como modificado cuando cambia el contenido
-    codeElement.addEventListener('input', function() {
-      appState.isModified = true;
-    });
-  </script>
+                    // --- Declarations and Dimensioning ---
+                    const definirMatch = line.match(/^Definir\s+([a-zA-Z_]\w*(?:\s*,\s*[a-zA-Z_]\w*)*)\s+Como\s+(Entero|Real|Caracter|Cadena|Logico)(?:\[(\d+)\])?$/i);
+                    if (definirMatch) {
+                        const varNames = definirMatch[1].split(',').map(n => n.trim().toLowerCase());
+                        const type = definirMatch[2].toLowerCase();
+                        const dimension = definirMatch[3] ? parseInt(definirMatch[3]) : null;
+
+                        for (const varName of varNames) {
+                            if (currentScope.hasOwnProperty(varName) || currentScope.hasOwnProperty(varName + '__type')) {
+                                appendToConsole(`Error en línea ${currentLineNumber}: La variable '${varName}' ya ha sido definida previamente.`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                            if (dimension !== null) {
+                                if (isNaN(dimension) || dimension <= 0) {
+                                    appendToConsole(`Error en línea ${currentLineNumber}: La dimensión del arreglo '${varName}' debe ser un número entero positivo.`, true);
+                                    appState.haltExecution = true;
+                                    return;
+                                }
+                                const newArray = Array(dimension).fill(getDefaultValueForType(type));
+                                newArray._is_array = true;
+                                newArray._type = type; 
+                                currentScope[varName] = newArray;
+                            } else {
+                                currentScope[varName] = getDefaultValueForType(type);
+                                currentScope[varName + '__type'] = type; 
+                            }
+                        }
+                        updateVariablePanel();
+                        continue;
+                    }
+
+                    const dimensionarMatch = line.match(/^Dimensionar\s+([a-zA-Z_]\w*)\s*\[(\d+)\]$/i);
+                    if (dimensionarMatch) {
+                        const varName = dimensionarMatch[1].toLowerCase();
+                        const dimension = parseInt(dimensionarMatch[2]);
+
+                        if (currentScope.hasOwnProperty(varName) || currentScope.hasOwnProperty(varName + '__type')) {
+                            // If already defined (e.g., by Definir), we should not re-dimension unless it's already an array
+                            if (currentScope[varName + '__type'] && !currentScope[varName]._is_array) {
+                                appendToConsole(`Error en línea ${currentLineNumber}: La variable '${varName}' ya ha sido definida como escalar. No se puede redimensionar.`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                        }
+                        
+                        if (isNaN(dimension) || dimension <= 0) {
+                            appendToConsole(`Error en línea ${currentLineNumber}: La dimensión para el arreglo '${varName}' debe ser un número entero positivo.`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        const newArray = Array(dimension).fill(null);
+                        newArray._is_array = true;
+                        newArray._type = undefined; // Type will be inferred
+                        currentScope[varName] = newArray;
+                        
+                        updateVariablePanel();
+                        continue;
+                    }
+
+                    // --- Output (Escribir) ---
+                    const escribirMatch = line.match(/^Escribir\s+(.*)$/i);
+                    if (escribirMatch) {
+                        const content = escribirMatch[1];
+                        let output = '';
+                        const parts = content.match(/"[^"]*"|'[^']*'|[^,]+/g); 
+                        
+                        if (!parts) {
+                            appendToConsole(`Error de sintaxis en 'Escribir' en línea ${currentLineNumber}: Se esperaba una expresión o texto a escribir.`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        for (const part of parts) {
+                            try {
+                                let evaluatedPart = evalExpression(part.trim(), currentScope);
+                                if (typeof evaluatedPart === 'boolean') {
+                                    output += evaluatedPart ? 'verdadero' : 'falso';
+                                } else {
+                                    output += String(evaluatedPart); 
+                                }
+                            } catch (e) {
+                                appendToConsole(`Error en línea ${currentLineNumber} al intentar 'Escribir' la expresión "${part.trim()}". Detalle: ${e.message}`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                        }
+                        appendToConsole(output);
+                        continue;
+                    }
+
+                    // --- Input (Leer) ---
+                    const leerMatch = line.match(/^Leer\s+([a-zA-Z_]\w*)(?:\[(.*?)\])?$/i); 
+                    if (leerMatch) {
+                        const targetVar = leerMatch[1].toLowerCase();
+                        const indexExpr = leerMatch[2]; 
+
+                        if (!currentScope.hasOwnProperty(targetVar) && !currentScope.hasOwnProperty(targetVar + '__type')) {
+                            appendToConsole(`Error en línea ${currentLineNumber}: La variable '${targetVar}' no ha sido definida para 'Leer'.`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        let targetType;
+                        let isArrayTarget = false;
+                        let evaluatedIndex = null;
+                        let targetVariableReference = currentScope[targetVar]; 
+
+                        if (targetVariableReference && targetVariableReference._is_array) {
+                            isArrayTarget = true;
+                            targetType = targetVariableReference._type; 
+                            if (indexExpr === undefined) {
+                                appendToConsole(`Error en línea ${currentLineNumber}: Para 'Leer' en un arreglo, debe especificar un índice para '${targetVar}'.`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                            try {
+                                evaluatedIndex = evalExpression(indexExpr, currentScope);
+                                if (typeof evaluatedIndex !== 'number' || !Number.isInteger(evaluatedIndex)) {
+                                    appendToConsole(`Error en línea ${currentLineNumber}: El índice para el arreglo '${targetVar}' debe ser un número entero.`, true);
+                                    appState.haltExecution = true;
+                                    return;
+                                }
+                                if (evaluatedIndex < 0 || evaluatedIndex >= targetVariableReference.length) {
+                                    appendToConsole(`Error en línea ${currentLineNumber}: El índice ${evaluatedIndex} está fuera de rango para el arreglo '${targetVar}' (tamaño: ${targetVariableReference.length}).`, true);
+                                    appState.haltExecution = true;
+                                    return;
+                                }
+                                if (targetType === undefined) {
+                                    targetType = getPSeIntType(targetVariableReference[evaluatedIndex]);
+                                    if (targetType === 'desconocido') targetType = 'cadena'; 
+                                }
+                            } catch (e) {
+                                appendToConsole(`Error en línea ${currentLineNumber} al evaluar el índice para 'Leer' en '${targetVar}'. Detalle: ${e.message}`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                        } else { 
+                            targetType = currentScope[targetVar + '__type']; 
+                            if (targetType === undefined) { 
+                                targetType = 'cadena'; // Default to string for generic input if not defined
+                            }
+                        }
+
+                        const typeHint = targetType && targetType !== 'desconocido' ? ` (tipo esperado: ${targetType})` : '';
+                        const inputValue = await new Promise(resolve => {
+                            const inputPrompt = document.createElement('div');
+                            inputPrompt.innerHTML = `<br><span><i class="fas fa-keyboard" style="margin-right: 5px; color: #f39c12;"></i>Ingrese valor para ${targetVar}` + (indexExpr !== undefined ? `[${evaluatedIndex}]` : '') + `${typeHint}:</span><input type="text" class="console-input" autofocus><button class="console-input-btn">Aceptar</button>`;
+                            consoleOutput.appendChild(inputPrompt);
+                            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+
+                            const inputField = inputPrompt.querySelector('.console-input');
+                            const inputBtn = inputPrompt.querySelector('.console-input-btn');
+
+                            inputField.addEventListener('keypress', function(e) {
+                                if (e.key === 'Enter') {
+                                    inputBtn.click();
+                                }
+                            });
+                            inputBtn.addEventListener('click', function() {
+                                const val = inputField.value;
+                                inputPrompt.remove();
+                                appendToConsole(`Entrada: ${val}`); 
+                                resolve(val);
+                            });
+                            inputField.focus(); 
+                        });
+
+                        try {
+                            let actualValue = convertValueToType(inputValue, targetType, targetVar);
+
+                            if (isArrayTarget) { 
+                                if (targetVariableReference._type === undefined) { 
+                                    targetVariableReference._type = getPSeIntType(actualValue); 
+                                    if (targetVariableReference._type === 'desconocido' && actualValue !== null) {
+                                        throw new Error(`El tipo de valor ingresado es desconocido para inferir el tipo del arreglo '${targetVar}'.`);
+                                    }
+                                    if (targetVariableReference._type !== 'desconocido') {
+                                        for(let k=0; k < targetVariableReference.length; k++) {
+                                            if (targetVariableReference[k] === null) { 
+                                                targetVariableReference[k] = getDefaultValueForType(targetVariableReference._type);
+                                            }
+                                        }
+                                    }
+                                    targetVariableReference[evaluatedIndex] = actualValue; 
+                                } else { 
+                                    let convertedValue = convertValueToType(actualValue, targetVariableReference._type, `${targetVar}[${evaluatedIndex}]`);
+                                    targetVariableReference[evaluatedIndex] = convertedValue;
+                                }
+                            } else { 
+                                if (currentScope[targetVar + '__type'] === undefined) { 
+                                    currentScope[targetVar] = actualValue;
+                                    currentScope[targetVar + '__type'] = getPSeIntType(actualValue); 
+                                    if (currentScope[targetVar + '__type'] === 'desconocido' && actualValue !== null) {
+                                        throw new Error(`El tipo de valor ingresado es desconocido para inferir el tipo de la variable '${targetVar}'.`);
+                                    }
+                                } else { 
+                                    let convertedValue = convertValueToType(actualValue, targetType, targetVar);
+                                    currentScope[targetVar] = convertedValue;
+                                }
+                            }
+                            updateVariablePanel();
+                        } catch (e) {
+                            appendToConsole(`Error en línea ${currentLineNumber} al leer valor para '${targetVar}'. Detalle: ${e.message}`, true);
+                            appState.haltExecution = true;
+                        }
+                        continue;
+                    }
+
+                    // --- Assignment (<-) ---
+                    const assignMatch = line.match(/^([a-zA-Z_]\w*)(?:\[(.*?)\])?\s*<-\s*(.*)$/i); 
+                    if (assignMatch) {
+                        const targetVar = assignMatch[1].toLowerCase();
+                        const indexExpr = assignMatch[2]; 
+                        const expression = assignMatch[3].trim();
+
+                        if (!currentScope.hasOwnProperty(targetVar) && !currentScope.hasOwnProperty(targetVar + '__type')) {
+                             appendToConsole(`Error en línea ${currentLineNumber}: La variable '${targetVar}' no ha sido definida para asignación.`, true);
+                             appState.haltExecution = true;
+                             return;
+                        }
+
+                        let targetVarValue = currentScope[targetVar]; 
+                        let targetType;
+                        let isArrayTarget = false;
+                        let evaluatedIndex = null;
+
+                        if (targetVarValue && targetVarValue._is_array) {
+                            isArrayTarget = true;
+                            targetType = targetVarValue._type; 
+                            if (indexExpr === undefined) {
+                                appendToConsole(`Error en línea ${currentLineNumber}: Para asignar a un arreglo, debe especificar un índice para '${targetVar}'.`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                            try {
+                                evaluatedIndex = evalExpression(indexExpr, currentScope);
+                                if (typeof evaluatedIndex !== 'number' || !Number.isInteger(evaluatedIndex)) {
+                                    appendToConsole(`Error en línea ${currentLineNumber}: El índice para el arreglo '${targetVar}' debe ser un número entero.`, true);
+                                    appState.haltExecution = true;
+                                    return;
+                                }
+                                if (evaluatedIndex < 0 || evaluatedIndex >= targetVarValue.length) {
+                                    appendToConsole(`Error en línea ${currentLineNumber}: El índice ${evaluatedIndex} está fuera de rango para el arreglo '${targetVar}' (tamaño: ${targetVarValue.length}).`, true);
+                                    appState.haltExecution = true;
+                                    return;
+                                }
+                            } catch (e) {
+                                appendToConsole(`Error en línea ${currentLineNumber} al evaluar el índice para asignación a '${targetVar}'. Detalle: ${e.message}`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                        } else if (indexExpr !== undefined) { 
+                            appendToConsole(`Error en línea ${currentLineNumber}: La variable '${targetVar}' no es un arreglo. No se puede asignar con un índice.`, true);
+                            appState.haltExecution = true;
+                            return;
+                        } else { 
+                            targetType = currentScope[targetVar + '__type'];
+                        }
+
+
+                        let valueToAssign;
+                        const funcCallMatch = expression.match(/^([a-zA-Z_]\w*)\s*\((.*?)\)$/i);
+                        if (funcCallMatch && appState.functions.hasOwnProperty(funcCallMatch[1].toLowerCase())) {
+                            const funcName = funcCallMatch[1].toLowerCase();
+                            const funcArgsStr = funcCallMatch[2];
+                            
+                            const funcArgs = [];
+                            if (funcArgsStr.trim() !== '') {
+                                const argParts = funcArgsStr.split(',').map(arg => arg.trim());
+                                for (const argPart of argParts) {
+                                    try {
+                                        funcArgs.push(evalExpression(argPart, currentScope));
+                                    } catch (e) {
+                                        appendToConsole(`Error en línea ${currentLineNumber} al evaluar el argumento '${argPart}' para la función '${funcName}'. Detalle: ${e.message}`, true);
+                                        appState.haltExecution = true;
+                                        return;
+                                    }
+                                }
+                            }
+                            valueToAssign = await callFunction(funcName, funcArgs, currentLineNumber); // Pass line number
+                            if (appState.haltExecution) return; 
+                        } else {
+                            try {
+                                valueToAssign = evalExpression(expression, currentScope);
+                            } catch (e) {
+                                 appendToConsole(`Error en línea ${currentLineNumber} al evaluar la expresión "${expression}" para asignación. Detalle: ${e.message}`, true);
+                                 appState.haltExecution = true;
+                                 return;
+                            }
+                        }
+                        
+                        try {
+                            if (isArrayTarget) { 
+                                if (targetVarValue._type === undefined) { 
+                                    targetVarValue._type = getPSeIntType(valueToAssign); 
+                                    if (targetVarValue._type === 'desconocido' && valueToAssign !== null) {
+                                        throw new Error(`El tipo de valor asignado es desconocido para inferir el tipo del arreglo '${targetVar}'.`);
+                                    }
+                                    if (targetVarValue._type !== 'desconocido') {
+                                        for(let k=0; k < targetVarValue.length; k++) {
+                                            if (targetVarValue[k] === null) { 
+                                                targetVarValue[k] = getDefaultValueForType(targetVarValue._type);
+                                            }
+                                        }
+                                    }
+                                    targetVarValue[evaluatedIndex] = valueToAssign; 
+                                } else { 
+                                    let convertedValue = convertValueToType(valueToAssign, targetVarValue._type, `${targetVar}[${evaluatedIndex}]`);
+                                    targetVarValue[evaluatedIndex] = convertedValue;
+                                }
+                            } else { 
+                                if (currentScope[targetVar + '__type'] === undefined) { 
+                                    currentScope[targetVar] = valueToAssign;
+                                    currentScope[targetVar + '__type'] = getPSeIntType(valueToAssign); 
+                                    if (currentScope[targetVar + '__type'] === 'desconocido' && valueToAssign !== null) {
+                                        throw new Error(`El tipo de valor asignado es desconocido para inferir el tipo de la variable '${targetVar}'.`);
+                                    }
+                                } else { 
+                                    let convertedValue = convertValueToType(valueToAssign, targetType, targetVar);
+                                    currentScope[targetVar] = convertedValue;
+                                }
+                            }
+                            updateVariablePanel();
+                        } catch (e) {
+                            appendToConsole(`Error en línea ${currentLineNumber}: La asignación a '${targetVar}' falló. Detalle: ${e.message}`, true);
+                            appState.haltExecution = true;
+                        }
+                        continue;
+                    }
+
+                    // --- For Loop (Para) ---
+                    const paraMatch = line.match(/^Para\s+([a-zA-Z_]\w*)\s*<-\s*(\S+)\s+Hasta\s+(\S+)(?:\s+Con\s+Paso\s+(\S+))?\s+Hacer$/i);
+                    if (paraMatch) {
+                        const loopVarName = paraMatch[1].toLowerCase();
+                        let startVal, endVal, stepVal;
+                        try {
+                            startVal = evalExpression(paraMatch[2], currentScope);
+                            endVal = evalExpression(paraMatch[3], currentScope);
+                            stepVal = paraMatch[4] ? evalExpression(paraMatch[4], currentScope) : 1;
+                        } catch (e) {
+                            appendToConsole(`Error en línea ${currentLineNumber} al evaluar el rango o paso del bucle 'Para'. Detalle: ${e.message}`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        if (typeof startVal !== 'number' || typeof endVal !== 'number' || typeof stepVal !== 'number') {
+                             appendToConsole(`Error en línea ${currentLineNumber}: Los valores de inicio, fin y paso en 'Para' deben ser numéricos.`, true);
+                             appState.haltExecution = true;
+                             return;
+                        }
+                        if (stepVal === 0) {
+                            appendToConsole(`Error en línea ${currentLineNumber}: El 'Paso' en el bucle 'Para' no puede ser cero.`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        let loopBody = [];
+                        let j = i + 1;
+                        let paraCount = 1; 
+                        while (j < blockLines.length && !appState.haltExecution) {
+                            let innerLine = blockLines[j].trim();
+                            const innerCommentIndex = innerLine.indexOf('//');
+                            if (innerCommentIndex !== -1) {
+                                innerLine = innerLine.substring(0, innerCommentIndex).trim();
+                            }
+
+                            if (innerLine.match(/^Para\s+/i)) {
+                                paraCount++;
+                            } else if (innerLine.toLowerCase() === 'finpara') {
+                                paraCount--;
+                                if (paraCount === 0) break; 
+                            }
+                            loopBody.push(blockLines[j]);
+                            j++;
+                        }
+
+                        if (paraCount !== 0) {
+                            appendToConsole(`Error de sintaxis en línea ${currentLineNumber}: Falta 'FinPara' o hay un anidamiento incorrecto para el bucle 'Para'.`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        if ((stepVal > 0 && startVal > endVal) || (stepVal < 0 && startVal < endVal)) {
+                            // Loop will not execute, this is valid in PSeInt, so just skip
+                        } else {
+                            for (let k = startVal; (stepVal > 0 ? k <= endVal : k >= endVal); k += stepVal) {
+                                if (appState.haltExecution) return;
+                                const iterationScope = { ...currentScope }; 
+                                iterationScope[loopVarName] = k;
+                                iterationScope[loopVarName + '__type'] = 'entero'; 
+                                await executeBlock(loopBody, iterationScope, currentLineNumber); 
+                                if (appState.haltExecution) return; 
+                            }
+                        }
+                        i = j; 
+                        continue;
+                    }
+
+                    // --- If-ElseIf-Else Statement (Si-Entonces-SinoSi-Sino) ---
+                    const siMatch = line.match(/^Si\s+(.*)\s+Entonces$/i);
+                    if (siMatch) {
+                        let condition;
+                        try {
+                            condition = evalExpression(siMatch[1], currentScope);
+                        } catch (e) {
+                             appendToConsole(`Error en línea ${currentLineNumber} al evaluar la condición 'Si' ("${siMatch[1]}"). Detalle: ${e.message}`, true);
+                             appState.haltExecution = true;
+                             return;
+                        }
+
+                        if (typeof condition !== 'boolean') {
+                            appendToConsole(`Error en línea ${currentLineNumber}: La condición en 'Si' debe ser un valor lógico (verdadero o falso).`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        let ifBlock = [];
+                        let elseIfBlocks = []; 
+                        let elseBlock = [];
+                        let currentBlock = ifBlock; 
+                        
+                        let j = i + 1;
+                        let siCount = 1; 
+
+                        while (j < blockLines.length && !appState.haltExecution) {
+                            let innerLine = blockLines[j].trim();
+                            const innerCommentIndex = innerLine.indexOf('//');
+                            if (innerCommentIndex !== -1) {
+                                innerLine = innerLine.substring(0, innerCommentIndex).trim();
+                            }
+                            
+                            if (innerLine.match(/^Si\s+/i)) { 
+                                siCount++;
+                            } else if (innerLine.toLowerCase() === 'finsi') {
+                                siCount--;
+                                if (siCount === 0) break; 
+                            } else if (siCount === 1) { 
+                                const sinoSiMatch = innerLine.match(/^SinoSi\s+(.*)\s+Entonces$/i);
+                                if (sinoSiMatch) {
+                                    elseIfBlocks.push({ condition: sinoSiMatch[1], body: [] });
+                                    currentBlock = elseIfBlocks[elseIfBlocks.length - 1].body;
+                                    j++; 
+                                    continue;
+                                } else if (innerLine.toLowerCase() === 'sino') { 
+                                    currentBlock = elseBlock;
+                                    j++; 
+                                    continue;
+                                }
+                            }
+                            
+                            currentBlock.push(blockLines[j]);
+                            j++;
+                        }
+                        
+                        if (siCount !== 0) {
+                             appendToConsole(`Error de sintaxis en línea ${currentLineNumber}: Falta 'FinSi' o hay un anidamiento incorrecto para el bloque 'Si'.`, true);
+                             appState.haltExecution = true;
+                             return;
+                        }
+
+                        if (condition) {
+                            await executeBlock(ifBlock, currentScope, currentLineNumber);
+                        } else {
+                            let executedElseIf = false;
+                            for (const elseIf of elseIfBlocks) {
+                                if (appState.haltExecution) return;
+                                try {
+                                    const elseIfCondition = evalExpression(elseIf.condition, currentScope);
+                                    if (typeof elseIfCondition !== 'boolean') {
+                                        appendToConsole(`Error en línea ${currentLineNumber}: La condición 'SinoSi' debe ser lógica.`, true);
+                                        appState.haltExecution = true;
+                                        return;
+                                    }
+                                    if (elseIfCondition) {
+                                        await executeBlock(elseIf.body, currentScope, currentLineNumber);
+                                        executedElseIf = true;
+                                        break; 
+                                    }
+                                } catch (e) {
+                                    appendToConsole(`Error en línea ${currentLineNumber} al evaluar la condición 'SinoSi' ("${elseIf.condition}"). Detalle: ${e.message}`, true);
+                                    appState.haltExecution = true;
+                                    return;
+                                }
+                            }
+                            if (!executedElseIf && elseBlock.length > 0) {
+                                await executeBlock(elseBlock, currentScope, currentLineNumber);
+                            }
+                        }
+                        i = j; 
+                        continue;
+                    }
+
+                    // --- While Loop (Mientras) ---
+                    const mientrasMatch = line.match(/^Mientras\s+(.*)\s+Hacer$/i);
+                    if (mientrasMatch) {
+                        let conditionExpr = mientrasMatch[1];
+                        let loopBody = [];
+                        let j = i + 1;
+                        let mientrasCount = 1;
+
+                        while (j < blockLines.length && !appState.haltExecution) {
+                            let innerLine = blockLines[j].trim();
+                            const innerCommentIndex = innerLine.indexOf('//');
+                            if (innerCommentIndex !== -1) {
+                                innerLine = innerLine.substring(0, innerCommentIndex).trim();
+                            }
+
+                            if (innerLine.match(/^Mientras\s+/i)) {
+                                mientrasCount++;
+                            } else if (innerLine.toLowerCase() === 'finmientras') {
+                                mientrasCount--;
+                                if (mientrasCount === 0) break;
+                            }
+                            loopBody.push(blockLines[j]);
+                            j++;
+                        }
+
+                        if (mientrasCount !== 0) {
+                            appendToConsole(`Error de sintaxis en línea ${currentLineNumber}: Falta 'FinMientras' o hay un anidamiento incorrecto para el bucle 'Mientras'.`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+                        
+                        let condition;
+                        try {
+                            condition = evalExpression(conditionExpr, currentScope);
+                        } catch (e) {
+                            appendToConsole(`Error en línea ${currentLineNumber} al evaluar la condición del bucle 'Mientras'. Detalle: ${e.message}`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        if (typeof condition !== 'boolean') {
+                            appendToConsole(`Error en línea ${currentLineNumber}: La condición en 'Mientras' debe ser lógica (verdadero o falso).`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        while (condition && !appState.haltExecution) {
+                            await executeBlock(loopBody, currentScope, currentLineNumber);
+                            if (appState.haltExecution) return; 
+                            try {
+                                condition = evalExpression(conditionExpr, currentScope); 
+                            } catch (e) {
+                                appendToConsole(`Error en línea ${currentLineNumber} al re-evaluar la condición del bucle 'Mientras'. Detalle: ${e.message}`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                            if (typeof condition !== 'boolean') {
+                                appendToConsole(`Error en línea ${currentLineNumber}: La condición en 'Mientras' se volvió no lógica.`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                        }
+                        i = j;
+                        continue;
+                    }
+
+                    // --- Do-While Loop (Repetir-Hasta Que) ---
+                    const repetirMatch = line.match(/^Repetir$/i);
+                    if (repetirMatch) {
+                        let loopBody = [];
+                        let j = i + 1;
+                        let repetirCount = 1;
+                        let untilConditionExpr = null;
+                        let foundUntil = false;
+
+                        while (j < blockLines.length && !appState.haltExecution) {
+                            let innerLine = blockLines[j].trim();
+                            const innerCommentIndex = innerLine.indexOf('//');
+                            if (innerCommentIndex !== -1) {
+                                innerLine = innerLine.substring(0, innerCommentIndex).trim();
+                            }
+
+                            if (innerLine.match(/^Repetir$/i)) {
+                                repetirCount++;
+                            } else {
+                                const untilMatch = innerLine.match(/^Hasta Que\s+(.*)$/i);
+                                if (untilMatch) {
+                                    repetirCount--;
+                                    if (repetirCount === 0) {
+                                        untilConditionExpr = untilMatch[1];
+                                        foundUntil = true;
+                                        break; 
+                                    }
+                                }
+                            }
+                            loopBody.push(blockLines[j]);
+                            j++;
+                        }
+
+                        if (!foundUntil || repetirCount !== 0) {
+                            appendToConsole(`Error de sintaxis en línea ${currentLineNumber}: Falta 'Hasta Que' o hay un anidamiento incorrecto para el bucle 'Repetir'.`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        let condition = false; 
+                        do {
+                            await executeBlock(loopBody, currentScope, currentLineNumber);
+                            if (appState.haltExecution) return; 
+                            try {
+                                condition = evalExpression(untilConditionExpr, currentScope);
+                            } catch (e) {
+                                appendToConsole(`Error en línea ${currentLineNumber} al evaluar la condición 'Hasta Que'. Detalle: ${e.message}`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                            if (typeof condition !== 'boolean') {
+                                appendToConsole(`Error en línea ${currentLineNumber}: La condición 'Hasta Que' se volvió no lógica.`, true);
+                                appState.haltExecution = true;
+                                return;
+                            }
+                        } while (!condition && !appState.haltExecution); 
+
+                        i = j;
+                        continue;
+                    }
+
+                    // --- Direct Function Call (e.g., Subproceso()) ---
+                    const directFuncCallMatch = line.match(/^([a-zA-Z_]\w*)\s*\((.*?)\)$/i);
+                    if (directFuncCallMatch && appState.functions.hasOwnProperty(directFuncCallMatch[1].toLowerCase())) {
+                        const funcName = directFuncCallMatch[1].toLowerCase();
+                        const funcArgsStr = directFuncCallMatch[2];
+                        const funcArgs = [];
+
+                        if (funcArgsStr.trim() !== '') {
+                            const argParts = funcArgsStr.split(',').map(arg => arg.trim());
+                            for (const argPart of argParts) {
+                                try {
+                                    funcArgs.push(evalExpression(argPart, currentScope));
+                                } catch (e) {
+                                    appendToConsole(`Error en línea ${currentLineNumber} al evaluar el argumento '${argPart}' para la función '${funcName}'. Detalle: ${e.message}`, true);
+                                    appState.haltExecution = true;
+                                    return;
+                                }
+                            }
+                        }
+                        await callFunction(funcName, funcArgs, currentLineNumber); // Pass line number
+                        if (appState.haltExecution) return;
+                        continue;
+                    }
+
+
+                    // Ignore main algorithm start/end (already handled by block processing)
+                    if (line.toLowerCase().startsWith('algoritmo') || line.toLowerCase() === 'finalgoritmo') {
+                        continue;
+                    }
+                    
+                    appendToConsole(`Error en línea ${currentLineNumber}: ¡Lo siento! No pude entender esta instrucción: "${line}". Revisa la sintaxis.`, true);
+                    appState.haltExecution = true;
+                    return;
+                }
+            }
+
+            // Function to call a PSeInt function
+            async function callFunction(funcName, args, callLineNumber) {
+                const func = appState.functions[funcName];
+                if (!func) {
+                    appendToConsole(`Error en línea ${callLineNumber}: ¡Oh no! La función '${funcName}' no está definida. ¿La escribiste correctamente?`, true);
+                    appState.haltExecution = true;
+                    return undefined;
+                }
+
+                if (args.length !== func.params.length) {
+                    appendToConsole(`Error en línea ${callLineNumber}: La función '${funcName}' espera ${func.params.length} argumentos, pero le diste ${args.length}.`, true);
+                    appState.haltExecution = true;
+                    return undefined;
+                }
+
+                const functionLocalScope = { ...appState.variables }; 
+
+                for (let k = 0; k < func.params.length; k++) {
+                    const paramName = func.params[k];
+                    const argValue = args[k];
+
+                    let inferredType = getPSeIntType(argValue);
+
+                    if (Array.isArray(argValue) && argValue._is_array) {
+                        const clonedArray = argValue.map(item => item); 
+                        clonedArray._is_array = true;
+                        clonedArray._type = argValue._type; 
+                        functionLocalScope[paramName] = clonedArray;
+                    } else {
+                        functionLocalScope[paramName] = argValue;
+                        functionLocalScope[paramName + '__type'] = inferredType; 
+                    }
+                }
+
+                await executeBlock(func.body, functionLocalScope, func.startLine); 
+
+                if (appState.haltExecution) { 
+                    return undefined;
+                }
+
+                if (functionLocalScope.hasOwnProperty(func.returnVar)) {
+                    return functionLocalScope[func.returnVar]; 
+                } else {
+                    appendToConsole(`Error en la función '${funcName}': La variable de retorno '${func.returnVar}' no recibió un valor. ¡Asegúrate de asignarle algo!`, true);
+                    appState.haltExecution = true;
+                    return undefined;
+                }
+            }
+
+            // --- UI and Event Handling ---
+
+            runCodeBtn.addEventListener('click', async function() {
+                resetState();
+                const code = codeElement.value;
+                const lines = code.split('\n');
+
+                let mainAlgorithmBlock = [];
+                let inFunctionDefinition = false;
+                let functionStack = []; 
+
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i].trim();
+                    const commentIndex = line.indexOf('//');
+                    if (commentIndex !== -1) {
+                        line = line.substring(0, commentIndex).trim();
+                    }
+                    if (line === '') continue;
+
+                    const funcMatch = line.match(/^Funcion\s+([a-zA-Z_]\w*)\s*=\s*([a-zA-Z_]\w*)\s*\((.*?)\)$/i);
+                    if (funcMatch) {
+                        const returnVar = funcMatch[1].toLowerCase();
+                        const funcName = funcMatch[2].toLowerCase(); 
+                        const params = funcMatch[3].split(',').map(p => p.trim().toLowerCase()).filter(p => p !== '');
+                        
+                        if (appState.functions.hasOwnProperty(funcName)) {
+                            appendToConsole(`Error en línea ${i+1}: ¡Ups! La función '${funcName}' ya existe. Usa un nombre diferente o revisa duplicados.`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+
+                        appState.functions[funcName] = {
+                            returnVar: returnVar,
+                            params: params,
+                            body: [],
+                            startLine: i + 1 
+                        };
+                        functionStack.push(funcName); 
+                        inFunctionDefinition = true;
+                        continue;
+                    }
+
+                    if (line.toLowerCase() === 'finfuncion') {
+                        if (functionStack.length === 0) {
+                            appendToConsole(`Error en línea ${i+1}: 'FinFuncion' sin un 'Funcion' que lo inicie. ¿Olvidaste algo?`, true);
+                            appState.haltExecution = true;
+                            return;
+                        }
+                        functionStack.pop(); 
+                        inFunctionDefinition = (functionStack.length > 0); 
+                        continue;
+                    }
+
+                    if (inFunctionDefinition && functionStack.length > 0) {
+                        const currentFunction = appState.functions[functionStack[functionStack.length - 1]];
+                        if (currentFunction) { 
+                            currentFunction.body.push(line);
+                        }
+                    } else {
+                        mainAlgorithmBlock.push(line);
+                    }
+                }
+
+                if (functionStack.length > 0) {
+                    appendToConsole(`Error: Parece que la función '${functionStack[functionStack.length - 1]}' no tiene su 'FinFuncion'.`, true);
+                    appState.haltExecution = true;
+                    return;
+                }
+
+                appendToConsole("<i class='fas fa-play' style='margin-right: 5px; color: #2ecc71;'></i> Iniciando la ejecución del algoritmo principal...");
+                mainAlgorithmBlock = mainAlgorithmBlock.filter(line => 
+                    !line.toLowerCase().startsWith('algoritmo') && 
+                    !line.toLowerCase().startsWith('finalgoritmo')
+                );
+                
+                await executeBlock(mainAlgorithmBlock, appState.variables);
+
+                if (!appState.haltExecution) {
+                    appendToConsole("<i class='fas fa-check-circle' style='margin-right: 5px; color: #2ecc71;'></i> Ejecución completada exitosamente.");
+                } else {
+                    appendToConsole("<i class='fas fa-exclamation-triangle' style='margin-right: 5px; color: #e74c3c;'></i> Ejecución detenida debido a un error. Revisa los mensajes anteriores.", true);
+                }
+            });
+
+            clearConsoleBtn.addEventListener('click', function() {
+                resetState(); 
+                appendToConsole('<i class="fas fa-eraser" style="margin-right: 5px; color: #f39c12;"></i> Consola y estado del programa limpiados.');
+            });
+
+            // Nuevo botón "Nuevo"
+            newCodeBtn.addEventListener('click', function() {
+                codeElement.value = `Algoritmo MiPrimerAlgoritmo
+
+FinAlgoritmo`;
+                resetState();
+                appendToConsole('<i class="fas fa-file-alt" style="margin-right: 5px; color: #3498db;"></i> Contenido del editor borrado. Listo para un nuevo pseudocódigo.');
+            });
+
+
+            saveCodeBtn.addEventListener('click', function() {
+                const codeContent = codeElement.value;
+                const blob = new Blob([codeContent], { type: 'text/plain;charset=utf-8' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'mi_pseudocodigo.psc'; 
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(a.href);
+                appendToConsole('<i class="fas fa-save" style="margin-right: 5px; color: #2ecc71;"></i> Código guardado como "mi_pseudocodigo.psc".');
+            });
+
+            openCodeBtn.addEventListener('click', function() {
+                openCodeInput.click(); 
+            });
+
+            openCodeInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (!file) {
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    codeElement.value = e.target.result;
+                    appendToConsole(`<i class="fas fa-folder-open" style="margin-right: 5px; color: #3498db;"></i> Archivo "${file.name}" cargado correctamente.`);
+                    resetState(); 
+                };
+                reader.onerror = function(e) {
+                    appendToConsole(`<i class="fas fa-times-circle" style="margin-right: 5px; color: #e74c3c;"></i> Error al leer el archivo: ${e.message}`, true);
+                };
+                reader.readAsText(file);
+            });
+
+            runExampleBtn.addEventListener('click', function() {
+                const exampleCode = `Algoritmo SumaDeDosNumeros
+  // Este es un ejemplo básico de PSeInt.
+  // Pide dos números, los suma y muestra el resultado.
+  
+  Definir num1, num2, resultado Como Entero
+  
+  Escribir "Hola! Este programa suma dos numeros."
+  Escribir "Por favor, ingresa el primer numero:"
+  Leer num1
+  
+  Escribir "Ahora, ingresa el segundo numero:"
+  Leer num2
+  
+  resultado <- num1 + num2
+  
+  Escribir "La suma de ", num1, " y ", num2, " es: ", resultado
+  
+FinAlgoritmo`;
+                codeElement.value = exampleCode;
+                appendToConsole("<i class='fas fa-code' style='margin-right: 5px; color: #3498db;'></i> Código de ejemplo básico cargado. ¡Presiona 'Ejecutar' para ver cómo funciona!");
+            });
+
+            // --- Panel Updates ---
+            function updateVariablePanel() {
+                variableList.innerHTML = '';
+                const variables = Object.entries(appState.variables).filter(([key, value]) => !key.endsWith('__type')).sort((a, b) => a[0].localeCompare(b[0]));
+                
+                if (variables.length === 0) {
+                    const li = document.createElement('li');
+                    li.className = 'variable-item';
+                    li.textContent = "No hay variables definidas";
+                    variableList.appendChild(li);
+                    return;
+                }
+
+                for (const [name, value] of variables) {
+                    const li = document.createElement('li');
+                    li.className = 'variable-item';
+                    let displayValue = '';
+                    let typeDisplay = '(-)';
+
+                    if (value && typeof value === 'object' && value._is_array) {
+                        typeDisplay = value._type ? `(arreglo de ${value._type})` : '(arreglo sin tipo definido)';
+                        displayValue = `[${value.map(item => JSON.stringify(item)).join(', ')}]`;
+                    } else { 
+                        const scalarType = appState.variables[name + '__type'] || getPSeIntType(value);
+                        typeDisplay = `(${scalarType})`;
+                        displayValue = JSON.stringify(value);
+                    }
+                    li.innerHTML = `<strong>${name}</strong> ${typeDisplay}: ${displayValue}`;
+                    variableList.appendChild(li);
+                }
+            }
+            
+            function updateFunctionPanel() {
+                functionList.innerHTML = '';
+                const functions = Object.entries(appState.functions).sort((a, b) => a[0].localeCompare(b[0]));
+
+                if (functions.length === 0) {
+                    const li = document.createElement('li');
+                    li.className = 'function-item';
+                    li.textContent = "No hay funciones definidas";
+                    functionList.appendChild(li);
+                    return;
+                }
+
+                for (const [name, func] of functions) {
+                    const li = document.createElement('li');
+                    li.className = 'function-item';
+                    li.innerHTML = `
+                        <div class="function-name">${name}</div>
+                        <div class="function-params">(${func.params.join(', ')})</div>
+                    `;
+                    functionList.appendChild(li);
+                }
+            }
+            
+            function clearPanels() {
+                variableList.innerHTML = '<li class="variable-item">No hay variables definidas</li>';
+                functionList.innerHTML = '<li class="function-item">No hay funciones definidas</li>';
+                suggestionList.innerHTML = '<li class="suggestion-item">Escribe para ver sugerencias...</li>'; // Clear suggestions too
+            }
+
+            // Toggle Side Panel (collapsible feature)
+            toggleSidePanelBtn.addEventListener('click', toggleSidePanel);
+            function toggleSidePanel() {
+                if (window.innerWidth > 900) {
+                    sidePanel.classList.toggle('collapsed');
+                    const icon = toggleSidePanelBtn.querySelector('i'); 
+                    if (icon) { 
+                        if (sidePanel.classList.contains('collapsed')) {
+                            icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
+                        } else {
+                            icon.classList.replace('fa-chevron-right', 'fa-chevron-left');
+                        }
+                    }
+                }
+            }
+
+            // --- SUGGESTIONS LOGIC ---
+            const suggestions = [
+                {
+                    keyword: 'definir',
+                    title: 'Declarar Variable',
+                    tip: 'Define una variable con su tipo. ¡Así el programa sabe qué esperar!',
+                    code: 'Definir miVariable Como Entero\n// Tipos: Entero, Real, Caracter, Cadena, Logico'
+                },
+                {
+                    keyword: 'dimensionar',
+                    title: 'Declarar Arreglo (Vector)',
+                    tip: 'Crea un espacio para guardar varios datos del mismo tipo.',
+                    code: 'Dimensionar miArreglo[5]\n// Puedes acceder con miArreglo[0], miArreglo[1]...'
+                },
+                {
+                    keyword: 'escribir',
+                    title: 'Mostrar en Pantalla',
+                    tip: 'Usa Escribir para mostrar mensajes o el valor de tus variables.',
+                    code: 'Escribir "Hola mundo"\nEscribir "El valor es: ", miVariable'
+                },
+                {
+                    keyword: 'leer',
+                    title: 'Pedir Datos al Usuario',
+                    tip: 'Pide al usuario que ingrese un valor y guárdalo en una variable.',
+                    code: 'Leer miVariable'
+                },
+                {
+                    keyword: 'si',
+                    title: 'Condición Si-Entonces',
+                    tip: 'Ejecuta un código solo si una condición es verdadera.',
+                    code: 'Si (condicionLogica) Entonces\n  // Código si la condición es verdadera\nFinSi'
+                },
+                {
+                    keyword: 'sino',
+                    title: 'Condición Si-Sino',
+                    tip: 'Para cuando tienes dos caminos: si es verdadero o si es falso.',
+                    code: 'Si (condicionLogica) Entonces\n  // Código si es verdadero\nSino\n  // Código si es falso\nFinSi'
+                },
+                 {
+                    keyword: 'sinosi',
+                    title: 'Condición Si-SinoSi-Sino',
+                    tip: 'Para cuando tienes varias condiciones posibles en cadena.',
+                    code: 'Si (condicion1) Entonces\n  // Código para condicion1\nSinoSi (condicion2) Entonces\n  // Código para condicion2\nSino\n  // Código si ninguna de las anteriores es verdadera\nFinSi'
+                },
+                {
+                    keyword: 'para',
+                    title: 'Bucle Para (Ciclo Fijo)',
+                    tip: 'Repite un bloque de código un número específico de veces.',
+                    code: 'Para i <- 1 Hasta 10 Con Paso 1 Hacer\n  // Código a repetir 10 veces\nFinPara'
+                },
+                {
+                    keyword: 'mientras',
+                    title: 'Bucle Mientras (Ciclo Condicional)',
+                    tip: 'Repite un bloque de código mientras una condición sea verdadera.',
+                    code: 'Mientras (condicionLogica) Hacer\n  // Código a repetir\n  // Asegúrate de que la condición cambie o será un bucle infinito!\nFinMientras'
+                },
+                {
+                    keyword: 'repetir',
+                    title: 'Bucle Repetir-Hasta Que',
+                    tip: 'Repite un bloque de código al menos una vez, hasta que una condición sea verdadera.',
+                    code: 'Repetir\n  // Código a repetir\nHasta Que (condicionLogica)'
+                },
+                {
+                    keyword: 'funcion',
+                    title: 'Declarar Función/Subproceso',
+                    tip: 'Crea un bloque de código reutilizable. ¡Ayuda a organizar tu programa!',
+                    code: 'Funcion resultado = miFuncion(parametro1, parametro2)\n  // Código de la función\n  resultado <- parametro1 + parametro2\nFinFuncion'
+                },
+                {
+                    keyword: '<-',
+                    title: 'Asignación de Valor',
+                    tip: 'Usa "<-" para guardar un valor en una variable.',
+                    code: 'variable <- 10\nmiArreglo[0] <- "texto"'
+                }
+                // Añade más sugerencias aquí
+            ];
+
+            function updateSuggestions() {
+                suggestionList.innerHTML = '';
+                const currentLine = getCurrentLine();
+                const currentText = codeElement.value.substring(0, codeElement.selectionStart);
+                const lastWordMatch = currentText.match(/\b(\w+)$/); // Last complete word
+
+                let foundSuggestions = false;
+
+                if (lastWordMatch) {
+                    const lastWord = lastWordMatch[1].toLowerCase();
+                    const filteredSuggestions = suggestions.filter(s => s.keyword.startsWith(lastWord));
+
+                    if (filteredSuggestions.length > 0) {
+                        filteredSuggestions.forEach(sug => {
+                            const li = document.createElement('li');
+                            li.className = 'suggestion-item';
+                            li.innerHTML = `<strong>${sug.title}</strong><br>${sug.tip}<pre>${sug.code}</pre>`;
+                            li.addEventListener('click', () => insertSuggestion(sug.code, lastWord.length));
+                            suggestionList.appendChild(li);
+                            foundSuggestions = true;
+                        });
+                    }
+                }
+                
+                if (!foundSuggestions) {
+                     const li = document.createElement('li');
+                    li.className = 'suggestion-item';
+                    li.textContent = "Escribe una palabra clave (ej: 'definir', 'si') para ver sugerencias.";
+                    suggestionList.appendChild(li);
+                }
+            }
+
+            function getCurrentLine() {
+                const text = codeElement.value;
+                const cursorPosition = codeElement.selectionStart;
+                const lines = text.split('\n');
+                let charCount = 0;
+                for (let i = 0; i < lines.length; i++) {
+                    charCount += lines[i].length + 1; // +1 for the newline character
+                    if (cursorPosition <= charCount) {
+                        return lines[i];
+                    }
+                }
+                return '';
+            }
+
+            function insertSuggestion(suggestionCode, charsToRemove) {
+                const start = codeElement.selectionStart - charsToRemove;
+                const end = codeElement.selectionEnd;
+                const currentValue = codeElement.value;
+
+                // Insert the suggestion code
+                codeElement.value = currentValue.substring(0, start) + suggestionCode + currentValue.substring(end);
+
+                // Set cursor position after insertion
+                codeElement.focus();
+                codeElement.selectionStart = start + suggestionCode.length;
+                codeElement.selectionEnd = start + suggestionCode.length;
+                
+                // Clear suggestions after insertion
+                updateSuggestions();
+            }
+
+
+            // Listen for input changes in the code editor to update suggestions
+            codeElement.addEventListener('input', updateSuggestions);
+
+            // Load example code by default on startup
+            runExampleBtn.click();
+            updateSuggestions(); // Initial call to populate suggestions
+        });
+
+    </script>
 </body>
 </html>
