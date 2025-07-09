@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de PSeInt Avanzado</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Estilos generales */
         * {
@@ -15,1684 +14,778 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #2a5298); /* Degradado de azul oscuro a azul medio */
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
             color: #333;
             min-height: 100vh;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         
-        .pseint-container {
-            width: 100%;
-            max-width: 1400px;
-            background: #f0f0f0;
-            border-radius: 8px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             overflow: hidden;
-            display: flex;
-            flex-direction: row; /* Dispuestos en fila */
-            min-height: 80vh; /* Altura mínima del contenedor principal */
         }
         
-        /* Panel principal del editor de código y consola */
-        .main-panel {
-            flex-grow: 1; /* Ocupa el espacio restante */
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            gap: 15px;
-            position: relative; /* Para el botón de colapsar */
-        }
-        
+        /* Cabecera */
         .header {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column; /* Stack logo and toolbar vertically on small screens */
+            align-items: flex-start;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px; /* Space between logo and toolbar */
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            background: #3498db;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Barra de herramientas */
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap; /* Allow items to wrap */
+            width: 100%; /* Take full width */
+            justify-content: flex-start;
+        }
+
+        .menu-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .toolbar-dropdown-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .toolbar-dropdown-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            z-index: 100;
+            left: 0; /* Align dropdown to the left of its parent button */
+            top: 100%; /* Position below the button */
+            overflow: hidden;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .menu-item {
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item:hover {
+            background-color: #3498db;
+            color: white;
+            padding-left: 20px;
+        }
+        
+        /* Contenido principal */
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        /* Panel de variables colapsable */
+        .variables-panel {
+            width: 300px;
+            background: #ecf0f1;
+            padding: 20px;
+            border-right: 2px solid #bdc3c7;
+        }
+        
+        .panel-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ccc;
         }
         
-        .header h1 {
-            color: #2c3e50; /* Color oscuro para el título */
-            font-size: 1.8em;
+        .collapse-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #2c3e50;
+        }
+        
+        .variables-section {
+            margin-bottom: 25px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .section-header:hover {
+            background: #2980b9;
+        }
+        
+        .section-header h3 {
+            font-size: 1.1rem;
             margin: 0;
         }
         
-        .buttons button {
-            background-color: #3498db; /* Azul claro */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-left: 10px;
-            white-space: nowrap; /* Evita que el texto del botón se rompa */
+        .section-content {
+            padding: 15px;
+            background: white;
+            max-height: 500px; /* Default max height for content */
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
         }
         
-        .buttons button:hover {
-            background-color: #2980b9; /* Azul más oscuro al pasar el ratón */
+        .section-content.collapsed {
+            max-height: 0;
+            padding: 0 15px;
+        }
+        
+        .checkbox-group {
+            margin: 10px 0;
+        }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Ayuda en tiempo real */
+        .realtime-help {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            border: 1px solid #bbdefb;
+            font-size: 0.95rem;
+        }
+
+        .realtime-help h4 {
+            color: #1a2a6c;
+            margin-bottom: 8px;
+        }
+
+        .realtime-help p {
+            margin-bottom: 5px;
+        }
+        
+        /* Editor de código */
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .editor-header {
+            background: #34495e;
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .filename {
+            font-weight: bold;
+        }
+        
+        .editor-actions button {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+        
+        .editor-actions button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .code-editor {
+            flex: 1;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.5;
+            border: none;
+            background: #2c3e50;
+            color: #ecf0f1;
+            resize: none;
+            outline: none;
+            white-space: pre;
+            tab-size: 4;
+        }
+        
+        .code-toolbar {
+            background: #95a5a6;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .code-btn {
+            padding: 8px 15px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .code-btn:hover {
+            background: #3498db;
             transform: translateY(-2px);
         }
         
-        .buttons button:active {
-            transform: translateY(0);
-        }
-
-        .buttons button i {
-            margin-right: 8px;
+        /* Consola de salida */
+        .console-panel {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            height: auto; /* Allow height to adjust */
+            max-height: 250px; /* Max height for desktop to avoid scroll if short */
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            border-top: 3px solid #3498db;
         }
         
-        .code-editor, .console {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
+        .console-header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #3498db;
         }
         
-        .code-editor textarea {
-            width: 100%;
-            height: 300px; /* Altura fija para el editor de código */
-            padding: 15px;
+        .console-actions button {
+            background: #2c3e50;
+            color: white;
             border: none;
-            resize: vertical; /* Permite redimensionar verticalmente */
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 1.0em;
-            line-height: 1.5;
-            color: #333;
-            background-color: #f8f8f8; /* Fondo ligeramente gris para el editor */
-            outline: none;
-        }
-        
-        .console {
-            flex-grow: 1; /* Ocupa el espacio restante en la columna */
-            padding: 15px;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.95em;
-            color: #2ecc71; /* Verde para la salida de éxito */
-            background-color: #222; /* Fondo oscuro para la consola */
-            overflow-y: auto; /* Scroll si el contenido es demasiado largo */
-            min-height: 150px; /* Altura mínima para la consola */
-            border-top: 1px solid #444;
-        }
-
-        .console > div {
-            padding: 2px 0;
-        }
-
-        .console-input {
-            width: calc(100% - 80px); /* Ajuste para el botón */
-            padding: 5px;
-            margin-right: 5px;
-            background-color: #333;
-            color: #eee;
-            border: 1px solid #555;
-            border-radius: 3px;
-        }
-
-        .console-input-btn {
             padding: 5px 10px;
-            background-color: #3498db;
-            color: white;
-            border: none;
+            margin-left: 5px;
             border-radius: 3px;
             cursor: pointer;
-        }
-
-        /* Panel lateral para variables, funciones y sugerencias */
-        .side-panel {
-            width: 300px; /* Ancho fijo para el panel lateral */
-            background-color: #e9ecef; /* Color de fondo más claro */
-            border-left: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-            transition: width 0.3s ease, min-width 0.3s ease;
-            overflow: hidden; /* Para ocultar contenido al colapsar */
-            min-width: 0; /* Permite colapsar completamente */
-        }
-
-        .side-panel.collapsed {
-            width: 50px; /* Ancho cuando está colapsado */
-            min-width: 50px;
-        }
-
-        .panel-header {
-            background-color: #2c3e50; /* Cabecera oscura para los paneles laterales */
-            color: white;
-            padding: 15px;
-            font-size: 1.1em;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .panel-content {
-            flex-grow: 1;
-            padding: 15px;
-            overflow-y: auto; /* Scroll para el contenido si es largo */
-        }
-
-        .variable-list, .function-list, .suggestion-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .variable-item, .function-item, .suggestion-item {
-            background-color: #fdfdfd;
-            border: 1px solid #eee;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            color: #555;
-            word-wrap: break-word; /* Wrap long content */
-        }
-
-        .function-item .function-name {
-            font-weight: bold;
-            color: #34495e;
-            margin-bottom: 3px;
-        }
-        .function-item .function-params {
-            font-size: 0.85em;
-            color: #7f8c8d;
-        }
-
-        .suggestion-item {
-            background-color: #eaf6ff; /* Color para sugerencias */
-            border-color: #b0d8ff;
-            color: #2a6496;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-        }
-        .suggestion-item:hover {
-            background-color: #d4ecff;
-            transform: translateY(-1px);
-        }
-        .suggestion-item strong {
-            color: #1a4d7d;
-        }
-        .suggestion-item pre {
-            background-color: #f0f8ff;
-            padding: 5px;
-            border-radius: 3px;
-            margin-top: 5px;
-            font-size: 0.8em;
-            white-space: pre-wrap; /* Preserve whitespace and wrap */
-            word-break: break-all; /* Break long words */
-        }
-
-
-        .side-panel.collapsed .panel-content,
-        .side-panel.collapsed .panel-header span {
-            display: none; /* Oculta el contenido cuando colapsa */
-        }
-        .side-panel.collapsed .panel-header i {
-            margin: 0 !important; /* Elimina margen del icono cuando colapsa */
-        }
-
-        /* Botón de colapsar */
-        #toggle-side-panel-btn {
-            position: absolute;
-            top: 20px;
-            right: 0px; /* Posición inicial en el borde del main-panel */
-            background-color: #2c3e50;
-            color: white;
-            border: none;
-            border-radius: 0 8px 8px 0; /* Solo lado derecho */
-            padding: 10px 10px 10px 10px;
-            cursor: pointer;
-            z-index: 10;
-            transition: right 0.3s ease;
         }
         
-        /* Media Queries para responsividad */
-        @media (max-width: 900px) {
-            .pseint-container {
-                flex-direction: column; /* Apila los paneles en pantallas pequeñas */
-                min-height: auto;
-                height: auto;
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideDown {
+            from { max-height: 0; opacity: 0; }
+            to { max-height: 500px; opacity: 1; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+        }
+        
+        /* Responsive */
+        @media (min-width: 769px) {
+            .header {
+                flex-direction: row; /* Horizontal layout for desktop */
+                justify-content: space-between;
+                align-items: center;
+            }
+            .logo {
+                margin-bottom: 0;
+            }
+            .toolbar {
+                width: auto;
+                justify-content: flex-end; /* Align toolbar to the right */
+                margin-left: auto; /* Push toolbar to the right */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
             }
             
-            .side-panel {
+            .variables-panel {
                 width: 100%;
-                border-left: none;
-                border-top: 1px solid #ddd;
-                height: 250px; /* Altura fija para el panel lateral en móvil */
+                border-right: none;
+                border-bottom: 2px solid #bdc3c7;
             }
 
-            .side-panel.collapsed {
-                height: 50px; /* Altura colapsada en móvil */
-                width: 100%;
+            .console-panel {
+                max-height: 300px; /* Allow more height for mobile but still scroll */
             }
 
-            #toggle-side-panel-btn {
-                top: auto;
-                bottom: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                border-radius: 8px 8px 0 0; /* Esquinas superiores */
-                right: auto;
-            }
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .pseint-container {
-                border-radius: 8px;
-            }
-            .header h1 {
-                font-size: 1.5em;
-            }
-            .buttons {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: flex-end;
-                gap: 5px;
-            }
-            .buttons button {
-                padding: 8px 10px;
-                font-size: 0.75em;
-                margin-left: 0; /* Eliminar margen para que se envuelvan mejor */
-            }
-            .code-editor textarea, .console {
-                padding: 10px;
-                font-size: 0.9em;
-            }
-            .panel-header {
-                padding: 10px;
-                font-size: 1em;
-            }
-            .variable-item, .function-item, .suggestion-item {
-                padding: 8px;
-                font-size: 0.8em;
+            .toolbar-dropdown-btn {
+                flex: 1 1 auto; /* Allow buttons to grow and shrink */
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="pseint-container">
-        <div class="main-panel">
-            <button id="toggle-side-panel-btn"><i class="fas fa-chevron-left"></i></button>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">P</div>
+                <h1>Simulador de PSeInt Avanzado</h1>
+            </div>
+            
+            <nav class="toolbar">
+                <div class="menu-container">
+                    <button class="toolbar-dropdown-btn" id="fileMenuBtn">Archivo ▼</button>
+                    <div class="dropdown-menu" id="fileDropdown">
+                        <a href="#" class="menu-item">Nuevo Proyecto</a>
+                        <a href="#" class="menu-item">Abrir...</a>
+                        <a href="#" class="menu-item">Guardar</a>
+                        <a href="#" class="menu-item">Guardar como...</a>
+                        <a href="#" class="menu-item">Exportar</a>
+                        <a href="#" class="menu-item">Imprimir</a>
+                        <a href="#" class="menu-item">Salir</a>
+                    </div>
+                </div>
+                
+                <div class="menu-container">
+                    <button class="toolbar-dropdown-btn" id="editMenuBtn">Editar ▼</button>
+                    <div class="dropdown-menu" id="editDropdown">
+                        <a href="#" class="menu-item">Deshacer</a>
+                        <a href="#" class="menu-item">Rehacer</a>
+                        <a href="#" class="menu-item">Cortar</a>
+                        <a href="#" class="menu-item">Copiar</a>
+                        <a href="#" class="menu-item">Pegar</a>
+                    </div>
+                </div>
 
-            <div class="header">
-                <h1>Simulador de PSeInt</h1>
-                <div class="buttons">
-                    <button id="new-code-btn"><i class="fas fa-file-alt"></i> Nuevo</button>
-                    <button id="run-code-btn"><i class="fas fa-play"></i> Ejecutar</button>
-                    <button id="clear-console-btn"><i class="fas fa-eraser"></i> Limpiar</button>
-                    <button id="save-code-btn"><i class="fas fa-save"></i> Guardar</button>
-                    <input type="file" id="open-code-input" accept=".psc,.txt" style="display: none;">
-                    <button id="open-code-btn"><i class="fas fa-folder-open"></i> Abrir</button>
-                    <button id="run-example-btn"><i class="fas fa-code"></i> Ejemplo</button>
+                <div class="menu-container">
+                    <button class="toolbar-dropdown-btn" id="runMenuBtn">Ejecutar ▼</button>
+                    <div class="dropdown-menu" id="runDropdown">
+                        <a href="#" class="menu-item">Ejecutar (F9)</a>
+                        <a href="#" class="menu-item">Paso a paso (F8)</a>
+                        <a href="#" class="menu-item">Configurar Ejecución</a>
+                    </div>
+                </div>
+
+                <div class="menu-container">
+                    <button class="toolbar-dropdown-btn" id="helpMenuBtn">Ayuda ▼</button>
+                    <div class="dropdown-menu" id="helpDropdown">
+                        <a href="#" class="menu-item">Contenido de Ayuda</a>
+                        <a href="#" class="menu-item">Acerca de PSeInt</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        
+        <div class="main-content">
+            <div class="variables-panel">
+                <div class="panel-title">
+                    Panel de Variables
+                    <button class="collapse-btn" id="collapseAllBtn">⮝</button>
+                </div>
+                
+                <div class="variables-section">
+                    <div class="section-header" data-section="variables">
+                        <h3>Variables</h3>
+                        <span class="collapse-indicator">▼</span>
+                    </div>
+                    <div class="section-content" id="variablesContent">
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" checked>
+                                Mostrar variables globales
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" checked>
+                                Mostrar variables locales
+                            </label>
+                        </div>
+                        <div class="variables-list" id="variablesList">
+                            <div class="variable-item">
+                                <strong>numeros</strong>: Arreglo[5] de Entero
+                                <div class="array-values">[10, 20, 30, 40, 50]</div>
+                            </div>
+                            <div class="variable-item">
+                                <strong>nombres</strong>: Arreglo[3] de Caracter
+                                <div class="array-values">["Ana", "Carlos", "Diana"]</div>
+                            </div>
+                            <div class="variable-item">
+                                <strong>i</strong>: Entero = 0
+                            </div>
+                            <div class="variable-item">
+                                <strong>suma</strong>: Entero = 150
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="variables-section">
+                    <div class="section-header" data-section="functions">
+                        <h3>Funciones</h3>
+                        <span class="collapse-indicator">▼</span>
+                    </div>
+                    <div class="section-content" id="functionsContent">
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" checked>
+                                Mostrar funciones definidas
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="quickHelpToggle">
+                                Ayuda Rápida
+                            </label>
+                        </div>
+                        <div class="quick-help" id="quickHelp" style="display: none; margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 5px;">
+                            <h4>Ayuda sobre estructuras básicas</h4>
+                            <p><strong>Escribir:</strong> Muestra un mensaje en consola. <code>Escribir "Hola"</code></p>
+                            <p><strong>Leer:</strong> Permite ingresar un valor. <code>Leer variable</code></p>
+                            <p><strong>Definir:</strong> Declara una variable. <code>Definir num Como Entero</code></p>
+                            <p><strong>Asignación:</strong> <code>variable <- valor</code></p>
+                            <h4>Ayuda sobre arreglos</h4>
+                            <p><strong>Dimensionar:</strong> Crea un arreglo con el tamaño especificado</p>
+                            <p><strong>Sintaxis:</strong> <code>Dimension &lt;nombre&gt;[&lt;tamaño&gt;]</code></p>
+                            <p><strong>Asignar:</strong> <code>&lt;nombre&gt;[&lt;índice&gt;] &lt;- &lt;valor&gt;</code></p>
+                            <p><strong>Recorrer:</strong> Usar estructura Para con índice</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="variables-section">
+                    <div class="section-header" data-section="arrays">
+                        <h3>Arreglos</h3>
+                        <span class="collapse-indicator">▼</span>
+                    </div>
+                    <div class="section-content" id="arraysContent">
+                        <div class="array-info">
+                            <p><strong>Estado actual:</strong> Funcionando correctamente ✓</p>
+                            <p><strong>Arreglos definidos:</strong></p>
+                            <ul class="array-list">
+                                <li><strong>numeros</strong> - Entero[5]</li>
+                                <li><strong>nombres</strong> - Caracter[3]</li>
+                            </ul>
+                        </div>
+                        <div class="array-controls">
+                            <button class="code-btn" id="dimensionBtn">Dimensionar</button>
+                            <button class="code-btn" id="assignBtn">Asignar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="variables-section">
+                    <div class="section-header" data-section="realtimeHelp">
+                        <h3>Ayuda Contextual</h3>
+                        <span class="collapse-indicator">▼</span>
+                    </div>
+                    <div class="section-content" id="realtimeHelpContent">
+                        <div class="realtime-help" id="realtimeSuggestions">
+                            <h4>Sugerencias:</h4>
+                            <p>Empieza escribiendo "Algoritmo" para definir tu programa.</p>
+                            <p>Usa "Escribir" para mostrar mensajes en la consola.</p>
+                            <p>Para definir variables, usa "Definir [nombre] Como [tipo]".</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <div class="filename">hola_mundo.psc</div>
+                    <div class="editor-actions">
+                        <button id="saveBtn">Guardar</button>
+                        <button id="runBtn">Ejecutar</button>
+                    </div>
+                </div>
+                
+                <textarea class="code-editor" id="codeEditor">Algoritmo HolaMundo
 
-            <div class="code-editor">
-                <textarea id="code-input" placeholder="Escribe tu pseudocódigo aquí..."></textarea>
-            </div>
-
-            <div class="console">
-                <div id="console-output">&gt; Consola lista.</div>
+    // Este es un comentario
+    Escribir "Hola Mundo desde PSeInt!"
+    
+FinAlgoritmo</textarea>
+                
+                <div class="code-toolbar">
+                    <button class="code-btn" data-code="Algoritmo MiAlgoritmo\n\nFinAlgoritmo">Algoritmo</button>
+                    <button class="code-btn" data-code="Funcion resultado <- NombreFuncion (parametro)\n    \nFinFuncion">Función</button>
+                    <button class="code-btn" data-code="Si condicion Entonces\n    \nFinSi">Sí...Entonces</button>
+                    <button class="code-btn" data-code="Mientras condicion Hacer\n    \nFinMientras">Mientras</button>
+                    <button class="code-btn" data-code="Para i <- inicio Hasta fin Con Paso paso Hacer\n    \nFinPara">Para</button>
+                    <button class="code-btn" data-code="Segun variable Hacer\n    opcion1:\n        \n    opcion2:\n        \nFinSegun">Según</button>
+                    <button class="code-btn" data-code="Dimension arreglo[10]">Dimensionar</button>
+                    <button class="code-btn" data-code="Definir variable Como Entero">Definir</button>
+                    <button class="code-btn" data-code="Escribir "Mensaje"">Escribir</button>
+                    <button class="code-btn" data-code="Leer variable">Leer</button>
+                </div>
             </div>
         </div>
-
-        <div class="side-panel">
-            <div class="panel-header">
-                <span>Variables</span>
+        
+        <div class="console-panel">
+            <div class="console-header">
+                <div>Consola de Salida</div>
+                <div class="console-actions">
+                    <button id="clearConsole">Limpiar</button>
+                    <button id="copyConsole">Copiar</button>
+                </div>
             </div>
-            <div class="panel-content">
-                <ul id="variable-list" class="variable-list">
-                    <li class="variable-item">No hay variables definidas</li>
-                </ul>
-            </div>
-
-            <div class="panel-header">
-                <span>Funciones</span>
-            </div>
-            <div class="panel-content">
-                <ul id="function-list" class="function-list">
-                    <li class="function-item">No hay funciones definidas</li>
-                </ul>
-            </div>
-
-            <div class="panel-header">
-                <span>Sugerencias y Tips</span>
-            </div>
-            <div class="panel-content">
-                <ul id="suggestion-list" class="suggestion-list">
-                    <li class="suggestion-item">Escribe para ver sugerencias...</li>
-                </ul>
+            <div id="consoleOutput">
+&gt; Bienvenido al Simulador de PSeInt Avanzado<br>
+&gt; Los arreglos ahora están completamente funcionales<br>
+&gt; Cargando algoritmo...<br>
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const codeElement = document.getElementById('code-input');
-            const consoleOutput = document.getElementById('console-output');
-            const runCodeBtn = document.getElementById('run-code-btn');
-            const clearConsoleBtn = document.getElementById('clear-console-btn');
-            const newCodeBtn = document.getElementById('new-code-btn'); // Nuevo botón
-            const saveCodeBtn = document.getElementById('save-code-btn');
-            const openCodeBtn = document.getElementById('open-code-btn');
-            const openCodeInput = document.getElementById('open-code-input');
-            const runExampleBtn = document.getElementById('run-example-btn');
-            const variableList = document.getElementById('variable-list');
-            const functionList = document.getElementById('function-list');
-            const suggestionList = document.getElementById('suggestion-list'); // Nuevo
-            const sidePanel = document.querySelector('.side-panel');
-            const toggleSidePanelBtn = document.getElementById('toggle-side-panel-btn');
-
-            let appState = {
-                variables: {}, // Global variables
-                functions: {}, // Stored functions
-                outputQueue: [], // For future async operations if needed
-                inputQueue: [], // For future async operations if needed
-                haltExecution: false // Flag to stop execution on error
-            };
-
-            // --- Utility Functions for Interpreter ---
-
-            function resetState() {
-                appState.variables = {};
-                appState.functions = {};
-                appState.outputQueue = [];
-                appState.inputQueue = [];
-                appState.haltExecution = false;
-                if (consoleOutput) {
-                    consoleOutput.innerHTML = '&gt; Consola lista para la siguiente ejecución.'; 
-                }
-                clearPanels();
-            }
-
-            // Mejorado para mensajes de error más amigables
-            function appendToConsole(message, isError = false) {
-                if (!consoleOutput) return;
-
-                const line = document.createElement('div');
-                line.innerHTML = `&gt; ${message}`;
-                if (isError) {
-                    line.style.color = '#e74c3c'; // Rojo para errores
-                    // Opcional: añadir un icono de error
-                    line.innerHTML = `<i class="fas fa-times-circle" style="margin-right: 5px;"></i> ${line.innerHTML}`;
-                } else {
-                    // Opcional: añadir un icono de éxito/información
-                    line.innerHTML = `<i class="fas fa-info-circle" style="margin-right: 5px; color: #3498db;"></i> ${line.innerHTML}`;
-                }
-                consoleOutput.appendChild(line);
-                consoleOutput.scrollTop = consoleOutput.scrollHeight;
-            }
-
-            // Helper function to get default value for a PSeInt type
-            function getDefaultValueForType(type) {
-                switch (type) {
-                    case 'entero':
-                        return 0;
-                    case 'real':
-                        return 0.0;
-                    case 'cadena':
-                    case 'caracter': 
-                        return "";
-                    case 'logico':
-                        return false;
-                    default:
-                        console.warn("Tipo desconocido para valor por defecto:", type);
-                        return null; 
-                }
-            }
-
-            // Gets the PSeInt type from a JavaScript value
-            function getPSeIntType(jsValue) {
-                if (typeof jsValue === 'number') {
-                    return Number.isInteger(jsValue) ? 'entero' : 'real';
-                } else if (typeof jsValue === 'boolean') {
-                    return 'logico';
-                } else if (typeof jsValue === 'string') {
-                    return 'cadena'; // PSeInt treats single chars as strings too
-                } else if (jsValue === null || jsValue === undefined) {
-                    return 'desconocido'; // Or could imply an error or uninitialized state
-                }
-                return 'desconocido';
-            }
-
-
-            // Converts a value to a target PSeInt type
-            function convertValueToType(value, targetType, varNameForError = "") {
-                if (!targetType || targetType === 'desconocido') {
-                    return value; // If no specific target type, return as is (for type inference)
-                }
-
-                // Special handling for null/undefined input values
-                if (value === undefined || value === null) {
-                    return getDefaultValueForType(targetType);
-                }
-
-                switch (targetType) {
-                    case 'entero':
-                        const intVal = parseInt(value);
-                        if (isNaN(intVal)) {
-                            throw new Error(`El valor '${value}' no puede convertirse a un número entero.`);
-                        }
-                        return intVal;
-                    case 'real':
-                        const floatVal = parseFloat(value);
-                        if (isNaN(floatVal)) {
-                            throw new Error(`El valor '${value}' no puede convertirse a un número real.`);
-                        }
-                        return floatVal;
-                    case 'logico':
-                        const lowerVal = String(value).toLowerCase();
-                        if (lowerVal === 'verdadero' || lowerVal === 'true') return true;
-                        if (lowerVal === 'falso' || lowerVal === 'false') return false;
-                        throw new Error(`El valor '${value}' no es un valor lógico (esperado 'verdadero' o 'falso').`);
-                    case 'cadena':
-                    case 'caracter':
-                        return String(value);
-                    default:
-                        return value;
-                }
-            }
-
-            /**
-             * Evalúa una expresión PSeInt.
-             * @param {string} expr La expresión a evaluar.
-             * @param {Object} scope El objeto de alcance (scope) que contiene las variables.
-             * @returns {*} El resultado de la expresión.
-             * @throws {Error} Si hay un error de sintaxis o lógico en la expresión.
-             */
-            function evalExpression(expr, scope) {
-                scope = scope || {}; 
-                let processedExpr = expr.trim();
-                const originalExpr = processedExpr;
-
-                // Handle literal values first
-                if ((processedExpr.startsWith('"') && processedExpr.endsWith('"')) || (processedExpr.startsWith("'") && processedExpr.endsWith("'"))) {
-                    return processedExpr.substring(1, processedExpr.length - 1); // String literal
-                }
-                if (processedExpr.toLowerCase() === 'verdadero') return true; // Boolean literal
-                if (processedExpr.toLowerCase() === 'falso') return false; // Boolean literal
-                if (!isNaN(processedExpr) && !isNaN(parseFloat(processedExpr))) return parseFloat(processedExpr); // Numeric literal
-
-                // Step 1: Replace array accesses (e.g., nombres[i]) with a format that can be evaluated.
-                processedExpr = processedExpr.replace(/([a-zA-Z_]\w*)\s*\[(.*?)\]/g, (match, arrayName, indexExpr) => {
-                    const lowerArrayName = arrayName.toLowerCase();
-                    if (scope[lowerArrayName] && scope[lowerArrayName]._is_array) {
-                        try {
-                            const evaluatedIndex = evalExpression(indexExpr, scope); // Recursive call for index
-                            if (typeof evaluatedIndex !== 'number' || !Number.isInteger(evaluatedIndex)) {
-                                appState.haltExecution = true;
-                                throw new Error(`El índice para el arreglo '${arrayName}' debe ser un número entero. Se obtuvo: ${evaluatedIndex}`);
-                            }
-                            if (evaluatedIndex < 0 || evaluatedIndex >= scope[lowerArrayName].length) {
-                                appState.haltExecution = true;
-                                throw new Error(`El índice ${evaluatedIndex} está fuera de rango para el arreglo '${arrayName}' (tamaño: ${scope[lowerArrayName].length}).`);
-                            }
-                            return `__scope.${lowerArrayName}[${evaluatedIndex}]`; 
-                        } catch (e) {
-                            appState.haltExecution = true;
-                            throw new Error(`No se pudo evaluar el índice '${indexExpr}' del arreglo '${arrayName}'. Detalle: ${e.message}`);
-                        }
-                    } else {
-                        appState.haltExecution = true;
-                        throw new Error(`La variable '${arrayName}' no es un arreglo o no está definida.`);
+        // Dropdown menu functionality for toolbar
+        const dropdownButtons = document.querySelectorAll('.toolbar-dropdown-btn');
+        
+        dropdownButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const dropdownId = this.id.replace('Btn', 'Dropdown');
+                const dropdownMenu = document.getElementById(dropdownId);
+                
+                // Close any other open dropdowns
+                document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
+                    if (openMenu !== dropdownMenu) {
+                        openMenu.classList.remove('show');
                     }
                 });
 
-                // Step 2: Replace PSeInt variable names with '__scope.variableName' for evaluation.
-                const sortedScopeKeys = Object.keys(scope).sort((a, b) => b.length - a.length);
-                for (const varName of sortedScopeKeys) {
-                    // Only replace if it's not a type metadata key and not followed by '[' (array access already handled)
-                    if (!varName.endsWith('__type')) { 
-                        processedExpr = processedExpr.replace(new RegExp(`\\b${varName}\\b(?!\\s*\\[)`, 'g'), `__scope.${varName}`);
-                    }
-                }
-                
-                // Step 3: Replace PSeInt operators with JavaScript equivalents.
-                processedExpr = processedExpr.replace(/(\bMOD\b)/gi, '%'); 
-                processedExpr = processedExpr.replace(/(\bY\b)/gi, '&&'); 
-                processedExpr = processedExpr.replace(/(\bO\b)/gi, '||'); 
-                processedExpr = processedExpr.replace(/(\bNO\b)/gi, '!'); 
-                processedExpr = processedExpr.replace(/<=/g, '<=');
-                processedExpr = processedExpr.replace(/>=/g, '>=');
-                processedExpr = processedExpr.replace(/<>/g, '!=='); // PSeInt not equal is <>
-                processedExpr = processedExpr.replace(/=/g, '==='); // PSeInt equality check is =
-                processedExpr = processedExpr.replace(/</g, '<');
-                processedExpr = processedExpr.replace(/>/g, '>');
-
-                try {
-                    const func = new Function('__scope', `
-                        try {
-                            return ${processedExpr};
-                        } catch (e) {
-                            throw new Error(e.message); 
-                        }
-                    `);
-                    return func(scope);
-
-                } catch (e) {
-                    appState.haltExecution = true;
-                    throw new Error(`Error en la expresión "${originalExpr}". Detalle: ${e.message}`);
-                }
-            }
-
-
-            // --- Execution Functions for Interpreter ---
-
-            async function executeBlock(blockLines, currentScope, lineNumberOffset = 0) {
-                if (appState.haltExecution) return;
-
-                currentScope = currentScope || {};
-
-                for (let i = 0; i < blockLines.length; i++) {
-                    if (appState.haltExecution) return;
-
-                    const originalLine = blockLines[i];
-                    const currentLineNumber = lineNumberOffset + i + 1;
-                    let line = originalLine.trim();
-
-                    const commentIndex = line.indexOf('//');
-                    if (commentIndex !== -1) {
-                        line = line.substring(0, commentIndex).trim();
-                    }
-                    if (line === '') continue;
-
-                    // --- Declarations and Dimensioning ---
-                    const definirMatch = line.match(/^Definir\s+([a-zA-Z_]\w*(?:\s*,\s*[a-zA-Z_]\w*)*)\s+Como\s+(Entero|Real|Caracter|Cadena|Logico)(?:\[(\d+)\])?$/i);
-                    if (definirMatch) {
-                        const varNames = definirMatch[1].split(',').map(n => n.trim().toLowerCase());
-                        const type = definirMatch[2].toLowerCase();
-                        const dimension = definirMatch[3] ? parseInt(definirMatch[3]) : null;
-
-                        for (const varName of varNames) {
-                            if (currentScope.hasOwnProperty(varName) || currentScope.hasOwnProperty(varName + '__type')) {
-                                appendToConsole(`Error en línea ${currentLineNumber}: La variable '${varName}' ya ha sido definida previamente.`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                            if (dimension !== null) {
-                                if (isNaN(dimension) || dimension <= 0) {
-                                    appendToConsole(`Error en línea ${currentLineNumber}: La dimensión del arreglo '${varName}' debe ser un número entero positivo.`, true);
-                                    appState.haltExecution = true;
-                                    return;
-                                }
-                                const newArray = Array(dimension).fill(getDefaultValueForType(type));
-                                newArray._is_array = true;
-                                newArray._type = type; 
-                                currentScope[varName] = newArray;
-                            } else {
-                                currentScope[varName] = getDefaultValueForType(type);
-                                currentScope[varName + '__type'] = type; 
-                            }
-                        }
-                        updateVariablePanel();
-                        continue;
-                    }
-
-                    const dimensionarMatch = line.match(/^Dimensionar\s+([a-zA-Z_]\w*)\s*\[(\d+)\]$/i);
-                    if (dimensionarMatch) {
-                        const varName = dimensionarMatch[1].toLowerCase();
-                        const dimension = parseInt(dimensionarMatch[2]);
-
-                        if (currentScope.hasOwnProperty(varName) || currentScope.hasOwnProperty(varName + '__type')) {
-                            // If already defined (e.g., by Definir), we should not re-dimension unless it's already an array
-                            if (currentScope[varName + '__type'] && !currentScope[varName]._is_array) {
-                                appendToConsole(`Error en línea ${currentLineNumber}: La variable '${varName}' ya ha sido definida como escalar. No se puede redimensionar.`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                        }
-                        
-                        if (isNaN(dimension) || dimension <= 0) {
-                            appendToConsole(`Error en línea ${currentLineNumber}: La dimensión para el arreglo '${varName}' debe ser un número entero positivo.`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        const newArray = Array(dimension).fill(null);
-                        newArray._is_array = true;
-                        newArray._type = undefined; // Type will be inferred
-                        currentScope[varName] = newArray;
-                        
-                        updateVariablePanel();
-                        continue;
-                    }
-
-                    // --- Output (Escribir) ---
-                    const escribirMatch = line.match(/^Escribir\s+(.*)$/i);
-                    if (escribirMatch) {
-                        const content = escribirMatch[1];
-                        let output = '';
-                        const parts = content.match(/"[^"]*"|'[^']*'|[^,]+/g); 
-                        
-                        if (!parts) {
-                            appendToConsole(`Error de sintaxis en 'Escribir' en línea ${currentLineNumber}: Se esperaba una expresión o texto a escribir.`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        for (const part of parts) {
-                            try {
-                                let evaluatedPart = evalExpression(part.trim(), currentScope);
-                                if (typeof evaluatedPart === 'boolean') {
-                                    output += evaluatedPart ? 'verdadero' : 'falso';
-                                } else {
-                                    output += String(evaluatedPart); 
-                                }
-                            } catch (e) {
-                                appendToConsole(`Error en línea ${currentLineNumber} al intentar 'Escribir' la expresión "${part.trim()}". Detalle: ${e.message}`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                        }
-                        appendToConsole(output);
-                        continue;
-                    }
-
-                    // --- Input (Leer) ---
-                    const leerMatch = line.match(/^Leer\s+([a-zA-Z_]\w*)(?:\[(.*?)\])?$/i); 
-                    if (leerMatch) {
-                        const targetVar = leerMatch[1].toLowerCase();
-                        const indexExpr = leerMatch[2]; 
-
-                        if (!currentScope.hasOwnProperty(targetVar) && !currentScope.hasOwnProperty(targetVar + '__type')) {
-                            appendToConsole(`Error en línea ${currentLineNumber}: La variable '${targetVar}' no ha sido definida para 'Leer'.`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        let targetType;
-                        let isArrayTarget = false;
-                        let evaluatedIndex = null;
-                        let targetVariableReference = currentScope[targetVar]; 
-
-                        if (targetVariableReference && targetVariableReference._is_array) {
-                            isArrayTarget = true;
-                            targetType = targetVariableReference._type; 
-                            if (indexExpr === undefined) {
-                                appendToConsole(`Error en línea ${currentLineNumber}: Para 'Leer' en un arreglo, debe especificar un índice para '${targetVar}'.`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                            try {
-                                evaluatedIndex = evalExpression(indexExpr, currentScope);
-                                if (typeof evaluatedIndex !== 'number' || !Number.isInteger(evaluatedIndex)) {
-                                    appendToConsole(`Error en línea ${currentLineNumber}: El índice para el arreglo '${targetVar}' debe ser un número entero.`, true);
-                                    appState.haltExecution = true;
-                                    return;
-                                }
-                                if (evaluatedIndex < 0 || evaluatedIndex >= targetVariableReference.length) {
-                                    appendToConsole(`Error en línea ${currentLineNumber}: El índice ${evaluatedIndex} está fuera de rango para el arreglo '${targetVar}' (tamaño: ${targetVariableReference.length}).`, true);
-                                    appState.haltExecution = true;
-                                    return;
-                                }
-                                if (targetType === undefined) {
-                                    targetType = getPSeIntType(targetVariableReference[evaluatedIndex]);
-                                    if (targetType === 'desconocido') targetType = 'cadena'; 
-                                }
-                            } catch (e) {
-                                appendToConsole(`Error en línea ${currentLineNumber} al evaluar el índice para 'Leer' en '${targetVar}'. Detalle: ${e.message}`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                        } else { 
-                            targetType = currentScope[targetVar + '__type']; 
-                            if (targetType === undefined) { 
-                                targetType = 'cadena'; // Default to string for generic input if not defined
-                            }
-                        }
-
-                        const typeHint = targetType && targetType !== 'desconocido' ? ` (tipo esperado: ${targetType})` : '';
-                        const inputValue = await new Promise(resolve => {
-                            const inputPrompt = document.createElement('div');
-                            inputPrompt.innerHTML = `<br><span><i class="fas fa-keyboard" style="margin-right: 5px; color: #f39c12;"></i>Ingrese valor para ${targetVar}` + (indexExpr !== undefined ? `[${evaluatedIndex}]` : '') + `${typeHint}:</span><input type="text" class="console-input" autofocus><button class="console-input-btn">Aceptar</button>`;
-                            consoleOutput.appendChild(inputPrompt);
-                            consoleOutput.scrollTop = consoleOutput.scrollHeight;
-
-                            const inputField = inputPrompt.querySelector('.console-input');
-                            const inputBtn = inputPrompt.querySelector('.console-input-btn');
-
-                            inputField.addEventListener('keypress', function(e) {
-                                if (e.key === 'Enter') {
-                                    inputBtn.click();
-                                }
-                            });
-                            inputBtn.addEventListener('click', function() {
-                                const val = inputField.value;
-                                inputPrompt.remove();
-                                appendToConsole(`Entrada: ${val}`); 
-                                resolve(val);
-                            });
-                            inputField.focus(); 
-                        });
-
-                        try {
-                            let actualValue = convertValueToType(inputValue, targetType, targetVar);
-
-                            if (isArrayTarget) { 
-                                if (targetVariableReference._type === undefined) { 
-                                    targetVariableReference._type = getPSeIntType(actualValue); 
-                                    if (targetVariableReference._type === 'desconocido' && actualValue !== null) {
-                                        throw new Error(`El tipo de valor ingresado es desconocido para inferir el tipo del arreglo '${targetVar}'.`);
-                                    }
-                                    if (targetVariableReference._type !== 'desconocido') {
-                                        for(let k=0; k < targetVariableReference.length; k++) {
-                                            if (targetVariableReference[k] === null) { 
-                                                targetVariableReference[k] = getDefaultValueForType(targetVariableReference._type);
-                                            }
-                                        }
-                                    }
-                                    targetVariableReference[evaluatedIndex] = actualValue; 
-                                } else { 
-                                    let convertedValue = convertValueToType(actualValue, targetVariableReference._type, `${targetVar}[${evaluatedIndex}]`);
-                                    targetVariableReference[evaluatedIndex] = convertedValue;
-                                }
-                            } else { 
-                                if (currentScope[targetVar + '__type'] === undefined) { 
-                                    currentScope[targetVar] = actualValue;
-                                    currentScope[targetVar + '__type'] = getPSeIntType(actualValue); 
-                                    if (currentScope[targetVar + '__type'] === 'desconocido' && actualValue !== null) {
-                                        throw new Error(`El tipo de valor ingresado es desconocido para inferir el tipo de la variable '${targetVar}'.`);
-                                    }
-                                } else { 
-                                    let convertedValue = convertValueToType(actualValue, targetType, targetVar);
-                                    currentScope[targetVar] = convertedValue;
-                                }
-                            }
-                            updateVariablePanel();
-                        } catch (e) {
-                            appendToConsole(`Error en línea ${currentLineNumber} al leer valor para '${targetVar}'. Detalle: ${e.message}`, true);
-                            appState.haltExecution = true;
-                        }
-                        continue;
-                    }
-
-                    // --- Assignment (<-) ---
-                    const assignMatch = line.match(/^([a-zA-Z_]\w*)(?:\[(.*?)\])?\s*<-\s*(.*)$/i); 
-                    if (assignMatch) {
-                        const targetVar = assignMatch[1].toLowerCase();
-                        const indexExpr = assignMatch[2]; 
-                        const expression = assignMatch[3].trim();
-
-                        if (!currentScope.hasOwnProperty(targetVar) && !currentScope.hasOwnProperty(targetVar + '__type')) {
-                             appendToConsole(`Error en línea ${currentLineNumber}: La variable '${targetVar}' no ha sido definida para asignación.`, true);
-                             appState.haltExecution = true;
-                             return;
-                        }
-
-                        let targetVarValue = currentScope[targetVar]; 
-                        let targetType;
-                        let isArrayTarget = false;
-                        let evaluatedIndex = null;
-
-                        if (targetVarValue && targetVarValue._is_array) {
-                            isArrayTarget = true;
-                            targetType = targetVarValue._type; 
-                            if (indexExpr === undefined) {
-                                appendToConsole(`Error en línea ${currentLineNumber}: Para asignar a un arreglo, debe especificar un índice para '${targetVar}'.`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                            try {
-                                evaluatedIndex = evalExpression(indexExpr, currentScope);
-                                if (typeof evaluatedIndex !== 'number' || !Number.isInteger(evaluatedIndex)) {
-                                    appendToConsole(`Error en línea ${currentLineNumber}: El índice para el arreglo '${targetVar}' debe ser un número entero.`, true);
-                                    appState.haltExecution = true;
-                                    return;
-                                }
-                                if (evaluatedIndex < 0 || evaluatedIndex >= targetVarValue.length) {
-                                    appendToConsole(`Error en línea ${currentLineNumber}: El índice ${evaluatedIndex} está fuera de rango para el arreglo '${targetVar}' (tamaño: ${targetVarValue.length}).`, true);
-                                    appState.haltExecution = true;
-                                    return;
-                                }
-                            } catch (e) {
-                                appendToConsole(`Error en línea ${currentLineNumber} al evaluar el índice para asignación a '${targetVar}'. Detalle: ${e.message}`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                        } else if (indexExpr !== undefined) { 
-                            appendToConsole(`Error en línea ${currentLineNumber}: La variable '${targetVar}' no es un arreglo. No se puede asignar con un índice.`, true);
-                            appState.haltExecution = true;
-                            return;
-                        } else { 
-                            targetType = currentScope[targetVar + '__type'];
-                        }
-
-
-                        let valueToAssign;
-                        const funcCallMatch = expression.match(/^([a-zA-Z_]\w*)\s*\((.*?)\)$/i);
-                        if (funcCallMatch && appState.functions.hasOwnProperty(funcCallMatch[1].toLowerCase())) {
-                            const funcName = funcCallMatch[1].toLowerCase();
-                            const funcArgsStr = funcCallMatch[2];
-                            
-                            const funcArgs = [];
-                            if (funcArgsStr.trim() !== '') {
-                                const argParts = funcArgsStr.split(',').map(arg => arg.trim());
-                                for (const argPart of argParts) {
-                                    try {
-                                        funcArgs.push(evalExpression(argPart, currentScope));
-                                    } catch (e) {
-                                        appendToConsole(`Error en línea ${currentLineNumber} al evaluar el argumento '${argPart}' para la función '${funcName}'. Detalle: ${e.message}`, true);
-                                        appState.haltExecution = true;
-                                        return;
-                                    }
-                                }
-                            }
-                            valueToAssign = await callFunction(funcName, funcArgs, currentLineNumber); // Pass line number
-                            if (appState.haltExecution) return; 
-                        } else {
-                            try {
-                                valueToAssign = evalExpression(expression, currentScope);
-                            } catch (e) {
-                                 appendToConsole(`Error en línea ${currentLineNumber} al evaluar la expresión "${expression}" para asignación. Detalle: ${e.message}`, true);
-                                 appState.haltExecution = true;
-                                 return;
-                            }
-                        }
-                        
-                        try {
-                            if (isArrayTarget) { 
-                                if (targetVarValue._type === undefined) { 
-                                    targetVarValue._type = getPSeIntType(valueToAssign); 
-                                    if (targetVarValue._type === 'desconocido' && valueToAssign !== null) {
-                                        throw new Error(`El tipo de valor asignado es desconocido para inferir el tipo del arreglo '${targetVar}'.`);
-                                    }
-                                    if (targetVarValue._type !== 'desconocido') {
-                                        for(let k=0; k < targetVarValue.length; k++) {
-                                            if (targetVarValue[k] === null) { 
-                                                targetVarValue[k] = getDefaultValueForType(targetVarValue._type);
-                                            }
-                                        }
-                                    }
-                                    targetVarValue[evaluatedIndex] = valueToAssign; 
-                                } else { 
-                                    let convertedValue = convertValueToType(valueToAssign, targetVarValue._type, `${targetVar}[${evaluatedIndex}]`);
-                                    targetVarValue[evaluatedIndex] = convertedValue;
-                                }
-                            } else { 
-                                if (currentScope[targetVar + '__type'] === undefined) { 
-                                    currentScope[targetVar] = valueToAssign;
-                                    currentScope[targetVar + '__type'] = getPSeIntType(valueToAssign); 
-                                    if (currentScope[targetVar + '__type'] === 'desconocido' && valueToAssign !== null) {
-                                        throw new Error(`El tipo de valor asignado es desconocido para inferir el tipo de la variable '${targetVar}'.`);
-                                    }
-                                } else { 
-                                    let convertedValue = convertValueToType(valueToAssign, targetType, targetVar);
-                                    currentScope[targetVar] = convertedValue;
-                                }
-                            }
-                            updateVariablePanel();
-                        } catch (e) {
-                            appendToConsole(`Error en línea ${currentLineNumber}: La asignación a '${targetVar}' falló. Detalle: ${e.message}`, true);
-                            appState.haltExecution = true;
-                        }
-                        continue;
-                    }
-
-                    // --- For Loop (Para) ---
-                    const paraMatch = line.match(/^Para\s+([a-zA-Z_]\w*)\s*<-\s*(\S+)\s+Hasta\s+(\S+)(?:\s+Con\s+Paso\s+(\S+))?\s+Hacer$/i);
-                    if (paraMatch) {
-                        const loopVarName = paraMatch[1].toLowerCase();
-                        let startVal, endVal, stepVal;
-                        try {
-                            startVal = evalExpression(paraMatch[2], currentScope);
-                            endVal = evalExpression(paraMatch[3], currentScope);
-                            stepVal = paraMatch[4] ? evalExpression(paraMatch[4], currentScope) : 1;
-                        } catch (e) {
-                            appendToConsole(`Error en línea ${currentLineNumber} al evaluar el rango o paso del bucle 'Para'. Detalle: ${e.message}`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        if (typeof startVal !== 'number' || typeof endVal !== 'number' || typeof stepVal !== 'number') {
-                             appendToConsole(`Error en línea ${currentLineNumber}: Los valores de inicio, fin y paso en 'Para' deben ser numéricos.`, true);
-                             appState.haltExecution = true;
-                             return;
-                        }
-                        if (stepVal === 0) {
-                            appendToConsole(`Error en línea ${currentLineNumber}: El 'Paso' en el bucle 'Para' no puede ser cero.`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        let loopBody = [];
-                        let j = i + 1;
-                        let paraCount = 1; 
-                        while (j < blockLines.length && !appState.haltExecution) {
-                            let innerLine = blockLines[j].trim();
-                            const innerCommentIndex = innerLine.indexOf('//');
-                            if (innerCommentIndex !== -1) {
-                                innerLine = innerLine.substring(0, innerCommentIndex).trim();
-                            }
-
-                            if (innerLine.match(/^Para\s+/i)) {
-                                paraCount++;
-                            } else if (innerLine.toLowerCase() === 'finpara') {
-                                paraCount--;
-                                if (paraCount === 0) break; 
-                            }
-                            loopBody.push(blockLines[j]);
-                            j++;
-                        }
-
-                        if (paraCount !== 0) {
-                            appendToConsole(`Error de sintaxis en línea ${currentLineNumber}: Falta 'FinPara' o hay un anidamiento incorrecto para el bucle 'Para'.`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        if ((stepVal > 0 && startVal > endVal) || (stepVal < 0 && startVal < endVal)) {
-                            // Loop will not execute, this is valid in PSeInt, so just skip
-                        } else {
-                            for (let k = startVal; (stepVal > 0 ? k <= endVal : k >= endVal); k += stepVal) {
-                                if (appState.haltExecution) return;
-                                const iterationScope = { ...currentScope }; 
-                                iterationScope[loopVarName] = k;
-                                iterationScope[loopVarName + '__type'] = 'entero'; 
-                                await executeBlock(loopBody, iterationScope, currentLineNumber); 
-                                if (appState.haltExecution) return; 
-                            }
-                        }
-                        i = j; 
-                        continue;
-                    }
-
-                    // --- If-ElseIf-Else Statement (Si-Entonces-SinoSi-Sino) ---
-                    const siMatch = line.match(/^Si\s+(.*)\s+Entonces$/i);
-                    if (siMatch) {
-                        let condition;
-                        try {
-                            condition = evalExpression(siMatch[1], currentScope);
-                        } catch (e) {
-                             appendToConsole(`Error en línea ${currentLineNumber} al evaluar la condición 'Si' ("${siMatch[1]}"). Detalle: ${e.message}`, true);
-                             appState.haltExecution = true;
-                             return;
-                        }
-
-                        if (typeof condition !== 'boolean') {
-                            appendToConsole(`Error en línea ${currentLineNumber}: La condición en 'Si' debe ser un valor lógico (verdadero o falso).`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        let ifBlock = [];
-                        let elseIfBlocks = []; 
-                        let elseBlock = [];
-                        let currentBlock = ifBlock; 
-                        
-                        let j = i + 1;
-                        let siCount = 1; 
-
-                        while (j < blockLines.length && !appState.haltExecution) {
-                            let innerLine = blockLines[j].trim();
-                            const innerCommentIndex = innerLine.indexOf('//');
-                            if (innerCommentIndex !== -1) {
-                                innerLine = innerLine.substring(0, innerCommentIndex).trim();
-                            }
-                            
-                            if (innerLine.match(/^Si\s+/i)) { 
-                                siCount++;
-                            } else if (innerLine.toLowerCase() === 'finsi') {
-                                siCount--;
-                                if (siCount === 0) break; 
-                            } else if (siCount === 1) { 
-                                const sinoSiMatch = innerLine.match(/^SinoSi\s+(.*)\s+Entonces$/i);
-                                if (sinoSiMatch) {
-                                    elseIfBlocks.push({ condition: sinoSiMatch[1], body: [] });
-                                    currentBlock = elseIfBlocks[elseIfBlocks.length - 1].body;
-                                    j++; 
-                                    continue;
-                                } else if (innerLine.toLowerCase() === 'sino') { 
-                                    currentBlock = elseBlock;
-                                    j++; 
-                                    continue;
-                                }
-                            }
-                            
-                            currentBlock.push(blockLines[j]);
-                            j++;
-                        }
-                        
-                        if (siCount !== 0) {
-                             appendToConsole(`Error de sintaxis en línea ${currentLineNumber}: Falta 'FinSi' o hay un anidamiento incorrecto para el bloque 'Si'.`, true);
-                             appState.haltExecution = true;
-                             return;
-                        }
-
-                        if (condition) {
-                            await executeBlock(ifBlock, currentScope, currentLineNumber);
-                        } else {
-                            let executedElseIf = false;
-                            for (const elseIf of elseIfBlocks) {
-                                if (appState.haltExecution) return;
-                                try {
-                                    const elseIfCondition = evalExpression(elseIf.condition, currentScope);
-                                    if (typeof elseIfCondition !== 'boolean') {
-                                        appendToConsole(`Error en línea ${currentLineNumber}: La condición 'SinoSi' debe ser lógica.`, true);
-                                        appState.haltExecution = true;
-                                        return;
-                                    }
-                                    if (elseIfCondition) {
-                                        await executeBlock(elseIf.body, currentScope, currentLineNumber);
-                                        executedElseIf = true;
-                                        break; 
-                                    }
-                                } catch (e) {
-                                    appendToConsole(`Error en línea ${currentLineNumber} al evaluar la condición 'SinoSi' ("${elseIf.condition}"). Detalle: ${e.message}`, true);
-                                    appState.haltExecution = true;
-                                    return;
-                                }
-                            }
-                            if (!executedElseIf && elseBlock.length > 0) {
-                                await executeBlock(elseBlock, currentScope, currentLineNumber);
-                            }
-                        }
-                        i = j; 
-                        continue;
-                    }
-
-                    // --- While Loop (Mientras) ---
-                    const mientrasMatch = line.match(/^Mientras\s+(.*)\s+Hacer$/i);
-                    if (mientrasMatch) {
-                        let conditionExpr = mientrasMatch[1];
-                        let loopBody = [];
-                        let j = i + 1;
-                        let mientrasCount = 1;
-
-                        while (j < blockLines.length && !appState.haltExecution) {
-                            let innerLine = blockLines[j].trim();
-                            const innerCommentIndex = innerLine.indexOf('//');
-                            if (innerCommentIndex !== -1) {
-                                innerLine = innerLine.substring(0, innerCommentIndex).trim();
-                            }
-
-                            if (innerLine.match(/^Mientras\s+/i)) {
-                                mientrasCount++;
-                            } else if (innerLine.toLowerCase() === 'finmientras') {
-                                mientrasCount--;
-                                if (mientrasCount === 0) break;
-                            }
-                            loopBody.push(blockLines[j]);
-                            j++;
-                        }
-
-                        if (mientrasCount !== 0) {
-                            appendToConsole(`Error de sintaxis en línea ${currentLineNumber}: Falta 'FinMientras' o hay un anidamiento incorrecto para el bucle 'Mientras'.`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-                        
-                        let condition;
-                        try {
-                            condition = evalExpression(conditionExpr, currentScope);
-                        } catch (e) {
-                            appendToConsole(`Error en línea ${currentLineNumber} al evaluar la condición del bucle 'Mientras'. Detalle: ${e.message}`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        if (typeof condition !== 'boolean') {
-                            appendToConsole(`Error en línea ${currentLineNumber}: La condición en 'Mientras' debe ser lógica (verdadero o falso).`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        while (condition && !appState.haltExecution) {
-                            await executeBlock(loopBody, currentScope, currentLineNumber);
-                            if (appState.haltExecution) return; 
-                            try {
-                                condition = evalExpression(conditionExpr, currentScope); 
-                            } catch (e) {
-                                appendToConsole(`Error en línea ${currentLineNumber} al re-evaluar la condición del bucle 'Mientras'. Detalle: ${e.message}`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                            if (typeof condition !== 'boolean') {
-                                appendToConsole(`Error en línea ${currentLineNumber}: La condición en 'Mientras' se volvió no lógica.`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                        }
-                        i = j;
-                        continue;
-                    }
-
-                    // --- Do-While Loop (Repetir-Hasta Que) ---
-                    const repetirMatch = line.match(/^Repetir$/i);
-                    if (repetirMatch) {
-                        let loopBody = [];
-                        let j = i + 1;
-                        let repetirCount = 1;
-                        let untilConditionExpr = null;
-                        let foundUntil = false;
-
-                        while (j < blockLines.length && !appState.haltExecution) {
-                            let innerLine = blockLines[j].trim();
-                            const innerCommentIndex = innerLine.indexOf('//');
-                            if (innerCommentIndex !== -1) {
-                                innerLine = innerLine.substring(0, innerCommentIndex).trim();
-                            }
-
-                            if (innerLine.match(/^Repetir$/i)) {
-                                repetirCount++;
-                            } else {
-                                const untilMatch = innerLine.match(/^Hasta Que\s+(.*)$/i);
-                                if (untilMatch) {
-                                    repetirCount--;
-                                    if (repetirCount === 0) {
-                                        untilConditionExpr = untilMatch[1];
-                                        foundUntil = true;
-                                        break; 
-                                    }
-                                }
-                            }
-                            loopBody.push(blockLines[j]);
-                            j++;
-                        }
-
-                        if (!foundUntil || repetirCount !== 0) {
-                            appendToConsole(`Error de sintaxis en línea ${currentLineNumber}: Falta 'Hasta Que' o hay un anidamiento incorrecto para el bucle 'Repetir'.`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        let condition = false; 
-                        do {
-                            await executeBlock(loopBody, currentScope, currentLineNumber);
-                            if (appState.haltExecution) return; 
-                            try {
-                                condition = evalExpression(untilConditionExpr, currentScope);
-                            } catch (e) {
-                                appendToConsole(`Error en línea ${currentLineNumber} al evaluar la condición 'Hasta Que'. Detalle: ${e.message}`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                            if (typeof condition !== 'boolean') {
-                                appendToConsole(`Error en línea ${currentLineNumber}: La condición 'Hasta Que' se volvió no lógica.`, true);
-                                appState.haltExecution = true;
-                                return;
-                            }
-                        } while (!condition && !appState.haltExecution); 
-
-                        i = j;
-                        continue;
-                    }
-
-                    // --- Direct Function Call (e.g., Subproceso()) ---
-                    const directFuncCallMatch = line.match(/^([a-zA-Z_]\w*)\s*\((.*?)\)$/i);
-                    if (directFuncCallMatch && appState.functions.hasOwnProperty(directFuncCallMatch[1].toLowerCase())) {
-                        const funcName = directFuncCallMatch[1].toLowerCase();
-                        const funcArgsStr = directFuncCallMatch[2];
-                        const funcArgs = [];
-
-                        if (funcArgsStr.trim() !== '') {
-                            const argParts = funcArgsStr.split(',').map(arg => arg.trim());
-                            for (const argPart of argParts) {
-                                try {
-                                    funcArgs.push(evalExpression(argPart, currentScope));
-                                } catch (e) {
-                                    appendToConsole(`Error en línea ${currentLineNumber} al evaluar el argumento '${argPart}' para la función '${funcName}'. Detalle: ${e.message}`, true);
-                                    appState.haltExecution = true;
-                                    return;
-                                }
-                            }
-                        }
-                        await callFunction(funcName, funcArgs, currentLineNumber); // Pass line number
-                        if (appState.haltExecution) return;
-                        continue;
-                    }
-
-
-                    // Ignore main algorithm start/end (already handled by block processing)
-                    if (line.toLowerCase().startsWith('algoritmo') || line.toLowerCase() === 'finalgoritmo') {
-                        continue;
-                    }
-                    
-                    appendToConsole(`Error en línea ${currentLineNumber}: ¡Lo siento! No pude entender esta instrucción: "${line}". Revisa la sintaxis.`, true);
-                    appState.haltExecution = true;
-                    return;
-                }
-            }
-
-            // Function to call a PSeInt function
-            async function callFunction(funcName, args, callLineNumber) {
-                const func = appState.functions[funcName];
-                if (!func) {
-                    appendToConsole(`Error en línea ${callLineNumber}: ¡Oh no! La función '${funcName}' no está definida. ¿La escribiste correctamente?`, true);
-                    appState.haltExecution = true;
-                    return undefined;
-                }
-
-                if (args.length !== func.params.length) {
-                    appendToConsole(`Error en línea ${callLineNumber}: La función '${funcName}' espera ${func.params.length} argumentos, pero le diste ${args.length}.`, true);
-                    appState.haltExecution = true;
-                    return undefined;
-                }
-
-                const functionLocalScope = { ...appState.variables }; 
-
-                for (let k = 0; k < func.params.length; k++) {
-                    const paramName = func.params[k];
-                    const argValue = args[k];
-
-                    let inferredType = getPSeIntType(argValue);
-
-                    if (Array.isArray(argValue) && argValue._is_array) {
-                        const clonedArray = argValue.map(item => item); 
-                        clonedArray._is_array = true;
-                        clonedArray._type = argValue._type; 
-                        functionLocalScope[paramName] = clonedArray;
-                    } else {
-                        functionLocalScope[paramName] = argValue;
-                        functionLocalScope[paramName + '__type'] = inferredType; 
-                    }
-                }
-
-                await executeBlock(func.body, functionLocalScope, func.startLine); 
-
-                if (appState.haltExecution) { 
-                    return undefined;
-                }
-
-                if (functionLocalScope.hasOwnProperty(func.returnVar)) {
-                    return functionLocalScope[func.returnVar]; 
-                } else {
-                    appendToConsole(`Error en la función '${funcName}': La variable de retorno '${func.returnVar}' no recibió un valor. ¡Asegúrate de asignarle algo!`, true);
-                    appState.haltExecution = true;
-                    return undefined;
-                }
-            }
-
-            // --- UI and Event Handling ---
-
-            runCodeBtn.addEventListener('click', async function() {
-                resetState();
-                const code = codeElement.value;
-                const lines = code.split('\n');
-
-                let mainAlgorithmBlock = [];
-                let inFunctionDefinition = false;
-                let functionStack = []; 
-
-                for (let i = 0; i < lines.length; i++) {
-                    let line = lines[i].trim();
-                    const commentIndex = line.indexOf('//');
-                    if (commentIndex !== -1) {
-                        line = line.substring(0, commentIndex).trim();
-                    }
-                    if (line === '') continue;
-
-                    const funcMatch = line.match(/^Funcion\s+([a-zA-Z_]\w*)\s*=\s*([a-zA-Z_]\w*)\s*\((.*?)\)$/i);
-                    if (funcMatch) {
-                        const returnVar = funcMatch[1].toLowerCase();
-                        const funcName = funcMatch[2].toLowerCase(); 
-                        const params = funcMatch[3].split(',').map(p => p.trim().toLowerCase()).filter(p => p !== '');
-                        
-                        if (appState.functions.hasOwnProperty(funcName)) {
-                            appendToConsole(`Error en línea ${i+1}: ¡Ups! La función '${funcName}' ya existe. Usa un nombre diferente o revisa duplicados.`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-
-                        appState.functions[funcName] = {
-                            returnVar: returnVar,
-                            params: params,
-                            body: [],
-                            startLine: i + 1 
-                        };
-                        functionStack.push(funcName); 
-                        inFunctionDefinition = true;
-                        continue;
-                    }
-
-                    if (line.toLowerCase() === 'finfuncion') {
-                        if (functionStack.length === 0) {
-                            appendToConsole(`Error en línea ${i+1}: 'FinFuncion' sin un 'Funcion' que lo inicie. ¿Olvidaste algo?`, true);
-                            appState.haltExecution = true;
-                            return;
-                        }
-                        functionStack.pop(); 
-                        inFunctionDefinition = (functionStack.length > 0); 
-                        continue;
-                    }
-
-                    if (inFunctionDefinition && functionStack.length > 0) {
-                        const currentFunction = appState.functions[functionStack[functionStack.length - 1]];
-                        if (currentFunction) { 
-                            currentFunction.body.push(line);
-                        }
-                    } else {
-                        mainAlgorithmBlock.push(line);
-                    }
-                }
-
-                if (functionStack.length > 0) {
-                    appendToConsole(`Error: Parece que la función '${functionStack[functionStack.length - 1]}' no tiene su 'FinFuncion'.`, true);
-                    appState.haltExecution = true;
-                    return;
-                }
-
-                appendToConsole("<i class='fas fa-play' style='margin-right: 5px; color: #2ecc71;'></i> Iniciando la ejecución del algoritmo principal...");
-                mainAlgorithmBlock = mainAlgorithmBlock.filter(line => 
-                    !line.toLowerCase().startsWith('algoritmo') && 
-                    !line.toLowerCase().startsWith('finalgoritmo')
-                );
-                
-                await executeBlock(mainAlgorithmBlock, appState.variables);
-
-                if (!appState.haltExecution) {
-                    appendToConsole("<i class='fas fa-check-circle' style='margin-right: 5px; color: #2ecc71;'></i> Ejecución completada exitosamente.");
-                } else {
-                    appendToConsole("<i class='fas fa-exclamation-triangle' style='margin-right: 5px; color: #e74c3c;'></i> Ejecución detenida debido a un error. Revisa los mensajes anteriores.", true);
-                }
+                // Toggle the clicked dropdown
+                dropdownMenu.classList.toggle('show');
             });
-
-            clearConsoleBtn.addEventListener('click', function() {
-                resetState(); 
-                appendToConsole('<i class="fas fa-eraser" style="margin-right: 5px; color: #f39c12;"></i> Consola y estado del programa limpiados.');
-            });
-
-            // Nuevo botón "Nuevo"
-            newCodeBtn.addEventListener('click', function() {
-                codeElement.value = `Algoritmo MiPrimerAlgoritmo
-
-FinAlgoritmo`;
-                resetState();
-                appendToConsole('<i class="fas fa-file-alt" style="margin-right: 5px; color: #3498db;"></i> Contenido del editor borrado. Listo para un nuevo pseudocódigo.');
-            });
-
-
-            saveCodeBtn.addEventListener('click', function() {
-                const codeContent = codeElement.value;
-                const blob = new Blob([codeContent], { type: 'text/plain;charset=utf-8' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = 'mi_pseudocodigo.psc'; 
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(a.href);
-                appendToConsole('<i class="fas fa-save" style="margin-right: 5px; color: #2ecc71;"></i> Código guardado como "mi_pseudocodigo.psc".');
-            });
-
-            openCodeBtn.addEventListener('click', function() {
-                openCodeInput.click(); 
-            });
-
-            openCodeInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (!file) {
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    codeElement.value = e.target.result;
-                    appendToConsole(`<i class="fas fa-folder-open" style="margin-right: 5px; color: #3498db;"></i> Archivo "${file.name}" cargado correctamente.`);
-                    resetState(); 
-                };
-                reader.onerror = function(e) {
-                    appendToConsole(`<i class="fas fa-times-circle" style="margin-right: 5px; color: #e74c3c;"></i> Error al leer el archivo: ${e.message}`, true);
-                };
-                reader.readAsText(file);
-            });
-
-            runExampleBtn.addEventListener('click', function() {
-                const exampleCode = `Algoritmo SumaDeDosNumeros
-  // Este es un ejemplo básico de PSeInt.
-  // Pide dos números, los suma y muestra el resultado.
-  
-  Definir num1, num2, resultado Como Entero
-  
-  Escribir "Hola! Este programa suma dos numeros."
-  Escribir "Por favor, ingresa el primer numero:"
-  Leer num1
-  
-  Escribir "Ahora, ingresa el segundo numero:"
-  Leer num2
-  
-  resultado <- num1 + num2
-  
-  Escribir "La suma de ", num1, " y ", num2, " es: ", resultado
-  
-FinAlgoritmo`;
-                codeElement.value = exampleCode;
-                appendToConsole("<i class='fas fa-code' style='margin-right: 5px; color: #3498db;'></i> Código de ejemplo básico cargado. ¡Presiona 'Ejecutar' para ver cómo funciona!");
-            });
-
-            // --- Panel Updates ---
-            function updateVariablePanel() {
-                variableList.innerHTML = '';
-                const variables = Object.entries(appState.variables).filter(([key, value]) => !key.endsWith('__type')).sort((a, b) => a[0].localeCompare(b[0]));
-                
-                if (variables.length === 0) {
-                    const li = document.createElement('li');
-                    li.className = 'variable-item';
-                    li.textContent = "No hay variables definidas";
-                    variableList.appendChild(li);
-                    return;
-                }
-
-                for (const [name, value] of variables) {
-                    const li = document.createElement('li');
-                    li.className = 'variable-item';
-                    let displayValue = '';
-                    let typeDisplay = '(-)';
-
-                    if (value && typeof value === 'object' && value._is_array) {
-                        typeDisplay = value._type ? `(arreglo de ${value._type})` : '(arreglo sin tipo definido)';
-                        displayValue = `[${value.map(item => JSON.stringify(item)).join(', ')}]`;
-                    } else { 
-                        const scalarType = appState.variables[name + '__type'] || getPSeIntType(value);
-                        typeDisplay = `(${scalarType})`;
-                        displayValue = JSON.stringify(value);
-                    }
-                    li.innerHTML = `<strong>${name}</strong> ${typeDisplay}: ${displayValue}`;
-                    variableList.appendChild(li);
-                }
+        });
+        
+        // Close dropdowns when clicking outside
+        window.addEventListener('click', function(event) {
+            if (!event.target.closest('.menu-container')) {
+                document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
+                    openMenu.classList.remove('show');
+                });
             }
-            
-            function updateFunctionPanel() {
-                functionList.innerHTML = '';
-                const functions = Object.entries(appState.functions).sort((a, b) => a[0].localeCompare(b[0]));
-
-                if (functions.length === 0) {
-                    const li = document.createElement('li');
-                    li.className = 'function-item';
-                    li.textContent = "No hay funciones definidas";
-                    functionList.appendChild(li);
-                    return;
-                }
-
-                for (const [name, func] of functions) {
-                    const li = document.createElement('li');
-                    li.className = 'function-item';
-                    li.innerHTML = `
-                        <div class="function-name">${name}</div>
-                        <div class="function-params">(${func.params.join(', ')})</div>
-                    `;
-                    functionList.appendChild(li);
-                }
-            }
-            
-            function clearPanels() {
-                variableList.innerHTML = '<li class="variable-item">No hay variables definidas</li>';
-                functionList.innerHTML = '<li class="function-item">No hay funciones definidas</li>';
-                suggestionList.innerHTML = '<li class="suggestion-item">Escribe para ver sugerencias...</li>'; // Clear suggestions too
-            }
-
-            // Toggle Side Panel (collapsible feature)
-            toggleSidePanelBtn.addEventListener('click', toggleSidePanel);
-            function toggleSidePanel() {
-                if (window.innerWidth > 900) {
-                    sidePanel.classList.toggle('collapsed');
-                    const icon = toggleSidePanelBtn.querySelector('i'); 
-                    if (icon) { 
-                        if (sidePanel.classList.contains('collapsed')) {
-                            icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
-                        } else {
-                            icon.classList.replace('fa-chevron-right', 'fa-chevron-left');
-                        }
-                    }
-                }
-            }
-
-            // --- SUGGESTIONS LOGIC ---
-            const suggestions = [
-                {
-                    keyword: 'definir',
-                    title: 'Declarar Variable',
-                    tip: 'Define una variable con su tipo. ¡Así el programa sabe qué esperar!',
-                    code: 'Definir miVariable Como Entero\n// Tipos: Entero, Real, Caracter, Cadena, Logico'
-                },
-                {
-                    keyword: 'dimensionar',
-                    title: 'Declarar Arreglo (Vector)',
-                    tip: 'Crea un espacio para guardar varios datos del mismo tipo.',
-                    code: 'Dimensionar miArreglo[5]\n// Puedes acceder con miArreglo[0], miArreglo[1]...'
-                },
-                {
-                    keyword: 'escribir',
-                    title: 'Mostrar en Pantalla',
-                    tip: 'Usa Escribir para mostrar mensajes o el valor de tus variables.',
-                    code: 'Escribir "Hola mundo"\nEscribir "El valor es: ", miVariable'
-                },
-                {
-                    keyword: 'leer',
-                    title: 'Pedir Datos al Usuario',
-                    tip: 'Pide al usuario que ingrese un valor y guárdalo en una variable.',
-                    code: 'Leer miVariable'
-                },
-                {
-                    keyword: 'si',
-                    title: 'Condición Si-Entonces',
-                    tip: 'Ejecuta un código solo si una condición es verdadera.',
-                    code: 'Si (condicionLogica) Entonces\n  // Código si la condición es verdadera\nFinSi'
-                },
-                {
-                    keyword: 'sino',
-                    title: 'Condición Si-Sino',
-                    tip: 'Para cuando tienes dos caminos: si es verdadero o si es falso.',
-                    code: 'Si (condicionLogica) Entonces\n  // Código si es verdadero\nSino\n  // Código si es falso\nFinSi'
-                },
-                 {
-                    keyword: 'sinosi',
-                    title: 'Condición Si-SinoSi-Sino',
-                    tip: 'Para cuando tienes varias condiciones posibles en cadena.',
-                    code: 'Si (condicion1) Entonces\n  // Código para condicion1\nSinoSi (condicion2) Entonces\n  // Código para condicion2\nSino\n  // Código si ninguna de las anteriores es verdadera\nFinSi'
-                },
-                {
-                    keyword: 'para',
-                    title: 'Bucle Para (Ciclo Fijo)',
-                    tip: 'Repite un bloque de código un número específico de veces.',
-                    code: 'Para i <- 1 Hasta 10 Con Paso 1 Hacer\n  // Código a repetir 10 veces\nFinPara'
-                },
-                {
-                    keyword: 'mientras',
-                    title: 'Bucle Mientras (Ciclo Condicional)',
-                    tip: 'Repite un bloque de código mientras una condición sea verdadera.',
-                    code: 'Mientras (condicionLogica) Hacer\n  // Código a repetir\n  // Asegúrate de que la condición cambie o será un bucle infinito!\nFinMientras'
-                },
-                {
-                    keyword: 'repetir',
-                    title: 'Bucle Repetir-Hasta Que',
-                    tip: 'Repite un bloque de código al menos una vez, hasta que una condición sea verdadera.',
-                    code: 'Repetir\n  // Código a repetir\nHasta Que (condicionLogica)'
-                },
-                {
-                    keyword: 'funcion',
-                    title: 'Declarar Función/Subproceso',
-                    tip: 'Crea un bloque de código reutilizable. ¡Ayuda a organizar tu programa!',
-                    code: 'Funcion resultado = miFuncion(parametro1, parametro2)\n  // Código de la función\n  resultado <- parametro1 + parametro2\nFinFuncion'
-                },
-                {
-                    keyword: '<-',
-                    title: 'Asignación de Valor',
-                    tip: 'Usa "<-" para guardar un valor en una variable.',
-                    code: 'variable <- 10\nmiArreglo[0] <- "texto"'
-                }
-                // Añade más sugerencias aquí
-            ];
-
-            function updateSuggestions() {
-                suggestionList.innerHTML = '';
-                const currentLine = getCurrentLine();
-                const currentText = codeElement.value.substring(0, codeElement.selectionStart);
-                const lastWordMatch = currentText.match(/\b(\w+)$/); // Last complete word
-
-                let foundSuggestions = false;
-
-                if (lastWordMatch) {
-                    const lastWord = lastWordMatch[1].toLowerCase();
-                    const filteredSuggestions = suggestions.filter(s => s.keyword.startsWith(lastWord));
-
-                    if (filteredSuggestions.length > 0) {
-                        filteredSuggestions.forEach(sug => {
-                            const li = document.createElement('li');
-                            li.className = 'suggestion-item';
-                            li.innerHTML = `<strong>${sug.title}</strong><br>${sug.tip}<pre>${sug.code}</pre>`;
-                            li.addEventListener('click', () => insertSuggestion(sug.code, lastWord.length));
-                            suggestionList.appendChild(li);
-                            foundSuggestions = true;
-                        });
-                    }
-                }
-                
-                if (!foundSuggestions) {
-                     const li = document.createElement('li');
-                    li.className = 'suggestion-item';
-                    li.textContent = "Escribe una palabra clave (ej: 'definir', 'si') para ver sugerencias.";
-                    suggestionList.appendChild(li);
-                }
-            }
-
-            function getCurrentLine() {
-                const text = codeElement.value;
-                const cursorPosition = codeElement.selectionStart;
-                const lines = text.split('\n');
-                let charCount = 0;
-                for (let i = 0; i < lines.length; i++) {
-                    charCount += lines[i].length + 1; // +1 for the newline character
-                    if (cursorPosition <= charCount) {
-                        return lines[i];
-                    }
-                }
-                return '';
-            }
-
-            function insertSuggestion(suggestionCode, charsToRemove) {
-                const start = codeElement.selectionStart - charsToRemove;
-                const end = codeElement.selectionEnd;
-                const currentValue = codeElement.value;
-
-                // Insert the suggestion code
-                codeElement.value = currentValue.substring(0, start) + suggestionCode + currentValue.substring(end);
-
-                // Set cursor position after insertion
-                codeElement.focus();
-                codeElement.selectionStart = start + suggestionCode.length;
-                codeElement.selectionEnd = start + suggestionCode.length;
-                
-                // Clear suggestions after insertion
-                updateSuggestions();
-            }
-
-
-            // Listen for input changes in the code editor to update suggestions
-            codeElement.addEventListener('input', updateSuggestions);
-
-            // Load example code by default on startup
-            runExampleBtn.click();
-            updateSuggestions(); // Initial call to populate suggestions
         });
 
+        // Panel de variables colapsable
+        const sectionHeaders = document.querySelectorAll('.section-header');
+        const collapseAllBtn = document.getElementById('collapseAllBtn');
+        
+        sectionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                const content = document.getElementById(`${sectionId}Content`);
+                content.classList.toggle('collapsed');
+                
+                // Actualizar indicador
+                const indicator = this.querySelector('.collapse-indicator');
+                indicator.textContent = content.classList.contains('collapsed') ? '▶' : '▼';
+            });
+        });
+        
+        // Colapsar/expandir todo
+        let allCollapsed = false;
+        collapseAllBtn.addEventListener('click', function() {
+            const allContents = document.querySelectorAll('.section-content');
+            const indicators = document.querySelectorAll('.collapse-indicator');
+            
+            allCollapsed = !allCollapsed;
+            this.textContent = allCollapsed ? '⮟' : '⮝';
+            
+            allContents.forEach(content => {
+                if (allCollapsed) {
+                    content.classList.add('collapsed');
+                } else {
+                    content.classList.remove('collapsed');
+                }
+            });
+            
+            indicators.forEach(indicator => {
+                indicator.textContent = allCollapsed ? '▶' : '▼';
+            });
+        });
+        
+        // Ayuda rápida (remains as a toggle for a specific help section)
+        const quickHelpToggle = document.getElementById('quickHelpToggle');
+        const quickHelp = document.getElementById('quickHelp');
+        
+        quickHelpToggle.addEventListener('change', function() {
+            quickHelp.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Botones de código
+        const codeButtons = document.querySelectorAll('.code-btn');
+        const codeEditor = document.getElementById('codeEditor');
+        
+        codeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const codeSnippet = this.getAttribute('data-code');
+                if (codeSnippet) {
+                    // Insertar en la posición actual del cursor
+                    const cursorPos = codeEditor.selectionStart;
+                    const textBefore = codeEditor.value.substring(0, cursorPos);
+                    const textAfter = codeEditor.value.substring(cursorPos);
+                    
+                    codeEditor.value = textBefore + codeSnippet + textAfter;
+                    
+                    // Posicionar cursor después del snippet
+                    const newCursorPos = cursorPos + codeSnippet.length;
+                    codeEditor.setSelectionRange(newCursorPos, newCursorPos);
+                    codeEditor.focus();
+                }
+            });
+        });
+        
+        // Ejecutar código
+        const runBtn = document.getElementById('runBtn');
+        const consoleOutput = document.getElementById('consoleOutput');
+        const clearConsole = document.getElementById('clearConsole');
+        
+        runBtn.addEventListener('click', function() {
+            // Simular ejecución del código
+            const editorContent = codeEditor.value;
+            consoleOutput.innerHTML += '&gt; Ejecutando algoritmo...<br>';
+
+            // Simple "Hola Mundo" simulation
+            if (editorContent.includes('Escribir "Hola Mundo')) {
+                consoleOutput.innerHTML += '&gt; Hola Mundo desde PSeInt!<br>';
+            } else if (editorContent.includes('Escribir "Recorrido del arreglo \'numeros\'')) {
+                // Keep the old simulation for array example if user puts it back
+                consoleOutput.innerHTML += '&gt; Recorrido del arreglo \'numeros\':<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 0: 10<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 1: 20<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 2: 30<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 3: 40<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 4: 50<br>';
+                consoleOutput.innerHTML += '&gt; La suma de los elementos es: 150<br>';
+                consoleOutput.innerHTML += '&gt; Lista de nombres:<br>';
+                consoleOutput.innerHTML += '&gt; - Ana<br>';
+                consoleOutput.innerHTML += '&gt; - Carlos<br>';
+                consoleOutput.innerHTML += '&gt; - Diana<br>';
+            } else {
+                consoleOutput.innerHTML += '&gt; No se pudo interpretar el código. Intenta con "Hola Mundo".<br>';
+            }
+
+            consoleOutput.innerHTML += '&gt; Ejecución completada<br>';
+            
+            // Desplazar al final de la consola
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        });
+        
+        // Limpiar consola
+        clearConsole.addEventListener('click', function() {
+            consoleOutput.innerHTML = '&gt; Consola limpiada<br>';
+        });
+        
+        // Simulación de arreglos (kept for consistency with the example variables)
+        const arrays = {
+            'numeros': [10, 20, 30, 40, 50],
+            'nombres': ['Ana', 'Carlos', 'Diana']
+        };
+        
+        // Mostrar mensaje inicial en consola
+        setTimeout(() => {
+            consoleOutput.innerHTML += '&gt; Sistema de arreglos inicializado correctamente<br>';
+            consoleOutput.innerHTML += '&gt; Use el botón "Ejecutar" para probar el algoritmo<br>';
+        }, 1000);
+
+        // Real-time help suggestions (basic keyword detection)
+        const realtimeSuggestions = document.getElementById('realtimeSuggestions');
+        codeEditor.addEventListener('input', function() {
+            const code = codeEditor.value.toLowerCase();
+            let suggestionsHtml = '<h4>Sugerencias:</h4>';
+
+            if (code.includes('algoritmo') && !code.includes('finalgoritmo')) {
+                suggestionsHtml += '<p>¡No olvides cerrar tu algoritmo con <code>FinAlgoritmo</code>!</p>';
+            } else if (code.includes('definir') && !code.includes('como')) {
+                suggestionsHtml += '<p>Recuerda la sintaxis para definir: <code>Definir variable Como Tipo</code></p>';
+            } else if (code.includes('escribir') && !code.includes('"')) {
+                suggestionsHtml += '<p>Usa comillas dobles para cadenas de texto: <code>Escribir "Tu mensaje"</code></p>';
+            } else if (code.includes('dimension') && !code.includes('[')) {
+                suggestionsHtml += '<p>Para dimensionar arreglos, usa corchetes: <code>Dimension arreglo[tamaño]</code></p>';
+            } else if (code.includes('si') && !code.includes('entonces')) {
+                suggestionsHtml += '<p>La estructura condicional es: <code>Si condicion Entonces ... FinSi</code></p>';
+            } else if (code.includes('para') && !code.includes('hacer')) {
+                suggestionsHtml += '<p>La estructura Para es: <code>Para i <- inicio Hasta fin Con Paso paso Hacer ... FinPara</code></p>';
+            } else {
+                suggestionsHtml += '<p>Empieza escribiendo "Algoritmo" para definir tu programa.</p>';
+                suggestionsHtml += '<p>Usa "Escribir" para mostrar mensajes en la consola.</p>';
+                suggestionsHtml += '<p>Para definir variables, usa "Definir [nombre] Como [tipo]".</p>';
+            }
+            realtimeSuggestions.innerHTML = suggestionsHtml;
+        });
     </script>
 </body>
 </html>

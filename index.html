@@ -3,19 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area de Informatica</title>
+    <title>Inicio - ISEMED</title>
     <link rel="stylesheet" href="estilos.css">
+    <!-- Enlace a Google Fonts para 'Inter' -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos específicos para los elementos dinámicos de descarga */
+        .dynamic-content-card {
+            background-color: rgba(0, 234, 255, 0.1);
+            border: 1px solid #00eaff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            text-align: center;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px; /* Altura mínima para las tarjetas */
+        }
+
+        .dynamic-content-card:hover {
+            background-color: #00eaff;
+            color: #1a1a2e;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 234, 255, 0.4);
+        }
+
+        .dynamic-content-card.back-button {
+            background-color: rgba(255, 99, 71, 0.2); /* Tomate para el botón de retroceso */
+            border-color: tomato;
+            color: tomato;
+            margin-top: 1.5rem;
+        }
+
+        .dynamic-content-card.back-button:hover {
+            background-color: tomato;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 99, 71, 0.4);
+        }
+
+        .dynamic-content-list {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .dynamic-content-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .dynamic-content-list a {
+            display: block;
+            padding: 0.7rem 1rem;
+            background-color: rgba(34, 36, 58, 0.8);
+            border-radius: 6px;
+            color: #00eaff;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        .dynamic-content-list a:hover {
+            background-color: #00eaff;
+            color: #1a1a2e;
+            transform: translateX(5px);
+        }
+    </style>
 </head>
 <body>
     <div class="background"></div>
     <header>
         <button id="menu-btn">&#9776;</button>
         <img src="imagenes/logo.png" alt="Logo ISEMED" class="logo">
-        <h1 class="titulo-principal">
-            <span class="instituto">Instituto Maria Auxiliadora</span><br>
-            <span class="subtitulo">sistema isemed</span><br>
-            <span class="subtitulo">Área de Informática</span>
-        </h1>
+        <div class="titulo-principal">
+            <div class="instituto">Instituto Maria Auxiliadora</div>
+            <div class="subtitulo">sistema isemed</div>
+            <div class="subtitulo">Área de Informática</div>
+        </div>
         <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" class="bandera">
     </header>
     <nav id="sidebar" class="sidebar">
@@ -28,7 +98,9 @@
                     <li class="has-submenu">
                         <a href="#">Décimo &#9656;</a>
                         <ul class="submenu">
-                            <li><a href="Informatica_I/Historia_Computacion.htm">Historia de la Computación</a></li>
+                            <!-- Directorios corregidos y estandarizados -->
+                            <li><a href="Informatica_I/historia_computacion.htm">Historia de la Computación</a></li>
+                            <li><a href="Informatica_I/Partes_Computadora.html">Partes de la Computadora</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu">
@@ -37,14 +109,19 @@
                             <li class="has-submenu">
                                 <a href="#">Informática Aplicada I &#9656;</a>
                                 <ul class="submenu">
+                                    <!-- Directorios corregidos y estandarizados -->
                                     <li>
                                         <a href="II_BTP_A/Informatica_Aplicada_I/sistemas_operativos.html">Sistemas Operativos</a>
+                                    </li>
+                                    <li>
+                                        <a href="II_BTP_A/Informatica_Aplicada_I/dipositivos_almac.html">Dispositivos de Almacenamiento</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="has-submenu">
                                 <a href="#">Ofimática I &#9656;</a>
                                 <ul class="submenu">
+                                    <!-- Directorios corregidos y estandarizados -->
                                     <li>
                                         <a href="II_BTP_A/Ofimatica_I/procesadores_texto.html">Procesadores de Texto</a>
                                     </li>
@@ -53,8 +130,12 @@
                             <li class="has-submenu">
                                 <a href="#">Análisis y Diseño de Sistemas &#9656;</a>
                                 <ul class="submenu">
+                                    <!-- Directorios corregidos y estandarizados -->
                                     <li>
-                                        <a href="II_BTP_A/analisis_diseno/AYDS.html">AYDS</a>
+                                        <a href="II_BTP_A/analisis_diseno/analisis_y_diseno_s.html">Análisis y Diseño de Sistemas</a>
+                                    </li>
+                                    <li>
+                                        <a href="II_BTP_A/analisis_diseno/rol_analista_sistemas.html">Rol del Analista de Sistemas</a>
                                     </li>
                                 </ul>
                             </li>
@@ -66,8 +147,13 @@
                             <li class="has-submenu">
                                 <a href="#">Diseño Web II &#9656;</a>
                                 <ul class="submenu">
+                                    <!-- Directorios corregidos y estandarizados -->
                                     <li>
                                         <a href="III_BTP_A/dw_II/backend_frontend.html">Backend y Frontend</a>
+                                    </li>
+                                    <!-- Se eliminó dt_fundamentos.html de aquí -->
+                                    <li>
+                                        <a href="III_BTP_A/dw_II/fundamentos_js.html">Fundamentos de JavaScript</a>
                                     </li>
                                 </ul>
                             </li>
@@ -93,7 +179,7 @@
     </nav>
     <main>
         <section class="bienvenida">
-            <h2>Bienvenido al area de Informática</h2>
+            <h2>Bienvenido a ISEMED</h2>
             <p>Formando profesionales en informática y tecnología para el futuro.</p>
         </section>
         <section class="noticias">
@@ -102,15 +188,180 @@
                 <!-- Las noticias se cargarán aquí automáticamente -->
             </ul>
         </section>
+
+        <!-- Sección para Descarga Directa de Contenido Teórico (Dinámica) -->
+        <section class="descargas">
+            <h2>Descarga Directa de Contenido Teórico</h2>
+            <div id="dynamic-download-panel" class="descargas-content">
+                <!-- El contenido dinámico se cargará aquí -->
+            </div>
+        </section>
     </main>
     <script>
+        // Datos de los documentos para la sección de descargas dinámicas
+        const documentos = {
+            decimo: {
+                nombre: "Décimo Grado",
+                clases: {
+                    "Informática I": [
+                        // Directorios corregidos y estandarizados
+                        { nombre: "Historia de la Computación", enlace: "Informatica_I/historia_de_la_computacion.pdf" },
+                        { nombre: "Partes y Tipos de Computadora", enlace: "Informatica_I/partes_y_tipos_de_computadora.pdf" }
+                    ]
+                }
+            },
+            undecimo: {
+                nombre: "Undécimo Grado",
+                clases: {
+                    "Informática Aplicada I": [
+                        // Directorios corregidos y estandarizados
+                        { nombre: "Fundamentos de Sistemas Operativos", enlace: "II_BTP_A/Informatica_Aplicada_I/fundamentos_de_sistemas_operativos.pdf" },
+                        { nombre: "Dispositivos de Almacenamiento", enlace: "II_BTP_A/Informatica_Aplicada_I/dispositivos_de_almacenamiento.pdf" }
+                    ],
+                    "Ofimática I": [
+                        // Directorios corregidos y estandarizados
+                        { nombre: "Procesadores de Texto", enlace: "II_BTP_A/Ofimatica_I/procesadores_de_texto.pdf" }
+                    ],
+                    "Análisis y Diseño de Sistemas": [
+                        // Directorios corregidos y estandarizados
+                        { nombre: "Análisis y Diseño de Sistemas", enlace: "II_BTP_A/analisis_diseno/analisis_y_diseno_de_sistemas.pdf" },
+                        { nombre: "Rol del Analista de Sistemas", enlace: "II_BTP_A/analisis_diseno/rol_del_analista_de_sistemas.pdf" }
+                    ]
+                }
+            },
+            duodecimo: {
+                nombre: "Duodécimo Grado",
+                clases: {
+                    "Diseño Web II": [
+                        // Directorios corregidos y estandarizados
+                        { nombre: "Backend y Frontend", enlace: "III_BTP_A/dw_II/front_end_vs_back_end.pdf" },
+                        { nombre: "Fundamentos de JavaScript", enlace: "III_BTP_A/dw_II/fundamentos_de_js.pdf" }
+                        // Se eliminó el PDF "Diseño y Tecnología - Fundamentos" de aquí
+                    ]
+                }
+            }
+        };
+
+        const dynamicDownloadPanel = document.getElementById('dynamic-download-panel');
+        let currentView = 'initial'; // 'initial', 'grades', 'classes', 'topics'
+        let selectedGrado = null;
+        let selectedClase = null;
+
+        // Función para renderizar la vista inicial
+        function renderInitialView() {
+            currentView = 'initial';
+            selectedGrado = null;
+            selectedClase = null;
+            dynamicDownloadPanel.innerHTML = `
+                <div class="dynamic-content-card" id="start-download-button">
+                    <img src="imagenes/descargas.png" alt="Icono de Descarga" class="download-icon">
+                    Contenido de Clase
+                </div>
+            `;
+            document.getElementById('start-download-button').addEventListener('click', renderGrades);
+        }
+
+        // Función para renderizar la vista de grados
+        function renderGrades() {
+            currentView = 'grades';
+            dynamicDownloadPanel.innerHTML = `
+                <p style="color: #00eaff; font-size: 1.1rem; margin-bottom: 0.8rem;">Elige tu grado:</p>
+                <ul class="dynamic-content-list" style="width: 100%;">
+                    ${Object.keys(documentos).map(key => `
+                        <li>
+                            <div class="dynamic-content-card" data-grado="${key}">
+                                ${documentos[key].nombre}
+                            </div>
+                        </li>
+                    `).join('')}
+                </ul>
+                <div class="dynamic-content-card back-button" id="back-to-initial">
+                    Volver
+                </div>
+            `;
+            document.querySelectorAll('.dynamic-content-card[data-grado]').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    selectedGrado = e.currentTarget.dataset.grado;
+                    renderClasses();
+                });
+            });
+            document.getElementById('back-to-initial').addEventListener('click', renderInitialView);
+        }
+
+        // Función para renderizar la vista de clases
+        function renderClasses() {
+            currentView = 'classes';
+            dynamicDownloadPanel.innerHTML = `
+                <p style="color: #00eaff; font-size: 1.1rem; margin-bottom: 0.8rem;">Clases de ${documentos[selectedGrado].nombre}:</p>
+                <ul class="dynamic-content-list" style="width: 100%;">
+                    ${Object.keys(documentos[selectedGrado].clases).map(clase => `
+                        <li>
+                            <div class="dynamic-content-card" data-clase="${clase}">
+                                ${clase}
+                            </div>
+                        </li>
+                    `).join('')}
+                </ul>
+                <div class="dynamic-content-card back-button" id="back-to-grades">
+                    Volver a Grados
+                </div>
+            `;
+            document.querySelectorAll('.dynamic-content-card[data-clase]').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    selectedClase = e.currentTarget.dataset.clase;
+                    renderTopics();
+                });
+            });
+            document.getElementById('back-to-grades').addEventListener('click', renderGrades);
+        }
+
+        // Función para renderizar la vista de temas
+        function renderTopics() {
+            currentView = 'topics';
+            const temas = documentos[selectedGrado].clases[selectedClase];
+            dynamicDownloadPanel.innerHTML = `
+                <p style="color: #00eaff; font-size: 1.1rem; margin-bottom: 0.8rem;">Temas de ${selectedClase}:</p>
+                <ul class="dynamic-content-list" style="width: 100%;">
+                    ${temas.map(tema => `
+                        <li>
+                            <a href="${tema.enlace}" target="_blank" download="${tema.nombre}.pdf">
+                                ${tema.nombre}
+                            </a>
+                        </li>
+                    `).join('')}
+                </ul>
+                <div class="dynamic-content-card back-button" id="back-to-classes">
+                    Volver a Clases
+                </div>
+            `;
+            document.getElementById('back-to-classes').addEventListener('click', renderClasses);
+        }
+
+        // Inicializar la vista al cargar la página
+        renderInitialView();
+
+        // Script para el menú lateral
         const menuBtn = document.getElementById('menu-btn');
         const sidebar = document.getElementById('sidebar');
         const closeBtn = document.getElementById('close-btn');
+
         menuBtn.onclick = () => sidebar.classList.add('active');
         closeBtn.onclick = () => sidebar.classList.remove('active');
-    </script>
-    <script>
+
+        // Abrir/cerrar submenús por clic (tanto en móvil como en escritorio)
+        document.querySelectorAll('.sidebar li.has-submenu > a').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); // Previene la acción por defecto del enlace
+                const parent = this.parentElement;
+                // Cierra otros submenús abiertos al mismo nivel
+                Array.from(parent.parentElement.children).forEach(li => {
+                    if (li !== parent) li.classList.remove('open');
+                });
+                parent.classList.toggle('open'); // Alterna la clase 'open' para mostrar/ocultar
+            });
+        });
+
+        // Script para cargar noticias
         async function cargarNoticias() {
             try {
                 const response = await fetch('noticias.json?_=' + new Date().getTime());
@@ -128,37 +379,6 @@
         }
         cargarNoticias();
         setInterval(cargarNoticias, 10000); // Actualiza cada 10 segundos
-    </script>
-    <script>
-// Abrir/cerrar submenús por clic (útil para móviles)
-document.querySelectorAll('.sidebar li.has-submenu > a').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-        // Solo activar por clic si es pantalla pequeña
-        if (window.innerWidth <= 900) {
-            e.preventDefault();
-            const parent = this.parentElement;
-            // Cierra otros submenús abiertos al mismo nivel
-            Array.from(parent.parentElement.children).forEach(li => {
-                if (li !== parent) li.classList.remove('open');
-            });
-            parent.classList.toggle('open');
-        }
-    });
-});
-
-// Abrir submenús por hover en escritorio
-document.querySelectorAll('.sidebar li.has-submenu').forEach(function(li) {
-    li.addEventListener('mouseenter', function() {
-        if (window.innerWidth > 900) {
-            this.classList.add('open');
-        }
-    });
-    li.addEventListener('mouseleave', function() {
-        if (window.innerWidth > 900) {
-            this.classList.remove('open');
-        }
-    });
-});
     </script>
 </body>
 </html>
