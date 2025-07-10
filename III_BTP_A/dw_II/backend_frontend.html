@@ -156,7 +156,61 @@
         }
         @media (max-width: 700px) {
             .vsc-toolbar-search input {
-                width: 90px;
+                width: 90px; /* Mantener o ajustar si es necesario */
+            }
+            .vsc-toolbar-item {
+                margin-right: 10px; /* Reducir espacio entre items de toolbar */
+                font-size: 0.85rem; /* Reducir fuente */
+            }
+            .vsc-titlebar .vsc-title {
+                font-size: 0.9rem; /* Reducir fuente del título de ventana */
+            }
+            .vsc-sidebar {
+                width: 40px; /* Ligeramente más estrecha si es necesario */
+            }
+             .vsc-sidebar img {
+                width: 24px; /* Iconos de sidebar más pequeños */
+                height: 24px;
+            }
+            .vsc-main-content {
+                left: 40px; /* Ajustar si el sidebar cambió */
+                top: 70px; /* Un poco más de espacio si la toolbar es más alta */
+                bottom: 25px; /* Ajustar para la statusbar */
+            }
+            .slide-content {
+                padding: 1rem 1.5rem; /* Reducir padding del contenido del slide */
+                margin: 0.8rem 0;
+            }
+            .slide h2 {
+                font-size: 1.8rem; /* Reducir títulos */
+            }
+            .slide h3 {
+                font-size: 1.2rem; /* Reducir subtítulos */
+            }
+            .slide p, .slide ul, .slide ol {
+                font-size: 0.95rem; /* Reducir texto general */
+                line-height: 1.6;
+            }
+            .logos-tec-frontend img {
+                width: 50px; /* Reducir logos de tecnologías */
+                height: 50px;
+                gap: 1.5rem;
+            }
+            .nav-button {
+                padding: 10px 20px; /* Botones de navegación más pequeños */
+                font-size: 0.9rem;
+            }
+            .vsc-statusbar {
+                height: 25px; /* Status bar un poco más delgada */
+                font-size: 0.8rem; /* Fuente más pequeña en status bar */
+                padding: 0 10px;
+            }
+            .vsc-statusbar .vsc-statusbar-item {
+                margin-right: 12px; /* Menos espacio entre items de status bar */
+            }
+             .vsc-statusbar-item svg {
+                width: 14px;
+                height: 14px;
             }
         }
         .vsc-statusbar {
@@ -595,6 +649,10 @@
             </div>
         </div>
         <div class="vsc-statusbar">
+            <a href="../../../index.html" class="vsc-statusbar-item" title="Regresar al Portal Principal" style="text-decoration: none; color: inherit;">
+                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: currentColor;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                Inicio
+            </a>
             <span class="vsc-statusbar-item">
                 <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/></svg>
                 Spaces: 4

@@ -1,12 +1,28 @@
+/* Paleta de colores propuesta:
+    Fondo principal: #101727 (Azul muy oscuro, casi negro)
+    Encabezado/Sidebar: #1A2238 (Azul oscuro)
+    Secciones: rgba(26, 34, 56, 0.9) (Azul oscuro semitransparente)
+    Texto principal: #CFD8DC (Gris claro)
+    Títulos principales (header): #80DEEA (Cian claro)
+    Títulos de sección: #80DEEA (Cian claro)
+    Acentos (bordes, botones, enlaces hover): #00ACC1 (Cian verdoso)
+    Texto en botones/acentos: #101727 o #FFFFFF
+    Botón de regreso: #FF6D47 (Naranja)
+    Fuente principal: 'Roboto', 'Segoe UI', Arial, sans-serif
+    Fuente títulos: 'Montserrat', 'Verdana', sans-serif
+*/
+
 body, html {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto', 'Segoe UI', Arial, sans-serif; /* Tipografía principal moderna y legible */
     height: 100%;
     min-height: 100vh;
-    color: #f4f4f4;
+    color: #CFD8DC; /* Color de texto principal (gris claro) */
+    background-color: #101727; /* Fondo principal azul muy oscuro, casi negro */
     position: relative;
     overflow-x: hidden; /* Evita el scroll horizontal */
+    line-height: 1.6; /* Mejora la legibilidad general */
 }
 
 .background {
@@ -16,108 +32,112 @@ body, html {
     width: 100vw;
     height: 100vh;
     z-index: -1;
-    filter: blur(3px) brightness(0.6);
+    filter: blur(5px) brightness(0.4); /* Desenfoque y oscuridad ajustados */
+    opacity: 0.5; /* Opacidad para que no sea tan dominante */
 }
 
 header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(20, 20, 40, 0.9);
-    padding: 0.1rem 1rem; /* Reduced padding for a more compact banner */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    background: #1A2238; /* Azul oscuro para el encabezado, ligeramente más claro que el body */
+    padding: 0.6rem 1.5rem; /* Padding vertical y horizontal */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada y suave */
     position: sticky;
     top: 0;
     z-index: 999;
-    border-bottom: 2px solid #00eaff;
+    border-bottom: 3px solid #00ACC1; /* Cian verdoso para el borde inferior, color acento */
 }
 
 .logo, .bandera {
-    height: 30px; /* Reduced logo size */
-    border-radius: 8px;
-    margin: 0 5px; /* Adjusted margin */
-    background: none;
+    height: 38px; /* Tamaño de logo y bandera */
+    border-radius: 4px; /* Bordes ligeramente redondeados */
+    margin: 0 10px;
+    background: transparent; /* Asegurar fondo transparente */
     padding: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    box-shadow: none;
+    object-fit: contain; /* Para que no se deformen */
 }
 
 .titulo-principal {
     flex: 1;
     text-align: center;
-    color: #00eaff;
-    text-shadow: none;
+    color: #80DEEA; /* Cian claro para el título principal */
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3); /* Sombra de texto sutil */
     margin: 0;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Montserrat', 'Verdana', sans-serif; /* Fuente moderna y elegante para títulos */
     font-weight: bold;
     letter-spacing: 0.5px;
-    padding: 0; /* Ensure container has no extra vertical padding */
-    display: flex; /* Use flexbox to align text lines */
-    flex-direction: column; /* Stack lines vertically */
-    justify-content: center; /* Vertically center if there's space */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .titulo-principal .instituto {
-    font-size: 1.4rem; /* Font size for "Instituto Maria Auxiliadora" */
+    font-size: 1.6rem; /* Tamaño de fuente para "Instituto Maria Auxiliadora" */
     margin: 0;
     padding: 0;
-    line-height: 1; /* Adjusted line-height to bring lines closer */
+    line-height: 1.1; /* Ajuste de interlineado */
     display: block;
+    font-weight: 700; /* Más peso para el nombre del instituto */
 }
 
 .titulo-principal .subtitulo {
-    font-size: 0.7rem; /* Font size for "sistema isemed" and "Área de Informática" */
+    font-size: 0.8rem; /* Tamaño de fuente para subtítulos */
     margin: 0;
     padding: 0;
-    line-height: 1; /* Adjusted line-height to bring lines closer */
+    line-height: 1.1;
     display: block;
-    color: #a0faff;
+    color: #B0BEC5; /* Gris azulado claro para subtítulos */
+    font-weight: 400; /* Peso normal para subtítulos */
 }
 
 #menu-btn {
-    font-size: 1.5rem; /* Adjusted menu button size */
+    font-size: 1.8rem; /* Tamaño del botón de menú */
     background: none;
     border: none;
-    color: #00eaff;
+    color: #80DEEA; /* Color del botón de menú (cian claro) */
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 15px;
     transition: color 0.3s ease, transform 0.3s ease;
 }
 #menu-btn:hover {
-    color: #fff;
-    transform: scale(1.1);
+    color: #E0F7FA; /* Color al pasar el mouse (cian muy claro) */
+    transform: scale(1.15);
 }
 
 .sidebar {
     position: fixed;
-    left: -300px;
+    left: -320px; /* Ancho aumentado y oculto */
     top: 0;
-    width: 300px;
+    width: 300px; /* Ancho del sidebar */
     height: 100%;
-    background: linear-gradient(135deg, #1a1a2e 70%, #00eaff 100%);
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.8);
-    padding-top: 3rem;
-    transition: left 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    background: linear-gradient(145deg, #1A2238 60%, #263355 100%); /* Gradiente azul oscuro */
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+    padding-top: 3.5rem;
+    transition: left 0.45s cubic-bezier(0.23, 1, 0.32, 1); /* Transición 'easeOutQuint' para suavidad */
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: auto; /* Permitir scroll si el contenido es largo */
 }
 .sidebar.active {
     left: 0;
 }
 #close-btn {
     align-self: flex-end;
-    font-size: 2rem; /* Adjusted close button size */
+    font-size: 2.2rem; /* Tamaño del botón de cerrar */
     background: none;
     border: none;
-    color: #00eaff;
+    color: #80DEEA; /* Color del botón (cian claro) */
     cursor: pointer;
-    margin: 0 1.5rem 1.5rem 0;
-    transition: color 0.3s ease, transform 0.3s ease;
+    margin: 0 1.8rem 1.8rem 0;
+    transition: color 0.35s ease, transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Transición con rebote */
 }
 #close-btn:hover {
-    color: #fff;
-    transform: rotate(90deg);
+    color: #E0F7FA; /* Color al pasar el mouse (cian muy claro) */
+    transform: rotate(180deg) scale(1.15); /* Rotación y escala más pronunciada */
 }
 .sidebar ul {
     list-style: none;
@@ -125,147 +145,172 @@ header {
     margin: 0;
 }
 .sidebar li {
-    margin: 0.7rem 0; /* Adjusted spacing */
+    margin: 0.8rem 0; /* Espaciado entre elementos de lista */
 }
 .sidebar a {
-    color: #fff;
+    color: #E0F7FA; /* Color de enlaces (cian muy claro) */
     text-decoration: none;
-    font-size: 0.95rem; /* Adjusted font size */
-    padding: 0.6rem 2rem; /* More padding */
+    font-size: 1rem; /* Tamaño de fuente de enlaces */
+    padding: 0.8rem 2.2rem; /* Padding de enlaces */
     display: block;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    border-radius: 6px; /* Bordes redondeados */
+    transition: background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                box-shadow 0.3s ease-in-out; /* Transiciones más dinámicas */
+    letter-spacing: 0.5px;
+    position: relative; /* Para pseudo-elementos si se necesitaran */
 }
 .sidebar a:hover {
-    background: #00eaff;
-    color: #1a1a2e;
-    transform: translateX(5px);
+    background: #00C9D2; /* Un cian un poco más brillante para hover */
+    color: #0A101F; /* Texto aún más oscuro para contraste */
+    transform: translateX(10px) scale(1.03); /* Mayor desplazamiento y escala */
+    box-shadow: 0 4px 12px rgba(0, 201, 210, 0.3); /* Sombra de color cian */
 }
 
-/* Submenus hidden by default */
+/* Submenus */
 .sidebar ul ul {
     display: none;
-    background: rgba(34, 36, 58, 0.7);
-    margin-left: 15px;
-    border-radius: 8px;
-    box-shadow: inset 0 0 8px rgba(0, 234, 255, 0.2);
-    padding: 0.5rem 0;
+    background: rgba(20, 28, 50, 0.85); /* Ligeramente más opaco */
+    margin-left: 20px;
+    border-radius: 6px;
+    box-shadow: inset 0 2px 8px rgba(0, 172, 193, 0.2); /* Sombra interna más notable */
+    padding: 0.6rem 0;
     position: static;
     overflow: hidden;
-    transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+    transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1), /* Animación más suave (easeOutQuint) */
+                opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     max-height: 0;
     opacity: 0;
+    transform: translateY(-10px); /* Efecto de entrada desde arriba */
 }
 
-/* Show submenu when 'open' class is present */
 .sidebar li.has-submenu.open > ul {
     display: block;
-    max-height: 500px;
+    max-height: 600px;
     opacity: 1;
+    transform: translateY(0); /* Regresar a posición original */
 }
 
 .sidebar li.has-submenu > a {
     cursor: pointer;
     position: relative;
 }
+.sidebar li.has-submenu > a::after { /* Indicador de submenú más estilizado */
+    content: '›';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    font-size: 1.4em;
+    color: #80DEEA;
+    transition: transform 0.3s ease-in-out;
+}
+.sidebar li.has-submenu.open > a::after {
+    transform: translateY(-50%) rotate(90deg); /* Flecha rota al abrir */
+}
+
 
 .sidebar ul ul li a {
-    font-size: 0.85rem; /* Adjusted font size */
-    padding-left: 2.5rem; /* Adjusted padding */
+    font-size: 0.9rem;
+    padding-left: 3rem; /* Mayor indentación */
 }
 .sidebar ul ul ul li a {
-    padding-left: 3.5rem; /* Adjusted padding */
+    padding-left: 4rem; /* Mayor indentación para sub-submenús */
 }
 
-/* Main content styles (Grid Layout) */
+/* Estilos del contenido principal */
 main {
     display: grid;
-    grid-template-columns: 1fr; /* One column by default */
-    gap: 0.8rem; /* Reduced space between sections (from 1.5rem) */
-    margin: 0.8rem auto; /* Reduced top margin to move content up (from 1.5rem) */
-    max-width: 640px; /* Reduced max-width for more compact modules (from 700px) */
-    padding: 0.8rem; /* Reduced padding (from 1.5rem) */
+    grid-template-columns: 1fr; /* Una columna por defecto */
+    gap: 1.5rem; /* Espacio entre secciones */
+    margin: 1.5rem auto; /* Margen superior e inferior */
+    max-width: 750px; /* Ancho máximo del contenido principal */
+    padding: 1.5rem;
     box-sizing: border-box;
 }
 
 section {
-    background: rgba(30, 30, 50, 0.85);
-    border-radius: 10px; /* Slightly less rounded borders (from 12px) */
-    padding: 1rem; /* Reduced padding (from 1.2rem) */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Slightly more subtle shadow */
-    border: 1px solid rgba(0, 234, 255, 0.12); /* Slightly more subtle border */
+    background: rgba(26, 34, 56, 0.9); /* Fondo de sección (azul oscuro semitransparente) */
+    border-radius: 12px; /* Bordes redondeados */
+    padding: 1.5rem; /* Padding interno */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35); /* Sombra más pronunciada */
+    border: 1px solid rgba(0, 172, 193, 0.2); /* Borde sutil con color acento */
 }
 
 .bienvenida h2, .descargas h2, .noticias h3 {
-    color: #00eaff;
-    font-size: 1.3rem; /* Reduced font size (from 1.6rem) */
-    margin-bottom: 0.6rem; /* Reduced bottom margin (from 0.8rem) */
+    color: #80DEEA; /* Color de títulos de sección (cian claro) */
+    font-size: 1.6rem; /* Tamaño de fuente para títulos de sección */
+    margin-bottom: 1rem; /* Margen inferior */
     text-align: center;
-    text-shadow: none;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    font-family: 'Montserrat', sans-serif; /* Fuente para títulos de sección */
 }
 
 .bienvenida p {
-    font-size: 0.8rem; /* Reduced font size (from 0.95rem) */
-    color: #e0e0e0;
-    line-height: 1.3; /* Adjusted line-height (from 1.4) */
+    font-size: 0.95rem; /* Tamaño de fuente para párrafos */
+    color: #B0BEC5; /* Color de texto para párrafos (gris azulado claro) */
+    line-height: 1.7; /* Interlineado mejorado */
     text-align: center;
 }
 
-/* News */
+/* Noticias */
 .noticias {
-    background: rgba(0, 234, 255, 0.08);
-    border-left: 4px solid #00eaff;
-    padding: 0.7rem 1rem; /* Reduced padding (from 0.8rem 1.2rem) */
-    border-radius: 8px; /* Slightly less rounded borders (from 10px) */
+    background: rgba(0, 172, 193, 0.1); /* Fondo con tinte cian verdoso */
+    border-left: 5px solid #00ACC1; /* Borde izquierdo con color acento */
+    padding: 1.2rem 1.5rem;
+    border-radius: 10px;
 }
 .noticias ul {
     list-style: none;
     padding: 0;
-    color: #fff;
+    color: #E0F7FA; /* Color de texto de noticias (cian muy claro) */
 }
 .noticias li {
-    margin-bottom: 0.4rem; /* Reduced spacing (from 0.5rem) */
-    padding-left: 0.8rem; /* Adjusted padding (from 1rem) */
+    margin-bottom: 0.6rem; /* Espaciado entre noticias */
+    padding-left: 1.2rem; /* Padding para el marcador */
     position: relative;
+    font-size: 0.9rem;
 }
 .noticias li::before {
-    content: '•';
-    color: #00eaff;
-    font-size: 0.9em; /* Adjusted bullet size (from 1em) */
+    content: '❖'; /* Marcador personalizado */
+    color: #00ACC1; /* Color del marcador (cian verdoso) */
+    font-size: 1em;
     position: absolute;
     left: 0;
-    top: 0;
+    top: 1px;
 }
 .noticias a {
-    color: #00eaff;
+    color: #80DEEA; /* Color de enlaces en noticias (cian claro) */
     text-decoration: none;
-    transition: color 0.2s, background 0.2s, border-radius 0.2s;
-    font-size: 0.85rem; /* Reduced font size (from 0.9rem) */
+    font-weight: 600;
+    transition: color 0.2s, background-color 0.2s, padding 0.2s;
 }
 .noticias a:hover {
-    color: #1a1a2e;
-    background: #00eaff;
+    color: #1A2238; /* Color de texto al pasar el mouse (azul oscuro) */
+    background-color: #80DEEA; /* Fondo al pasar el mouse (cian claro) */
     border-radius: 4px;
-    padding: 0 3px; /* Reduced padding on hover (from 0 4px) */
+    padding: 2px 5px;
 }
 
-/* Styles for the new dynamic download section */
+/* Sección de descargas */
 .descargas {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem; /* Reduced space between download elements (from 0.8rem) */
+    gap: 1rem; /* Espacio entre elementos de descarga */
 }
 
 .descargas h2 {
-    margin-bottom: 0.5rem; /* Reduced bottom margin (from 0.6rem) */
+    margin-bottom: 0.8rem;
 }
 
 .descargas-content {
-    background: rgba(34, 36, 58, 0.6);
-    border-radius: 8px; /* Slightly less rounded borders (from 10px) */
-    padding: 0.7rem; /* Reduced padding (from 0.8rem) */
-    border: 1px solid rgba(0, 234, 255, 0.06); /* Slightly more subtle border */
-    min-height: 80px; /* Reduced minimum height (from 100px) */
+    background: rgba(38, 51, 85, 0.7); /* Fondo ligeramente más claro para el panel de descarga */
+    border-radius: 10px;
+    padding: 1.2rem;
+    border: 1px solid rgba(0, 172, 193, 0.15);
+    min-height: 90px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -274,44 +319,74 @@ section {
 }
 
 .dynamic-content-card {
-    background-color: rgba(0, 234, 255, 0.1);
-    border: 1px solid #00eaff;
-    border-radius: 6px; /* Reduced border-radius (from 8px) */
-    padding: 0.7rem; /* Reduced padding (from 0.8rem) */
-    margin-bottom: 0.5rem; /* Reduced margin (from 0.6rem) */
+    background-color: rgba(0, 172, 193, 0.15); /* Fondo de tarjeta con tinte cian */
+    border: 1px solid #00ACC1; /* Borde cian */
+    border-radius: 8px;
+    padding: 0.9rem 1.2rem; /* Padding aumentado */
+    margin-bottom: 0.8rem;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    transition: background-color 0.35s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                box-shadow 0.35s ease-in-out,
+                color 0.35s ease; /* Transiciones mejoradas */
     text-align: center;
-    color: #fff;
-    font-size: 0.9rem; /* Reduced font size (from 1rem) */
+    color: #E0F7FA; /* Texto cian muy claro */
+    font-size: 1rem; /* Tamaño de fuente aumentado */
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 35px; /* Reduced minimum height (from 40px) */
-    width: calc(100% - 1.4rem); /* Adjusted width for padding */
+    min-height: 45px; /* Altura mínima aumentada */
+    width: calc(100% - 2.4rem); /* Ancho ajustado al padding */
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden; /* Para efectos de hover */
+}
+.dynamic-content-card::before { /* Pseudo-elemento para animación de fondo en hover */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 201, 210, 0.25), transparent);
+    transition: left 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    z-index: 0;
 }
 
+.dynamic-content-card:hover::before {
+    left: 100%;
+}
+
+.dynamic-content-card > * { /* Asegurar que el contenido de la tarjeta esté sobre el pseudo-elemento */
+    position: relative;
+    z-index: 1;
+}
+
+
 .dynamic-content-card:hover {
-    background-color: #00eaff;
-    color: #1a1a2e;
-    transform: translateY(-1.5px); /* Slightly less elevation */
-    box-shadow: 0 2px 8px rgba(0, 234, 255, 0.25);
+    background-color: #00C9D2; /* Cian más brillante al pasar el mouse */
+    color: #0A101F; /* Texto más oscuro para contraste */
+    transform: translateY(-3px) scale(1.03); /* Elevación y escala más notorias */
+    box-shadow: 0 6px 18px rgba(0, 201, 210, 0.35); /* Sombra cian más fuerte */
 }
 
 .dynamic-content-card.back-button {
-    background-color: rgba(255, 99, 71, 0.2);
-    border-color: tomato;
-    color: tomato;
-    margin-top: 0.8rem; /* Reduced top margin (from 1rem) */
+    background-color: rgba(255, 109, 71, 0.15);
+    border-color: #FF6D47;
+    color: #FFD0C1;
 }
 
 .dynamic-content-card.back-button:hover {
-    background-color: tomato;
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(255, 99, 71, 0.25);
+    background-color: #FF6D47;
+    color: #101727;
+    box-shadow: 0 6px 18px rgba(255, 109, 71, 0.35);
+    transform: translateY(-3px) scale(1.03);
 }
+.dynamic-content-card.back-button::before { /* Desactivar animación de barrido para botón de regreso si se prefiere */
+    display: none;
+}
+
 
 .dynamic-content-list {
     list-style: none;
@@ -320,64 +395,62 @@ section {
 }
 
 .dynamic-content-list li {
-    margin-bottom: 0.3rem; /* Reduced spacing (from 0.4rem) */
+    margin-bottom: 0.5rem; /* Espaciado entre elementos de lista */
 }
 
 .dynamic-content-list a {
     display: block;
-    padding: 0.5rem 0.7rem; /* Reduced padding (from 0.6rem 0.8rem) */
-    background-color: rgba(34, 36, 58, 0.8);
-    border-radius: 5px; /* Reduced border-radius (from 6px) */
-    color: #00eaff;
+    padding: 0.7rem 1rem; /* Padding aumentado */
+    background-color: rgba(38, 51, 85, 0.9); /* Fondo de enlace */
+    border-radius: 6px;
+    color: #80DEEA; /* Color de texto (cian claro) */
     text-decoration: none;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-    font-size: 0.85rem; /* Reduced font size (from 0.95rem) */
+    font-size: 0.95rem; /* Tamaño de fuente aumentado */
     text-align: left;
 }
 
 .dynamic-content-list a:hover {
-    background-color: #00eaff;
-    color: #1a1a2e;
-    transform: translateX(2px); /* Slightly less displacement */
+    background-color: #80DEEA; /* Fondo cian claro al pasar el mouse */
+    color: #101727; /* Texto oscuro */
+    transform: translateX(4px); /* Desplazamiento ligero */
 }
 
-/* Download icon and animation */
+/* Icono de descarga y animación */
 .download-icon {
-    height: 24px; /* Reduced icon size (from 28px) */
-    width: 24px;
-    margin-right: 8px; /* Reduced spacing */
-    animation: pulse 2s infinite ease-in-out;
+    height: 26px; /* Tamaño de icono aumentado */
+    width: 26px;
+    margin-right: 10px; /* Espaciado aumentado */
+    animation: pulse-glow 2.5s infinite ease-in-out; /* Animación modificada */
 }
 
-@keyframes pulse {
-    0% {
+@keyframes pulse-glow { /* Animación de pulso con brillo */
+    0%, 100% {
         transform: scale(1);
-        opacity: 1;
+        opacity: 0.8;
+        filter: drop-shadow(0 0 3px #80DEEA);
     }
     50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
-    100% {
-        transform: scale(1);
+        transform: scale(1.1);
         opacity: 1;
+        filter: drop-shadow(0 0 8px #80DEEA);
     }
 }
 
 
-/* Responsive adjustments */
+/* Ajustes responsivos */
 @media (min-width: 768px) {
     main {
-        grid-template-columns: 2fr 1fr;
-        gap: 1rem; /* Adjusted space between sections */
-        max-width: 700px; /* Adjusted max-width for desktop (from 850px) */
+        grid-template-columns: 2fr 1fr; /* Dos columnas para escritorio */
+        gap: 2rem; /* Espacio aumentado */
+        max-width: 900px; /* Ancho máximo aumentado para escritorio */
     }
     .bienvenida {
         grid-column: 1 / 2;
     }
     .noticias {
         grid-column: 2 / 3;
-        grid-row: 1 / 3;
+        grid-row: 1 / span 2; /* Noticias ocupan más espacio vertical */
     }
     .descargas {
         grid-column: 1 / 2;
@@ -386,89 +459,208 @@ section {
 
 @media (max-width: 767px) {
     header {
-        padding: 0.2rem 0.6rem; /* Even more reduced padding on mobile */
+        padding: 0.5rem 1rem; /* Padding ajustado para móviles */
     }
     .logo, .bandera {
-        height: 20px; /* Even smaller on mobile */
-        margin: 0 2px;
+        height: 30px; /* Tamaño reducido para móviles */
+        margin: 0 5px;
     }
     .titulo-principal .instituto {
-        font-size: 1rem; /* Adjusted for mobile */
+        font-size: 1.2rem; /* Tamaño de fuente ajustado */
     }
     .titulo-principal .subtitulo {
-        font-size: 0.5rem; /* Adjusted for mobile */
+        font-size: 0.7rem;
     }
     #menu-btn {
-        font-size: 1.2rem; /* Adjusted for mobile */
-        margin-right: 5px;
+        font-size: 1.5rem;
+        margin-right: 8px;
     }
     .sidebar {
-        width: 160px; /* Smaller on mobile */
-        padding-top: 1.5rem;
+        width: 250px; /* Ancho de sidebar reducido para móviles */
+        left: -270px; /* Ajustar para el nuevo ancho */
+        padding-top: 2.5rem;
     }
     #close-btn {
-        font-size: 1.5rem;
-        margin: 0 0.8rem 0.8rem 0;
+        font-size: 1.8rem;
+        margin: 0 1.2rem 1.2rem 0;
     }
     .sidebar a {
-        font-size: 0.8rem;
-        padding: 0.4rem 1.2rem;
+        font-size: 0.9rem;
+        padding: 0.7rem 1.8rem;
     }
     .sidebar ul ul li a {
-        font-size: 0.75rem;
-        padding-left: 1.8rem;
-    }
-    .sidebar ul ul ul li a {
+        font-size: 0.85rem;
         padding-left: 2.5rem;
     }
+    .sidebar ul ul ul li a {
+        padding-left: 3.5rem;
+    }
     main {
-        margin: 0.6rem auto; /* Reduced top margin on mobile */
-        padding: 0.6rem;
-        gap: 0.6rem; /* Reduced module spacing on mobile */
-        max-width: 98%; /* Occupy more width on mobile */
+        margin: 1rem auto;
+        padding: 1rem;
+        gap: 1rem;
+        max-width: 95%; /* Ocupar más ancho en móviles */
     }
     section {
-        padding: 0.8rem;
+        padding: 1.2rem; /* Padding de sección ajustado */
     }
     .bienvenida h2, .descargas h2, .noticias h3 {
-        font-size: 1.1rem;
+        font-size: 1.4rem; /* Tamaño de títulos de sección ajustado */
     }
     .bienvenida p {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
     .noticias {
-        padding: 0.6rem 0.8rem;
+        padding: 1rem 1.2rem;
     }
     .noticias li {
-        margin-bottom: 0.3rem;
-        padding-left: 0.7rem;
+        margin-bottom: 0.5rem;
+        padding-left: 1rem;
     }
     .noticias li::before {
-        font-size: 0.8em;
+        font-size: 0.9em;
     }
     .noticias a {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
     .descargas-content {
-        padding: 0.5rem;
-        min-height: 70px;
+        padding: 1rem;
+        min-height: 80px;
     }
     .dynamic-content-card {
-        padding: 0.5rem;
-        font-size: 0.8rem;
-        min-height: 30px;
-        width: calc(100% - 1rem);
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        min-height: 40px;
+        width: calc(100% - 1.6rem); /* Ajustado al padding */
     }
     .dynamic-content-card.back-button {
-        margin-top: 0.6rem;
+        margin-top: 0.8rem;
     }
     .dynamic-content-list a {
-        padding: 0.4rem 0.5rem;
-        font-size: 0.8rem;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
     }
     .download-icon {
-        height: 20px; /* Adjusted icon size for mobile */
-        width: 20px;
-        margin-right: 6px;
+        height: 22px;
+        width: 22px;
+        margin-right: 8px;
     }
 }
+
+/* Estilos adicionales para el artículo de Ofimática cargado dinámicamente */
+.ofimatica-article-content {
+    background-color: #1A2238; /* Fondo oscuro similar al header */
+    color: #CFD8DC; /* Texto principal claro */
+    padding: 2rem; /* Mayor padding */
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+    margin-bottom: 2rem;
+    border: 1px solid #00ACC1; /* Borde cian */
+}
+.ofimatica-article-content h1,
+.ofimatica-article-content h2,
+.ofimatica-article-content h3,
+.ofimatica-article-content h4 {
+    color: #80DEEA; /* Títulos en cian claro */
+    font-family: 'Montserrat', sans-serif;
+}
+.ofimatica-article-content .section-title { /* Si existe esta clase */
+    border-bottom: 2px solid #00ACC1; /* Borde cian */
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.8rem;
+}
+.ofimatica-article-content .exercise-box { /* Si existe esta clase */
+    background-color: #263355; /* Azul oscuro para cajas de ejercicio */
+    border-left: 4px solid #00ACC1; /* Borde cian */
+    padding: 1.2rem 1.8rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #E0F7FA;
+}
+.ofimatica-article-content .code-example { /* Si existe esta clase */
+    background-color: #101727; /* Fondo muy oscuro para código */
+    color: #80DEEA; /* Texto cian para código */
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    font-family: 'Roboto Mono', monospace; /* Fuente monoespaciada para código */
+    font-size: 0.9rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    border: 1px solid #263355;
+}
+.ofimatica-article-content .inline-key { /* Si existe esta clase */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #455A64; /* Gris oscuro para teclas */
+    color: #ECEFF1; /* Texto claro */
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 0 #263238; /* Sombra para efecto 3D */
+    border-bottom: 1px solid #263238;
+    height: 1.6rem;
+    margin: 0 0.25rem;
+    vertical-align: middle;
+}
+.ofimatica-article-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3); /* Sombra suave para imágenes */
+    margin: 2rem auto; /* Centrar imágenes y más margen */
+    border: 1px solid #00796B; /* Borde sutil verde azulado oscuro */
+}
+
+.hidden {
+    display: none !important;
+}
+
+.back-to-home-container {
+    text-align: center;
+    margin-bottom: 2rem; /* Más margen inferior */
+}
+
+.back-to-home-container .dynamic-content-card {
+    width: auto; /* Ancho automático basado en contenido */
+    min-width: 200px; /* Ancho mínimo */
+    margin: 0 auto; /* Centrado */
+    padding: 0.8rem 1.8rem; /* Padding ajustado */
+    font-size: 1rem; /* Tamaño de fuente */
+}
+
+/* Asegurar que los estilos de III_BTP_A/estilos.css no sobreescriban estos si se usan en la misma página */
+/* Esto es solo un placeholder, ya que no podemos editar directamente III_BTP_A/estilos.css desde aquí */
+/* Si III_BTP_A/index.html usa estilos.css global, estos cambios aplicarán. */
+/* Si III_BTP_A/index.html usa su propio III_BTP_A/estilos.css, ese archivo necesitará cambios similares. */
+
+/* Para II_BTP_A/Informatica_Aplicada_I/estilos.css, se mantendrán sus estilos XP únicos. */
+/* No se aplicarán estos cambios globales a las presentaciones que simulan SO. */
+
+main.article-view-active {
+    max-width: none; /* Permitir que main ocupe todo el ancho */
+    padding: 0;
+    margin: 0;
+}
+
+main.article-view-active #ofimatica-full-article-section.ofimatica-article-content {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    padding: 2rem 5%;
+}
+
+/* Opcional: Ocultar header y sidebar en modo artículo para inmersión */
+/*
+body.article-mode header,
+body.article-mode .sidebar {
+    display: none;
+}
+*/

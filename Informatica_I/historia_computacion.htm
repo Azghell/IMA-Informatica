@@ -8,11 +8,13 @@
     body, html {
         margin: 0;
         padding: 0;
-        font-family: 'Segoe UI', Arial, sans-serif;
+        font-family: 'Roboto', 'Segoe UI', Arial, sans-serif; /* Coincidir con index.html */
         height: 100%;
         min-height: 100vh;
-        color: #f4f4f4;
+        color: #CFD8DC; /* Coincidir con index.html */
+        background-color: #101727; /* Coincidir con index.html */
         position: relative;
+        line-height: 1.6;
     }
     .background {
         background: url('imagenes/fondo.jpg') no-repeat center center fixed;
@@ -21,67 +23,115 @@
         width: 100vw;
         height: 100vh;
         z-index: -1;
-        filter: blur(2px) brightness(0.7);
+        filter: blur(5px) brightness(0.4); /* Coincidir con index.html */
+        opacity: 0.5; /* Coincidir con index.html */
     }
-    header {
+    header { /* Estilos de header actualizados para coincidir con index.html */
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: rgba(20, 20, 40, 0.85);
-        padding: 1rem 2rem;
-        box-shadow: 0 2px 8px #0008;
-        position: relative;
+        background: #1A2238;
+        padding: 0.6rem 1.5rem;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        position: sticky; /* Mantener sticky si se desea */
+        top: 0;
+        z-index: 999;
+        border-bottom: 3px solid #00ACC1;
     }
-    .logo, .bandera {
-        height: 72px;
-        border-radius: 8px;
+    /* Los elementos img dentro del header tomarán estilos de .logo y .bandera de estilos.css si se aplica globalmente.
+       Si esta página NO usa estilos.css global, necesitamos definir .logo y .bandera aquí.
+       Asumiendo que esta página SÍ usará los nuevos estilos globales de header,
+       solo necesitamos asegurar que las imágenes tengan las clases correctas en el HTML.
+       El HTML actual de esta página para el header es:
+       <img src="../imagenes/logo.png" alt="Logo ISEMED" class="logo">
+       <h1 class="titulo-principal">...</h1>
+       <img src="../imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" class="bandera">
+       Estas clases .logo y .bandera ya existen en el HTML y tomarán los estilos de estilos.css.
+       Lo que sí hay que ajustar es el h1 que aquí funciona como .titulo-principal.
+    */
+    header img.logo, header img.bandera { /* Estilos específicos si no se usa el global o para asegurar */
+        height: 38px;
+        border-radius: 4px;
         margin: 0 10px;
-        background: none;
+        background: transparent;
         padding: 0;
+        box-shadow: none;
         object-fit: contain;
     }
-    header h1 {
+    header .titulo-principal { /* Ajustando el h1 que aquí es .titulo-principal */
         flex: 1;
         text-align: center;
-        font-size: 1.5rem;
-        letter-spacing: 1px;
-        color: #00eaff;
-        text-shadow: 0 2px 8px #000a;
-        line-height: 1.3;
+        color: #80DEEA; /* Cian claro */
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        margin: 0;
+        font-family: 'Montserrat', 'Verdana', sans-serif;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    #menu-btn {
-        font-size: 2rem;
+    header .titulo-principal .instituto { /* Clase para el span del instituto */
+        font-size: 1.6rem;
+        margin: 0;
+        padding: 0;
+        line-height: 1.1;
+        display: block;
+        font-weight: 700;
+    }
+    header .titulo-principal .subtitulo { /* Clase para los spans de subtitulo */
+        font-size: 0.8rem;
+        margin: 0;
+        padding: 0;
+        line-height: 1.1;
+        display: block;
+        color: #B0BEC5;
+        font-weight: 400;
+    }
+
+    #menu-btn { /* Estilos de #menu-btn actualizados */
+        font-size: 1.8rem;
         background: none;
         border: none;
-        color: #00eaff;
+        color: #80DEEA;
         cursor: pointer;
-        margin-right: 10px;
-        transition: color 0.2s;
+        margin-right: 15px;
+        transition: color 0.3s ease, transform 0.3s ease;
     }
-    #menu-btn:hover { color: #fff; }
-    .sidebar {
+    #menu-btn:hover {
+        color: #E0F7FA;
+        transform: scale(1.15);
+    }
+    .sidebar { /* Estilos de sidebar actualizados */
         position: fixed;
-        left: -260px;
+        left: -320px;
         top: 0;
-        width: 260px;
+        width: 300px;
         height: 100%;
-        background: linear-gradient(135deg, #1a1a2e 80%, #00eaff 100%);
-        box-shadow: 2px 0 12px #000a;
-        padding-top: 2rem;
-        transition: left 0.3s;
+        background: linear-gradient(145deg, #1A2238 60%, #263355 100%);
+        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
+        padding-top: 3.5rem;
+        transition: left 0.45s cubic-bezier(0.23, 1, 0.32, 1);
         z-index: 1000;
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
     }
     .sidebar.active { left: 0; }
-    #close-btn {
+    #close-btn { /* Estilos de #close-btn actualizados */
         align-self: flex-end;
-        font-size: 2rem;
+        font-size: 2.2rem;
         background: none;
         border: none;
-        color: #00eaff;
+        color: #80DEEA;
         cursor: pointer;
-        margin: 0 1rem 1rem 0;
+        margin: 0 1.8rem 1.8rem 0;
+        transition: color 0.35s ease, transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    #close-btn:hover {
+        color: #E0F7FA;
+        transform: rotate(180deg) scale(1.15);
     }
     .sidebar ul {
         list-style: none;
@@ -89,51 +139,81 @@
         margin: 0;
     }
     .sidebar li {
-        margin: 1.5rem 0;
+        margin: 0.8rem 0; /* Coincidir con index.html */
     }
     .sidebar a {
-        color: #fff;
+        color: #E0F7FA; /* Coincidir con index.html */
         text-decoration: none;
-        font-size: 1.2rem;
-        padding: 0.5rem 2rem;
+        font-size: 1rem; /* Coincidir con index.html */
+        padding: 0.8rem 2.2rem; /* Coincidir con index.html */
         display: block;
         border-radius: 6px;
-        transition: background 0.2s, color 0.2s;
+        transition: background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                    color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                    transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                    box-shadow 0.3s ease-in-out;
+        letter-spacing: 0.5px;
     }
     .sidebar a:hover {
-        background: #00eaff;
-        color: #1a1a2e;
+        background: #00C9D2; /* Coincidir con index.html */
+        color: #0A101F; /* Coincidir con index.html */
+        transform: translateX(10px) scale(1.03); /* Coincidir con index.html */
+        box-shadow: 0 4px 12px rgba(0, 201, 210, 0.3); /* Coincidir con index.html */
     }
-    main {
-        margin: 3rem auto;
-        max-width: 900px;
-        background: rgba(30, 30, 50, 0.85);
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: 0 4px 24px #000a;
+    main { /* Estilos de main actualizados */
+        margin: 1.5rem auto; /* Coincidir con index.html */
+        max-width: 750px; /* Coincidir con index.html */
+        background: rgba(26, 34, 56, 0.9); /* Coincidir con index.html */
+        border-radius: 12px; /* Coincidir con index.html */
+        padding: 1.5rem; /* Coincidir con index.html */
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35); /* Coincidir con index.html */
+        border: 1px solid rgba(0, 172, 193, 0.2); /* Coincidir con index.html */
         min-height: 400px;
     }
-    .titulo-principal {
-        flex: 1;
-        text-align: center;
-        color: #00eaff;
-        text-shadow: 0 2px 8px #000a;
-        line-height: 0.95;
-        margin: 0;
-        font-family: 'Times New Roman', Times, serif;
+    /* .titulo-principal y sus hijos ya están definidos dentro de header arriba */
+    /* Ya no se necesita la definición de .titulo-principal fuera del header si el h1 es el principal */
+
+    /* Los selectores .slide, .diapositiva, etc. se mantienen para la funcionalidad de la presentación */
+    /* pero se les podría dar un toque de la nueva paleta si es necesario más adelante */
+    .slide h2 { /* Ejemplo de ajuste para títulos de slide */
+        color: #80DEEA; /* Cian claro, como en secciones */
+        font-family: 'Montserrat', sans-serif;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .slide p, .slide ul, .slide ol {
+        color: #CFD8DC; /* Texto principal claro */
+    }
+    .slide ul li::before {
+        color: #00ACC1; /* Acento cian verdoso */
+    }
+    .slide ol li::marker {
+        color: #00ACC1; /* Acento cian verdoso */
+    }
+
+    .controles button { /* Ajustar botones de control de slide */
+        background: #00ACC1;
+        color: #101727;
+        border: none;
+        border-radius: 6px;
+        padding: 0.7rem 2rem;
+        font-size: 1.1rem;
         font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, transform 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-    .titulo-principal .instituto {
-        font-size: 2.8rem;
-        margin: 0;
-        padding: 0;
-        display: block;
+    .controles button:hover:not(:disabled) {
+        background: #00C9D2;
+        color: #0A101F;
+        transform: translateY(-2px);
     }
-    .titulo-principal .subtitulo {
-        font-size: 1.5rem;
-        margin: 0;
-        padding: 0;
-        display: block;
+    .controles button:disabled {
+        background: #4B5A7A; /* Color deshabilitado más acorde */
+        color: #90A4AE;
+        cursor: not-allowed;
+    }
+    .indicador {
+        color: #80DEEA; /* Indicador de diapositiva en cian claro */
     }
     .slide, .diapositiva {
         display: none;
@@ -266,11 +346,63 @@
         width: 100vw;
         box-sizing: border-box;
       }
-      .logo-institucion, .img-slide {
-        max-width: 90vw;
+      .logo-institucion { /* Ajustar tamaño de logo en slide 1 */
+        width: 250px !important;
+        max-width: 70vw !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+      }
+      .img-slide { /* Ajustar imágenes generales de slides */
+        max-width: 85vw; /* Que no sean más anchas que el viewport */
+        height: auto; /* Mantener proporción */
+        max-height: 40vh; /* Limitar altura para que quepa más contenido */
       }
       main {
-        padding: 0.5rem;
+        padding: 0.8rem; /* Aumentar padding de main */
+        margin: 1rem auto; /* Añadir margen vertical */
+      }
+      .slide-content {
+        padding: 1rem; /* Ajustar padding de slide-content */
+      }
+      .slide h2 {
+        font-size: 1.5rem; /* Reducir títulos de slide */
+      }
+       .slide h3 {
+        font-size: 1.2rem; /* Reducir subtítulos de slide */
+      }
+      .slide p, .slide ul, .slide ol {
+        font-size: 0.9rem; /* Reducir texto general de slide */
+      }
+      .controles {
+        margin-top: 1rem; /* Reducir margen de controles */
+        gap: 1rem;
+      }
+      .controles button {
+        padding: 0.6rem 1.5rem; /* Ajustar padding de botones */
+        font-size: 1rem;
+      }
+      .indicador {
+        font-size: 0.9rem;
+      }
+      header .titulo-principal .instituto {
+        font-size: 1.2rem; /* Reducir título del header */
+      }
+      header .titulo-principal .subtitulo {
+        font-size: 0.7rem; /* Reducir subtítulo del header */
+      }
+      header img.logo, header img.bandera {
+        height: 30px; /* Reducir logos del header */
+      }
+      #menu-btn {
+        font-size: 1.5rem; /* Ajustar botón de menú */
+      }
+      .sidebar {
+        width: 250px; /* Ajustar ancho de sidebar */
+        left: -270px; /* Ajustar para ocultar correctamente */
+      }
+      .sidebar a {
+        font-size: 0.9rem; /* Ajustar fuente de sidebar */
+        padding: 0.7rem 1.8rem;
       }
     }
     </style>

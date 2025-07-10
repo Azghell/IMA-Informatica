@@ -455,6 +455,17 @@ body {
     font-size: 1rem;
     font-family: Tahoma, Verdana, Arial, sans-serif;
 }
+
+.xp-taskbar-start a {
+    display: inline-block; /* Para que el enlace no ocupe todo el ancho */
+    text-decoration: none; /* Quitar subrayado del enlace */
+}
+.xp-taskbar-start a:hover,
+.xp-taskbar-start a:active,
+.xp-taskbar-start a:focus {
+    outline: none; /* Quitar cualquier outline al hacer foco/clic */
+}
+
 .xp-taskbar-bar {
     flex: 1;
 }

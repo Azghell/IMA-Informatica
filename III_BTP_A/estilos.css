@@ -1,102 +1,137 @@
+/* Paleta de colores propuesta:
+    Fondo principal: #101727 (Azul muy oscuro, casi negro)
+    Encabezado/Sidebar: #1A2238 (Azul oscuro)
+    Secciones: rgba(26, 34, 56, 0.9) (Azul oscuro semitransparente)
+    Texto principal: #CFD8DC (Gris claro)
+    Títulos principales (header): #80DEEA (Cian claro)
+    Títulos de sección: #80DEEA (Cian claro)
+    Acentos (bordes, botones, enlaces hover): #00ACC1 (Cian verdoso)
+    Texto en botones/acentos: #101727 o #FFFFFF
+    Botón de regreso: #FF6D47 (Naranja)
+    Fuente principal: 'Roboto', 'Segoe UI', Arial, sans-serif
+    Fuente títulos: 'Montserrat', 'Verdana', sans-serif
+*/
+
+/* Este archivo es una copia del estilos.css principal para mantener la consistencia,
+   asumiendo que III_BTP_A/index.html está enlazando a su propio III_BTP_A/estilos.css.
+   Si III_BTP_A/index.html enlaza al estilos.css global, este archivo no es estrictamente necesario
+   o podría eliminarse si se quiere una única fuente de verdad para los estilos.
+   Por ahora, se replicarán los estilos para asegurar que las páginas en III_BTP_A/ también se actualicen.
+*/
+
 body, html {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
     height: 100%;
     min-height: 100vh;
-    color: #f4f4f4;
+    color: #CFD8DC;
+    background-color: #101727;
     position: relative;
-    overflow-x: hidden; /* Evita el scroll horizontal */
+    overflow-x: hidden;
+    line-height: 1.6;
 }
 
 .background {
-    background: url('imagenes/fondo.jpg') no-repeat center center fixed;
+    background: url('../imagenes/fondo.jpg') no-repeat center center fixed; /* Corregida ruta de imagen */
     background-size: cover;
     position: fixed;
     width: 100vw;
     height: 100vh;
     z-index: -1;
-    filter: blur(3px) brightness(0.6);
+    filter: blur(5px) brightness(0.4);
+    opacity: 0.5;
 }
 
 header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(20, 20, 40, 0.9);
-    padding: 0.1rem 1rem; /* Reduced padding for a more compact banner */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    background: #1A2238;
+    padding: 0.6rem 1.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
     position: sticky;
     top: 0;
     z-index: 999;
-    border-bottom: 2px solid #00eaff;
+    border-bottom: 3px solid #00ACC1;
 }
 
 .logo, .bandera {
-    height: 30px; /* Reduced logo size */
-    border-radius: 8px;
-    margin: 0 5px; /* Adjusted margin */
-    background: none;
+    height: 38px;
+    border-radius: 4px;
+    margin: 0 10px;
+    background: transparent;
     padding: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    box-shadow: none;
+    object-fit: contain;
 }
+/* Asegurar que las rutas de logo y bandera sean correctas para esta ubicación */
+header .logo {
+    content: url('../imagenes/logo.png'); /* Corregida ruta de imagen */
+}
+header .bandera {
+    content: url('../imagenes/bandera-de-honduras.png'); /* Corregida ruta de imagen */
+}
+
 
 .titulo-principal {
     flex: 1;
     text-align: center;
-    color: #00eaff;
-    text-shadow: none;
+    color: #80DEEA;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
     margin: 0;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Montserrat', 'Verdana', sans-serif;
     font-weight: bold;
     letter-spacing: 0.5px;
-    padding: 0; /* Ensure container has no extra vertical padding */
-    display: flex; /* Use flexbox to align text lines */
-    flex-direction: column; /* Stack lines vertically */
-    justify-content: center; /* Vertically center if there's space */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .titulo-principal .instituto {
-    font-size: 1.4rem; /* Font size for "Instituto Maria Auxiliadora" */
+    font-size: 1.6rem;
     margin: 0;
     padding: 0;
-    line-height: 1; /* Adjusted line-height to bring lines closer */
+    line-height: 1.1;
     display: block;
+    font-weight: 700;
 }
 
 .titulo-principal .subtitulo {
-    font-size: 0.7rem; /* Font size for "sistema isemed" and "Área de Informática" */
+    font-size: 0.8rem;
     margin: 0;
     padding: 0;
-    line-height: 1; /* Adjusted line-height to bring lines closer */
+    line-height: 1.1;
     display: block;
-    color: #a0faff;
+    color: #B0BEC5;
+    font-weight: 400;
 }
 
 #menu-btn {
-    font-size: 1.5rem; /* Adjusted menu button size */
+    font-size: 1.8rem;
     background: none;
     border: none;
-    color: #00eaff;
+    color: #80DEEA;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 15px;
     transition: color 0.3s ease, transform 0.3s ease;
 }
 #menu-btn:hover {
-    color: #fff;
-    transform: scale(1.1);
+    color: #E0F7FA;
+    transform: scale(1.15);
 }
 
 .sidebar {
     position: fixed;
-    left: -300px;
+    left: -320px;
     top: 0;
     width: 300px;
     height: 100%;
-    background: linear-gradient(135deg, #1a1a2e 70%, #00eaff 100%);
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.8);
-    padding-top: 3rem;
-    transition: left 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    background: linear-gradient(145deg, #1A2238 60%, #263355 100%);
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
+    padding-top: 3.5rem;
+    transition: left 0.45s cubic-bezier(0.23, 1, 0.32, 1); /* Transición 'easeOutQuint' para suavidad */
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -107,17 +142,17 @@ header {
 }
 #close-btn {
     align-self: flex-end;
-    font-size: 2rem; /* Adjusted close button size */
+    font-size: 2.2rem;
     background: none;
     border: none;
-    color: #00eaff;
+    color: #80DEEA;
     cursor: pointer;
-    margin: 0 1.5rem 1.5rem 0;
-    transition: color 0.3s ease, transform 0.3s ease;
+    margin: 0 1.8rem 1.8rem 0;
+    transition: color 0.35s ease, transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Transición con rebote */
 }
 #close-btn:hover {
-    color: #fff;
-    transform: rotate(90deg);
+    color: #E0F7FA;
+    transform: rotate(180deg) scale(1.15); /* Rotación y escala más pronunciada */
 }
 .sidebar ul {
     list-style: none;
@@ -125,147 +160,167 @@ header {
     margin: 0;
 }
 .sidebar li {
-    margin: 0.7rem 0; /* Adjusted spacing */
+    margin: 0.8rem 0;
 }
 .sidebar a {
-    color: #fff;
+    color: #E0F7FA;
     text-decoration: none;
-    font-size: 0.95rem; /* Adjusted font size */
-    padding: 0.6rem 2rem; /* More padding */
+    font-size: 1rem;
+    padding: 0.8rem 2.2rem;
     display: block;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    border-radius: 6px;
+    transition: background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                box-shadow 0.3s ease-in-out; /* Transiciones más dinámicas */
+    letter-spacing: 0.5px;
+    position: relative;
 }
 .sidebar a:hover {
-    background: #00eaff;
-    color: #1a1a2e;
-    transform: translateX(5px);
+    background: #00C9D2; /* Un cian un poco más brillante para hover */
+    color: #0A101F; /* Texto aún más oscuro para contraste */
+    transform: translateX(10px) scale(1.03); /* Mayor desplazamiento y escala */
+    box-shadow: 0 4px 12px rgba(0, 201, 210, 0.3); /* Sombra de color cian */
 }
 
-/* Submenus hidden by default */
 .sidebar ul ul {
     display: none;
-    background: rgba(34, 36, 58, 0.7);
-    margin-left: 15px;
-    border-radius: 8px;
-    box-shadow: inset 0 0 8px rgba(0, 234, 255, 0.2);
-    padding: 0.5rem 0;
+    background: rgba(20, 28, 50, 0.85); /* Ligeramente más opaco */
+    margin-left: 20px;
+    border-radius: 6px;
+    box-shadow: inset 0 2px 8px rgba(0, 172, 193, 0.2); /* Sombra interna más notable */
+    padding: 0.6rem 0;
     position: static;
     overflow: hidden;
-    transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+    transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1), /* Animación más suave (easeOutQuint) */
+                opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     max-height: 0;
     opacity: 0;
+    transform: translateY(-10px); /* Efecto de entrada desde arriba */
 }
 
-/* Show submenu when 'open' class is present */
 .sidebar li.has-submenu.open > ul {
     display: block;
-    max-height: 500px;
+    max-height: 600px;
     opacity: 1;
+    transform: translateY(0); /* Regresar a posición original */
 }
 
 .sidebar li.has-submenu > a {
     cursor: pointer;
     position: relative;
 }
+.sidebar li.has-submenu > a::after { /* Indicador de submenú más estilizado */
+    content: '›';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    font-size: 1.4em;
+    color: #80DEEA;
+    transition: transform 0.3s ease-in-out;
+}
+.sidebar li.has-submenu.open > a::after {
+    transform: translateY(-50%) rotate(90deg); /* Flecha rota al abrir */
+}
 
 .sidebar ul ul li a {
-    font-size: 0.85rem; /* Adjusted font size */
-    padding-left: 2.5rem; /* Adjusted padding */
+    font-size: 0.9rem;
+    padding-left: 3rem;
 }
 .sidebar ul ul ul li a {
-    padding-left: 3.5rem; /* Adjusted padding */
+    padding-left: 4rem;
 }
 
-/* Main content styles (Grid Layout) */
 main {
     display: grid;
-    grid-template-columns: 1fr; /* One column by default */
-    gap: 0.8rem; /* Reduced space between sections (from 1.5rem) */
-    margin: 0.8rem auto; /* Reduced top margin to move content up (from 1.5rem) */
-    max-width: 640px; /* Reduced max-width for more compact modules (from 700px) */
-    padding: 0.8rem; /* Reduced padding (from 1.5rem) */
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem auto;
+    max-width: 750px;
+    padding: 1.5rem;
     box-sizing: border-box;
 }
 
 section {
-    background: rgba(30, 30, 50, 0.85);
-    border-radius: 10px; /* Slightly less rounded borders (from 12px) */
-    padding: 1rem; /* Reduced padding (from 1.2rem) */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Slightly more subtle shadow */
-    border: 1px solid rgba(0, 234, 255, 0.12); /* Slightly more subtle border */
+    background: rgba(26, 34, 56, 0.9);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(0, 172, 193, 0.2);
 }
 
 .bienvenida h2, .descargas h2, .noticias h3 {
-    color: #00eaff;
-    font-size: 1.3rem; /* Reduced font size (from 1.6rem) */
-    margin-bottom: 0.6rem; /* Reduced bottom margin (from 0.8rem) */
+    color: #80DEEA;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
     text-align: center;
-    text-shadow: none;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    font-family: 'Montserrat', sans-serif;
 }
 
 .bienvenida p {
-    font-size: 0.8rem; /* Reduced font size (from 0.95rem) */
-    color: #e0e0e0;
-    line-height: 1.3; /* Adjusted line-height (from 1.4) */
+    font-size: 0.95rem;
+    color: #B0BEC5;
+    line-height: 1.7;
     text-align: center;
 }
 
-/* News */
 .noticias {
-    background: rgba(0, 234, 255, 0.08);
-    border-left: 4px solid #00eaff;
-    padding: 0.7rem 1rem; /* Reduced padding (from 0.8rem 1.2rem) */
-    border-radius: 8px; /* Slightly less rounded borders (from 10px) */
+    background: rgba(0, 172, 193, 0.1);
+    border-left: 5px solid #00ACC1;
+    padding: 1.2rem 1.5rem;
+    border-radius: 10px;
 }
 .noticias ul {
     list-style: none;
     padding: 0;
-    color: #fff;
+    color: #E0F7FA;
 }
 .noticias li {
-    margin-bottom: 0.4rem; /* Reduced spacing (from 0.5rem) */
-    padding-left: 0.8rem; /* Adjusted padding (from 1rem) */
+    margin-bottom: 0.6rem;
+    padding-left: 1.2rem;
     position: relative;
+    font-size: 0.9rem;
 }
 .noticias li::before {
-    content: '•';
-    color: #00eaff;
-    font-size: 0.9em; /* Adjusted bullet size (from 1em) */
+    content: '❖';
+    color: #00ACC1;
+    font-size: 1em;
     position: absolute;
     left: 0;
-    top: 0;
+    top: 1px;
 }
 .noticias a {
-    color: #00eaff;
+    color: #80DEEA;
     text-decoration: none;
-    transition: color 0.2s, background 0.2s, border-radius 0.2s;
-    font-size: 0.85rem; /* Reduced font size (from 0.9rem) */
+    font-weight: 600;
+    transition: color 0.2s, background-color 0.2s, padding 0.2s;
 }
 .noticias a:hover {
-    color: #1a1a2e;
-    background: #00eaff;
+    color: #1A2238;
+    background-color: #80DEEA;
     border-radius: 4px;
-    padding: 0 3px; /* Reduced padding on hover (from 0 4px) */
+    padding: 2px 5px;
 }
 
-/* Styles for the new dynamic download section */
 .descargas {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem; /* Reduced space between download elements (from 0.8rem) */
+    gap: 1rem;
 }
 
 .descargas h2 {
-    margin-bottom: 0.5rem; /* Reduced bottom margin (from 0.6rem) */
+    margin-bottom: 0.8rem;
 }
 
 .descargas-content {
-    background: rgba(34, 36, 58, 0.6);
-    border-radius: 8px; /* Slightly less rounded borders (from 10px) */
-    padding: 0.7rem; /* Reduced padding (from 0.8rem) */
-    border: 1px solid rgba(0, 234, 255, 0.06); /* Slightly more subtle border */
-    min-height: 80px; /* Reduced minimum height (from 100px) */
+    background: rgba(38, 51, 85, 0.7);
+    border-radius: 10px;
+    padding: 1.2rem;
+    border: 1px solid rgba(0, 172, 193, 0.15);
+    min-height: 90px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -274,43 +329,71 @@ section {
 }
 
 .dynamic-content-card {
-    background-color: rgba(0, 234, 255, 0.1);
-    border: 1px solid #00eaff;
-    border-radius: 6px; /* Reduced border-radius (from 8px) */
-    padding: 0.7rem; /* Reduced padding (from 0.8rem) */
-    margin-bottom: 0.5rem; /* Reduced margin (from 0.6rem) */
+    background-color: rgba(0, 172, 193, 0.15);
+    border: 1px solid #00ACC1;
+    border-radius: 8px;
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 0.8rem;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    transition: background-color 0.35s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                box-shadow 0.35s ease-in-out,
+                color 0.35s ease; /* Transiciones mejoradas */
     text-align: center;
-    color: #fff;
-    font-size: 0.9rem; /* Reduced font size (from 1rem) */
+    color: #E0F7FA;
+    font-size: 1rem;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 35px; /* Reduced minimum height (from 40px) */
-    width: calc(100% - 1.4rem); /* Adjusted width for padding */
+    min-height: 45px;
+    width: calc(100% - 2.4rem);
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden; /* Para efectos de hover */
+}
+.dynamic-content-card::before { /* Pseudo-elemento para animación de fondo en hover */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 201, 210, 0.25), transparent);
+    transition: left 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    z-index: 0;
+}
+
+.dynamic-content-card:hover::before {
+    left: 100%;
+}
+
+.dynamic-content-card > * { /* Asegurar que el contenido de la tarjeta esté sobre el pseudo-elemento */
+    position: relative;
+    z-index: 1;
 }
 
 .dynamic-content-card:hover {
-    background-color: #00eaff;
-    color: #1a1a2e;
-    transform: translateY(-1.5px); /* Slightly less elevation */
-    box-shadow: 0 2px 8px rgba(0, 234, 255, 0.25);
+    background-color: #00C9D2; /* Cian más brillante al pasar el mouse */
+    color: #0A101F; /* Texto más oscuro para contraste */
+    transform: translateY(-3px) scale(1.03); /* Elevación y escala más notorias */
+    box-shadow: 0 6px 18px rgba(0, 201, 210, 0.35); /* Sombra cian más fuerte */
 }
 
 .dynamic-content-card.back-button {
-    background-color: rgba(255, 99, 71, 0.2);
-    border-color: tomato;
-    color: tomato;
-    margin-top: 0.8rem; /* Reduced top margin (from 1rem) */
+    background-color: rgba(255, 109, 71, 0.15);
+    border-color: #FF6D47;
+    color: #FFD0C1;
 }
 
 .dynamic-content-card.back-button:hover {
-    background-color: tomato;
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(255, 99, 71, 0.25);
+    background-color: #FF6D47;
+    color: #101727;
+    box-shadow: 0 6px 18px rgba(255, 109, 71, 0.35);
+    transform: translateY(-3px) scale(1.03);
+}
+.dynamic-content-card.back-button::before { /* Desactivar animación de barrido para botón de regreso si se prefiere */
+    display: none;
 }
 
 .dynamic-content-list {
@@ -320,64 +403,62 @@ section {
 }
 
 .dynamic-content-list li {
-    margin-bottom: 0.3rem; /* Reduced spacing (from 0.4rem) */
+    margin-bottom: 0.5rem;
 }
 
 .dynamic-content-list a {
     display: block;
-    padding: 0.5rem 0.7rem; /* Reduced padding (from 0.6rem 0.8rem) */
-    background-color: rgba(34, 36, 58, 0.8);
-    border-radius: 5px; /* Reduced border-radius (from 6px) */
-    color: #00eaff;
+    padding: 0.7rem 1rem;
+    background-color: rgba(38, 51, 85, 0.9);
+    border-radius: 6px;
+    color: #80DEEA;
     text-decoration: none;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-    font-size: 0.85rem; /* Reduced font size (from 0.95rem) */
+    font-size: 0.95rem;
     text-align: left;
 }
 
 .dynamic-content-list a:hover {
-    background-color: #00eaff;
-    color: #1a1a2e;
-    transform: translateX(2px); /* Slightly less displacement */
+    background-color: #80DEEA;
+    color: #101727;
+    transform: translateX(4px);
 }
 
-/* Download icon and animation */
 .download-icon {
-    height: 24px; /* Reduced icon size (from 28px) */
-    width: 24px;
-    margin-right: 8px; /* Reduced spacing */
-    animation: pulse 2s infinite ease-in-out;
+    height: 26px;
+    width: 26px;
+    margin-right: 10px;
+    animation: pulse-glow 2.5s infinite ease-in-out;
+    /* Asegurar que la ruta sea correcta para esta ubicación */
+    content: url('../imagenes/descargas.png'); /* Corregida ruta de imagen */
 }
 
-@keyframes pulse {
-    0% {
+
+@keyframes pulse-glow {
+    0%, 100% {
         transform: scale(1);
-        opacity: 1;
+        opacity: 0.8;
+        filter: drop-shadow(0 0 3px #80DEEA);
     }
     50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
-    100% {
-        transform: scale(1);
+        transform: scale(1.1);
         opacity: 1;
+        filter: drop-shadow(0 0 8px #80DEEA);
     }
 }
 
-
-/* Responsive adjustments */
 @media (min-width: 768px) {
     main {
         grid-template-columns: 2fr 1fr;
-        gap: 1rem; /* Adjusted space between sections */
-        max-width: 700px; /* Adjusted max-width for desktop (from 850px) */
+        gap: 2rem;
+        max-width: 900px;
     }
     .bienvenida {
         grid-column: 1 / 2;
     }
     .noticias {
         grid-column: 2 / 3;
-        grid-row: 1 / 3;
+        grid-row: 1 / span 2;
     }
     .descargas {
         grid-column: 1 / 2;
@@ -386,89 +467,192 @@ section {
 
 @media (max-width: 767px) {
     header {
-        padding: 0.2rem 0.6rem; /* Even more reduced padding on mobile */
+        padding: 0.5rem 1rem;
     }
     .logo, .bandera {
-        height: 20px; /* Even smaller on mobile */
-        margin: 0 2px;
+        height: 30px;
+        margin: 0 5px;
     }
     .titulo-principal .instituto {
-        font-size: 1rem; /* Adjusted for mobile */
+        font-size: 1.2rem;
     }
     .titulo-principal .subtitulo {
-        font-size: 0.5rem; /* Adjusted for mobile */
+        font-size: 0.7rem;
     }
     #menu-btn {
-        font-size: 1.2rem; /* Adjusted for mobile */
-        margin-right: 5px;
+        font-size: 1.5rem;
+        margin-right: 8px;
     }
     .sidebar {
-        width: 160px; /* Smaller on mobile */
-        padding-top: 1.5rem;
+        width: 250px;
+        left: -270px;
+        padding-top: 2.5rem;
     }
     #close-btn {
-        font-size: 1.5rem;
-        margin: 0 0.8rem 0.8rem 0;
+        font-size: 1.8rem;
+        margin: 0 1.2rem 1.2rem 0;
     }
     .sidebar a {
-        font-size: 0.8rem;
-        padding: 0.4rem 1.2rem;
+        font-size: 0.9rem;
+        padding: 0.7rem 1.8rem;
     }
     .sidebar ul ul li a {
-        font-size: 0.75rem;
-        padding-left: 1.8rem;
-    }
-    .sidebar ul ul ul li a {
+        font-size: 0.85rem;
         padding-left: 2.5rem;
     }
+    .sidebar ul ul ul li a {
+        padding-left: 3.5rem;
+    }
     main {
-        margin: 0.6rem auto; /* Reduced top margin on mobile */
-        padding: 0.6rem;
-        gap: 0.6rem; /* Reduced module spacing on mobile */
-        max-width: 98%; /* Occupy more width on mobile */
+        margin: 1rem auto;
+        padding: 1rem;
+        gap: 1rem;
+        max-width: 95%;
     }
     section {
-        padding: 0.8rem;
+        padding: 1.2rem;
     }
     .bienvenida h2, .descargas h2, .noticias h3 {
-        font-size: 1.1rem;
+        font-size: 1.4rem;
     }
     .bienvenida p {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
     .noticias {
-        padding: 0.6rem 0.8rem;
+        padding: 1rem 1.2rem;
     }
     .noticias li {
-        margin-bottom: 0.3rem;
-        padding-left: 0.7rem;
+        margin-bottom: 0.5rem;
+        padding-left: 1rem;
     }
     .noticias li::before {
-        font-size: 0.8em;
+        font-size: 0.9em;
     }
     .noticias a {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
     .descargas-content {
-        padding: 0.5rem;
-        min-height: 70px;
+        padding: 1rem;
+        min-height: 80px;
     }
     .dynamic-content-card {
-        padding: 0.5rem;
-        font-size: 0.8rem;
-        min-height: 30px;
-        width: calc(100% - 1rem);
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        min-height: 40px;
+        width: calc(100% - 1.6rem);
     }
     .dynamic-content-card.back-button {
-        margin-top: 0.6rem;
+        margin-top: 0.8rem;
     }
     .dynamic-content-list a {
-        padding: 0.4rem 0.5rem;
-        font-size: 0.8rem;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
     }
     .download-icon {
-        height: 20px; /* Adjusted icon size for mobile */
-        width: 20px;
-        margin-right: 6px;
+        height: 22px;
+        width: 22px;
+        margin-right: 8px;
     }
+}
+
+.ofimatica-article-content {
+    background-color: #1A2238;
+    color: #CFD8DC;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2rem;
+    border: 1px solid #00ACC1;
+}
+.ofimatica-article-content h1,
+.ofimatica-article-content h2,
+.ofimatica-article-content h3,
+.ofimatica-article-content h4 {
+    color: #80DEEA;
+    font-family: 'Montserrat', sans-serif;
+}
+.ofimatica-article-content .section-title {
+    border-bottom: 2px solid #00ACC1;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.8rem;
+}
+.ofimatica-article-content .exercise-box {
+    background-color: #263355;
+    border-left: 4px solid #00ACC1;
+    padding: 1.2rem 1.8rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #E0F7FA;
+}
+.ofimatica-article-content .code-example {
+    background-color: #101727;
+    color: #80DEEA;
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    border: 1px solid #263355;
+}
+.ofimatica-article-content .inline-key {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #455A64;
+    color: #ECEFF1;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 0 #263238;
+    border-bottom: 1px solid #263238;
+    height: 1.6rem;
+    margin: 0 0.25rem;
+    vertical-align: middle;
+}
+.ofimatica-article-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    margin: 2rem auto;
+    border: 1px solid #00796B;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.back-to-home-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.back-to-home-container .dynamic-content-card {
+    width: auto;
+    min-width: 200px;
+    margin: 0 auto;
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+}
+
+/* Estilos para vista de artículo si III_BTP_A/index.html llegara a usarla */
+main.article-view-active {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+}
+
+main.article-view-active #ofimatica-full-article-section.ofimatica-article-content {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    padding: 2rem 5%;
 }

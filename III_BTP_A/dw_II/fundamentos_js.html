@@ -447,15 +447,56 @@
                 right: 10px;
             }
             .logo-institucion {
-                width: 200px; /* Más pequeño en móvil */
-                margin-bottom: 1rem;
+                width: 180px; /* Aún más pequeño en móvil */
+                margin-bottom: 0.8rem;
             }
             .img-slide {
-                width: 95%;
+                width: 90%; /* Ligeramente más pequeño */
                 height: auto;
-                min-height: 150px;
-                margin-top: 1rem;
+                min-height: 120px; /* Reducir altura mínima si es necesario */
+                margin-top: 0.8rem;
             }
+            /* Ajustes más finos para el editor y consola en móviles */
+            .code-panel h3, .output-panel h3 {
+                font-size: 1rem; /* Reducir títulos de paneles */
+                margin-bottom: 0.5rem;
+            }
+            .code-editable {
+                font-size: 0.7em; /* Código aún más pequeño si es necesario */
+                padding-left: 1.8em; /* Menos padding para números de línea */
+                line-height: 1.25;
+            }
+            .code-editable .line::before {
+                left: -1.3em; /* Ajustar posición de números de línea */
+                width: 1.2em;
+                font-size: 0.9em; /* Números de línea más pequeños */
+            }
+            .run-code-btn {
+                padding: 6px 10px;
+                font-size: 0.75em;
+            }
+            .console-output {
+                font-size: 0.7em;
+                min-height: 60px;
+            }
+             .nav-buttons { /* Asegurar que los botones de navegación no se superpongan con la barra de estado de algunos móviles */
+                bottom: 5px;
+            }
+        }
+        @media (max-width: 400px) { /* Para pantallas muy estrechas */
+            body { padding: 2px; }
+            .presentation-container { height: 100vh; max-height: 100vh; } /* Ocupar toda la altura */
+            .slide { padding: 0.5rem 0.2rem; }
+            .slide-content { padding: 0.5rem; margin: 0.2rem; }
+            h2 { font-size: 1.1rem; }
+            h3 { font-size: 0.95rem; }
+            p, ul, ol { font-size: 0.75rem; }
+            .code-editable { font-size: 0.65em; padding-left: 1.5em; }
+            .code-editable .line::before { left: -1.1em; width: 1em; font-size: 0.85em;}
+            .console-output { font-size: 0.65em; }
+            .nav-button { padding: 4px 8px; font-size: 0.7rem; }
+            .logo-institucion { width: 150px; }
+
         }
     </style>
 </head>
@@ -893,6 +934,7 @@
 
         <!-- Botones de navegación -->
         <div class="nav-buttons">
+            <a href="../../../index.html" class="nav-button" id="homeBtn" style="text-decoration: none;">Regresar a Inicio</a>
             <button id="prevBtn" class="nav-button" disabled>Anterior</button>
             <button id="nextBtn" class="nav-button">Siguiente</button>
         </div>

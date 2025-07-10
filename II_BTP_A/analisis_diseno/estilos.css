@@ -320,3 +320,65 @@ button:disabled {
         transition-duration: 0.01ms !important;
     }
 }
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px; /* Menos padding en el body */
+    }
+    .presentation-container {
+        margin: 10px auto;
+        min-height: 0; /* Permitir que el contenedor sea más pequeño */
+        height: auto; /* Altura basada en contenido */
+        max-height: 95vh; /* Prevenir que sea más alto que la pantalla */
+        padding-bottom: 50px; /* Espacio para botones de navegación fijos */
+    }
+    .slide {
+        padding: 1rem; /* Menos padding en slides */
+        height: auto; /* Altura basada en contenido */
+        position: relative;
+    }
+    .slide.active {
+        position: relative;
+    }
+    .slide-content {
+        margin: 0.5rem 0;
+        padding: 1rem;
+        width: 100%;
+    }
+    .slide img, .img-slide {
+        max-height: 200px;
+        margin-top: 1rem;
+        height: auto; /* Asegurar altura automática */
+    }
+    .slide h2 {
+        font-size: 1.3rem;
+    }
+    .slide h3 {
+        font-size: 1rem;
+    }
+    .slide p, .slide ul, .slide ol {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    .slide ul, .slide ol {
+        margin-left: 1.5rem;
+        padding-left: 0.5rem;
+    }
+    .nav-buttons {
+        margin: 1rem auto;
+        gap: 10px;
+        position: static;
+        padding-bottom: 10px;
+    }
+    .nav-button {
+        padding: 8px 15px;
+        font-size: 0.8rem;
+    }
+    .logo-institucion {
+        width: 200px;
+        margin-bottom: 1rem;
+    }
+    .logo-fixed {
+        display: none;
+    }
+}
