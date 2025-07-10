@@ -9,22 +9,22 @@
     <style>
         /* Estilos para el contenido específico del artículo en esta página */
         .article-container {
-            max-width: 800px; /* Ancho máximo del contenido del artículo */
-            margin: 2rem auto; /* Margen para separar del header/footer y centrar */
+            max-width: 800px;
+            margin: 2rem auto;
             padding: 2rem;
-            background-color: #ffffff; /* Fondo blanco para el contenido del artículo */
-            color: #333; /* Texto oscuro para el artículo */
+            background-color: #fff;
+            color: #333;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .article-container h1 {
-            color: #1A2238; /* Azul oscuro del header global */
+            color: #1A2238;
             margin-bottom: 1.5rem;
             text-align: center;
             font-family: 'Montserrat', sans-serif;
         }
         .article-container h2 {
-            color: #00ACC1; /* Cian del acento global */
+            color: #00ACC1;
             margin-top: 2rem;
             margin-bottom: 1rem;
             font-family: 'Montserrat', sans-serif;
@@ -40,15 +40,15 @@
             color: #454545;
         }
         .article-container ul {
-            list-style-position: inside; /* Para que las viñetas no se salgan */
-            padding-left: 0; /* Resetear padding para controlar con li */
+            list-style-position: inside;
+            padding-left: 0;
         }
         .article-container ul li {
             margin-bottom: 0.5rem;
-            padding-left: 1.2em; /* Espacio para la viñeta */
+            padding-left: 1.2em;
             position: relative;
         }
-        .article-container ul li::before { /* Viñeta personalizada si se desea */
+        .article-container ul li::before {
             content: '•';
             color: #00ACC1;
             position: absolute;
@@ -69,7 +69,13 @@
             margin-top: 0.5rem;
             font-size: 0.9em;
         }
-        /* No es necesario .dynamic-content-card aquí si el botón de regreso usa una clase diferente o estilos directos */
+        .boton-regreso-articulo-wrapper { /* Contenedor para centrar el botón */
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        /* Estilo para el botón de regreso, usando clase de estilos.css para consistencia */
+        /* .dynamic-content-card ya tiene estilos definidos en estilos.css */
     </style>
 </head>
 <body>
@@ -77,7 +83,6 @@
     <div class="background"></div>
     <header>
         <button id="menu-btn">&#9776;</button>
-        <!-- Rutas corregidas para imágenes del banner -->
         <img src="imagenes/logo.png" alt="Logo ISEMED" class="logo">
         <div class="titulo-principal">
             <div class="instituto">Instituto Maria Auxiliadora</div>
@@ -114,8 +119,7 @@
                                 <a href="#">Ofimática I &#9656;</a>
                                 <ul class="submenu">
                                     <li><a href="procesadores_texto.html">Procesadores de Texto</a></li>
-                                    <!-- Aquí podría ir un enlace a este mismo artículo si se desea, o quitarlo -->
-                                    <!-- <li><a href="ofimatica.html">Destreza con el Teclado</a></li> -->
+                                    <li><a href="ofimatica.html">Destreza con el Teclado (Artículo)</a></li>
                                 </ul>
                             </li>
                             <li class="has-submenu">
@@ -165,7 +169,6 @@
             <p>La mecanografía al tacto (o "touch typing") es la capacidad de escribir sin mirar el teclado, utilizando todos los dedos de ambas manos. Esto no solo aumenta la velocidad, sino que también mejora la ergonomía y reduce la fatiga.</p>
 
             <figure style="text-align: center;">
-              <!-- Asumiendo que manosteclado.jpg está en II_BTP_A/Ofimatica_I/imagenes/ -->
               <img src="imagenes/manosteclado.jpg" alt="Posición correcta de las manos en el teclado" style="max-width: 500px; margin: 1em auto; border-radius: 8px;">
               <figcaption>Posición correcta de las manos para la mecanografía al tacto.</figcaption>
             </figure>
@@ -192,7 +195,7 @@
             <p>Recuerda mantener una postura correcta: espalda recta, pies apoyados en el suelo y muñecas flotando ligeramente sobre el teclado, sin apoyarlas. Evita la tentación de mirar el teclado, incluso si al principio escribes más lento. Con el tiempo, tus dedos aprenderán la ubicación de cada tecla por memoria muscular.</p>
             <p>Utiliza software de mecanografía que te proporcione retroalimentación sobre tu precisión y velocidad. Establece metas pequeñas y celebra tus progresos. ¡La perseverancia es tu mejor aliada en este aprendizaje!</p>
 
-            <div style="text-align: center; margin-top: 2rem; margin-bottom: 2rem;">
+            <div class="boton-regreso-articulo-wrapper">
                 <a href="../../index.html" class="dynamic-content-card" style="margin: 0 auto; width: auto; padding: 0.8rem 1.5rem; background-color: #00ACC1; color: white; border-color: #008C9E;">‹ Regresar a la Página Principal</a>
             </div>
         </article>
