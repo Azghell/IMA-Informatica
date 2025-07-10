@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de PSeInt Avanzado</title>
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        /* Cabecera */
+        .header {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column; /* Stack logo and toolbar vertically on small screens */
+            align-items: flex-start;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px; /* Space between logo and toolbar */
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            background: #3498db;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Barra de herramientas */
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap; /* Allow items to wrap */
+            width: 100%; /* Take full width */
+            justify-content: flex-start;
+        }
+
+        .menu-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .toolbar-dropdown-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .toolbar-dropdown-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            z-index: 100;
+            left: 0; /* Align dropdown to the left of its parent button */
+            top: 100%; /* Position below the button */
+            overflow: hidden;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .menu-item {
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item:hover {
+            background-color: #3498db;
+            color: white;
+            padding-left: 20px;
+        }
+        
+        /* Contenido principal */
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        /* Panel de variables colapsable */
+        .variables-panel {
+            width: 300px;
+            background: #ecf0f1;
+            padding: 20px;
+            border-right: 2px solid #bdc3c7;
+        }
+        
+        .panel-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .collapse-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #2c3e50;
+        }
+        
+        .variables-section {
+            margin-bottom: 25px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .section-header:hover {
+            background: #2980b9;
+        }
+        
+        .section-header h3 {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        
+        .section-content {
+            padding: 15px;
+            background: white;
+            max-height: 500px; /* Default max height for content */
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+        
+        .section-content.collapsed {
+            max-height: 0;
+            padding: 0 15px;
+        }
+        
+        .checkbox-group {
+            margin: 10px 0;
+        }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Ayuda en tiempo real */
+        .realtime-help {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            border: 1px solid #bbdefb;
+            font-size: 0.95rem;
+        }
+
+        .realtime-help h4 {
+            color: #1a2a6c;
+            margin-bottom: 8px;
+        }
+
+        .realtime-help p {
+            margin-bottom: 5px;
+        }
+        
+        /* Editor de código */
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .editor-header {
+            background: #34495e;
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .filename {
+            font-weight: bold;
+        }
+        
+        .editor-actions button {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+        
+        .editor-actions button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .code-editor {
+            flex: 1;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.5;
+            border: none;
+            background: #2c3e50;
+            color: #ecf0f1;
+            resize: none;
+            outline: none;
+            white-space: pre;
+            tab-size: 4;
+        }
+        
+        .code-toolbar {
+            background: #95a5a6;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .code-btn {
+            padding: 8px 15px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .code-btn:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+        }
+        
+        /* Consola de salida */
+        .console-panel {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            height: auto; /* Allow height to adjust */
+            max-height: 250px; /* Max height for desktop to avoid scroll if short */
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            border-top: 3px solid #3498db;
+        }
+        
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        .console-actions button {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideDown {
+            from { max-height: 0; opacity: 0; }
+            to { max-height: 500px; opacity: 1; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+        }
+        
+        /* Responsive */
+        @media (min-width: 769px) {
+            .header {
+                flex-direction: row; /* Horizontal layout for desktop */
+                justify-content: space-between;
+                align-items: center;
+            }
+            .logo {
+                margin-bottom: 0;
+            }
+            .toolbar {
+                width: auto;
+                justify-content: flex-end; /* Align toolbar to the right */
+                margin-left: auto; /* Push toolbar to the right */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .variables-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid #bdc3c7;
+            }
+
+            .console-panel {
+                max-height: 300px; /* Allow more height for mobile but still scroll */
+            }
+
+            .toolbar-dropdown-btn {
+                flex: 1 1 auto; /* Allow buttons to grow and shrink */
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">P</div>
+                <h1>Simulador de PSeInt Avanzado</h1>
+            </div>
+            
+            <nav class="toolbar">
+                <div class="menu-container">
+                    <button class="toolbar-dropdown-btn" id="fileMenuBtn">Archivo ▼</button>
+                    <div class="dropdown-menu" id="fileDropdown">
+                        <a href="#" class="menu-item">Nuevo Proyecto</a>
+                        <a href="#" class="menu-item">Abrir...</a>
+                        <a href="#" class="menu-item">Guardar</a>
+                        <a href="#" class="menu-item">Guardar como...</a>
+                        <a href="#" class="menu-item">Exportar</a>
+                        <a href="#" class="menu-item">Imprimir</a>
+                        <a href="#" class="menu-item">Salir</a>
+                    </div>
+                </div>
+                
+                <div class="menu-container">
+                    <button class="toolbar-dropdown-btn" id="editMenuBtn">Editar ▼</button>
+                    <div class="dropdown-menu" id="editDropdown">
+                        <a href="#" class="menu-item">Deshacer</a>
+                        <a href="#" class="menu-item">Rehacer</a>
+                        <a href="#" class="menu-item">Cortar</a>
+                        <a href="#" class="menu-item">Copiar</a>
+                        <a href="#" class="menu-item">Pegar</a>
+                    </div>
+                </div>
+
+                <div class="menu-container">
+                    <button class="toolbar-dropdown-btn" id="runMenuBtn">Ejecutar ▼</button>
+                    <div class="dropdown-menu" id="runDropdown">
+                        <a href="#" class="menu-item">Ejecutar (F9)</a>
+                        <a href="#" class="menu-item">Paso a paso (F8)</a>
+                        <a href="#" class="menu-item">Configurar Ejecución</a>
+                    </div>
+                </div>
+
+                <div class="menu-container">
+                    <button class="toolbar-dropdown-btn" id="helpMenuBtn">Ayuda ▼</button>
+                    <div class="dropdown-menu" id="helpDropdown">
+                        <a href="#" class="menu-item">Contenido de Ayuda</a>
+                        <a href="#" class="menu-item">Acerca de PSeInt</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        
+        <div class="main-content">
+            <div class="variables-panel">
+                <div class="panel-title">
+                    Panel de Variables
+                    <button class="collapse-btn" id="collapseAllBtn">⮝</button>
+                </div>
+                
+                <div class="variables-section">
+                    <div class="section-header" data-section="variables">
+                        <h3>Variables</h3>
+                        <span class="collapse-indicator">▼</span>
+                    </div>
+                    <div class="section-content" id="variablesContent">
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" checked>
+                                Mostrar variables globales
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" checked>
+                                Mostrar variables locales
+                            </label>
+                        </div>
+                        <div class="variables-list" id="variablesList">
+                            <div class="variable-item">
+                                <strong>numeros</strong>: Arreglo[5] de Entero
+                                <div class="array-values">[10, 20, 30, 40, 50]</div>
+                            </div>
+                            <div class="variable-item">
+                                <strong>nombres</strong>: Arreglo[3] de Caracter
+                                <div class="array-values">["Ana", "Carlos", "Diana"]</div>
+                            </div>
+                            <div class="variable-item">
+                                <strong>i</strong>: Entero = 0
+                            </div>
+                            <div class="variable-item">
+                                <strong>suma</strong>: Entero = 150
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="variables-section">
+                    <div class="section-header" data-section="functions">
+                        <h3>Funciones</h3>
+                        <span class="collapse-indicator">▼</span>
+                    </div>
+                    <div class="section-content" id="functionsContent">
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" checked>
+                                Mostrar funciones definidas
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="quickHelpToggle">
+                                Ayuda Rápida
+                            </label>
+                        </div>
+                        <div class="quick-help" id="quickHelp" style="display: none; margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 5px;">
+                            <h4>Ayuda sobre estructuras básicas</h4>
+                            <p><strong>Escribir:</strong> Muestra un mensaje en consola. <code>Escribir "Hola"</code></p>
+                            <p><strong>Leer:</strong> Permite ingresar un valor. <code>Leer variable</code></p>
+                            <p><strong>Definir:</strong> Declara una variable. <code>Definir num Como Entero</code></p>
+                            <p><strong>Asignación:</strong> <code>variable <- valor</code></p>
+                            <h4>Ayuda sobre arreglos</h4>
+                            <p><strong>Dimensionar:</strong> Crea un arreglo con el tamaño especificado</p>
+                            <p><strong>Sintaxis:</strong> <code>Dimension &lt;nombre&gt;[&lt;tamaño&gt;]</code></p>
+                            <p><strong>Asignar:</strong> <code>&lt;nombre&gt;[&lt;índice&gt;] &lt;- &lt;valor&gt;</code></p>
+                            <p><strong>Recorrer:</strong> Usar estructura Para con índice</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="variables-section">
+                    <div class="section-header" data-section="arrays">
+                        <h3>Arreglos</h3>
+                        <span class="collapse-indicator">▼</span>
+                    </div>
+                    <div class="section-content" id="arraysContent">
+                        <div class="array-info">
+                            <p><strong>Estado actual:</strong> Funcionando correctamente ✓</p>
+                            <p><strong>Arreglos definidos:</strong></p>
+                            <ul class="array-list">
+                                <li><strong>numeros</strong> - Entero[5]</li>
+                                <li><strong>nombres</strong> - Caracter[3]</li>
+                            </ul>
+                        </div>
+                        <div class="array-controls">
+                            <button class="code-btn" id="dimensionBtn">Dimensionar</button>
+                            <button class="code-btn" id="assignBtn">Asignar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="variables-section">
+                    <div class="section-header" data-section="realtimeHelp">
+                        <h3>Ayuda Contextual</h3>
+                        <span class="collapse-indicator">▼</span>
+                    </div>
+                    <div class="section-content" id="realtimeHelpContent">
+                        <div class="realtime-help" id="realtimeSuggestions">
+                            <h4>Sugerencias:</h4>
+                            <p>Empieza escribiendo "Algoritmo" para definir tu programa.</p>
+                            <p>Usa "Escribir" para mostrar mensajes en la consola.</p>
+                            <p>Para definir variables, usa "Definir [nombre] Como [tipo]".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <div class="filename">hola_mundo.psc</div>
+                    <div class="editor-actions">
+                        <button id="saveBtn">Guardar</button>
+                        <button id="runBtn">Ejecutar</button>
+                    </div>
+                </div>
+                
+                <textarea class="code-editor" id="codeEditor">Algoritmo HolaMundo
+
+    // Este es un comentario
+    Escribir "Hola Mundo desde PSeInt!"
+    
+FinAlgoritmo</textarea>
+                
+                <div class="code-toolbar">
+                    <button class="code-btn" data-code="Algoritmo MiAlgoritmo\n\nFinAlgoritmo">Algoritmo</button>
+                    <button class="code-btn" data-code="Funcion resultado <- NombreFuncion (parametro)\n    \nFinFuncion">Función</button>
+                    <button class="code-btn" data-code="Si condicion Entonces\n    \nFinSi">Sí...Entonces</button>
+                    <button class="code-btn" data-code="Mientras condicion Hacer\n    \nFinMientras">Mientras</button>
+                    <button class="code-btn" data-code="Para i <- inicio Hasta fin Con Paso paso Hacer\n    \nFinPara">Para</button>
+                    <button class="code-btn" data-code="Segun variable Hacer\n    opcion1:\n        \n    opcion2:\n        \nFinSegun">Según</button>
+                    <button class="code-btn" data-code="Dimension arreglo[10]">Dimensionar</button>
+                    <button class="code-btn" data-code="Definir variable Como Entero">Definir</button>
+                    <button class="code-btn" data-code="Escribir "Mensaje"">Escribir</button>
+                    <button class="code-btn" data-code="Leer variable">Leer</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="console-panel">
+            <div class="console-header">
+                <div>Consola de Salida</div>
+                <div class="console-actions">
+                    <button id="clearConsole">Limpiar</button>
+                    <button id="copyConsole">Copiar</button>
+                </div>
+            </div>
+            <div id="consoleOutput">
+&gt; Bienvenido al Simulador de PSeInt Avanzado<br>
+&gt; Los arreglos ahora están completamente funcionales<br>
+&gt; Cargando algoritmo...<br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dropdown menu functionality for toolbar
+        const dropdownButtons = document.querySelectorAll('.toolbar-dropdown-btn');
+        
+        dropdownButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const dropdownId = this.id.replace('Btn', 'Dropdown');
+                const dropdownMenu = document.getElementById(dropdownId);
+                
+                // Close any other open dropdowns
+                document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
+                    if (openMenu !== dropdownMenu) {
+                        openMenu.classList.remove('show');
+                    }
+                });
+
+                // Toggle the clicked dropdown
+                dropdownMenu.classList.toggle('show');
+            });
+        });
+        
+        // Close dropdowns when clicking outside
+        window.addEventListener('click', function(event) {
+            if (!event.target.closest('.menu-container')) {
+                document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
+                    openMenu.classList.remove('show');
+                });
+            }
+        });
+
+        // Panel de variables colapsable
+        const sectionHeaders = document.querySelectorAll('.section-header');
+        const collapseAllBtn = document.getElementById('collapseAllBtn');
+        
+        sectionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                const content = document.getElementById(`${sectionId}Content`);
+                content.classList.toggle('collapsed');
+                
+                // Actualizar indicador
+                const indicator = this.querySelector('.collapse-indicator');
+                indicator.textContent = content.classList.contains('collapsed') ? '▶' : '▼';
+            });
+        });
+        
+        // Colapsar/expandir todo
+        let allCollapsed = false;
+        collapseAllBtn.addEventListener('click', function() {
+            const allContents = document.querySelectorAll('.section-content');
+            const indicators = document.querySelectorAll('.collapse-indicator');
+            
+            allCollapsed = !allCollapsed;
+            this.textContent = allCollapsed ? '⮟' : '⮝';
+            
+            allContents.forEach(content => {
+                if (allCollapsed) {
+                    content.classList.add('collapsed');
+                } else {
+                    content.classList.remove('collapsed');
+                }
+            });
+            
+            indicators.forEach(indicator => {
+                indicator.textContent = allCollapsed ? '▶' : '▼';
+            });
+        });
+        
+        // Ayuda rápida (remains as a toggle for a specific help section)
+        const quickHelpToggle = document.getElementById('quickHelpToggle');
+        const quickHelp = document.getElementById('quickHelp');
+        
+        quickHelpToggle.addEventListener('change', function() {
+            quickHelp.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Botones de código
+        const codeButtons = document.querySelectorAll('.code-btn');
+        const codeEditor = document.getElementById('codeEditor');
+        
+        codeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const codeSnippet = this.getAttribute('data-code');
+                if (codeSnippet) {
+                    // Insertar en la posición actual del cursor
+                    const cursorPos = codeEditor.selectionStart;
+                    const textBefore = codeEditor.value.substring(0, cursorPos);
+                    const textAfter = codeEditor.value.substring(cursorPos);
+                    
+                    codeEditor.value = textBefore + codeSnippet + textAfter;
+                    
+                    // Posicionar cursor después del snippet
+                    const newCursorPos = cursorPos + codeSnippet.length;
+                    codeEditor.setSelectionRange(newCursorPos, newCursorPos);
+                    codeEditor.focus();
+                }
+            });
+        });
+        
+        // Ejecutar código
+        const runBtn = document.getElementById('runBtn');
+        const consoleOutput = document.getElementById('consoleOutput');
+        const clearConsole = document.getElementById('clearConsole');
+        
+        runBtn.addEventListener('click', function() {
+            // Simular ejecución del código
+            const editorContent = codeEditor.value;
+            consoleOutput.innerHTML += '&gt; Ejecutando algoritmo...<br>';
+
+            // Simple "Hola Mundo" simulation
+            if (editorContent.includes('Escribir "Hola Mundo')) {
+                consoleOutput.innerHTML += '&gt; Hola Mundo desde PSeInt!<br>';
+            } else if (editorContent.includes('Escribir "Recorrido del arreglo \'numeros\'')) {
+                // Keep the old simulation for array example if user puts it back
+                consoleOutput.innerHTML += '&gt; Recorrido del arreglo \'numeros\':<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 0: 10<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 1: 20<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 2: 30<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 3: 40<br>';
+                consoleOutput.innerHTML += '&gt; Elemento 4: 50<br>';
+                consoleOutput.innerHTML += '&gt; La suma de los elementos es: 150<br>';
+                consoleOutput.innerHTML += '&gt; Lista de nombres:<br>';
+                consoleOutput.innerHTML += '&gt; - Ana<br>';
+                consoleOutput.innerHTML += '&gt; - Carlos<br>';
+                consoleOutput.innerHTML += '&gt; - Diana<br>';
+            } else {
+                consoleOutput.innerHTML += '&gt; No se pudo interpretar el código. Intenta con "Hola Mundo".<br>';
+            }
+
+            consoleOutput.innerHTML += '&gt; Ejecución completada<br>';
+            
+            // Desplazar al final de la consola
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        });
+        
+        // Limpiar consola
+        clearConsole.addEventListener('click', function() {
+            consoleOutput.innerHTML = '&gt; Consola limpiada<br>';
+        });
+        
+        // Simulación de arreglos (kept for consistency with the example variables)
+        const arrays = {
+            'numeros': [10, 20, 30, 40, 50],
+            'nombres': ['Ana', 'Carlos', 'Diana']
+        };
+        
+        // Mostrar mensaje inicial en consola
+        setTimeout(() => {
+            consoleOutput.innerHTML += '&gt; Sistema de arreglos inicializado correctamente<br>';
+            consoleOutput.innerHTML += '&gt; Use el botón "Ejecutar" para probar el algoritmo<br>';
+        }, 1000);
+
+        // Real-time help suggestions (basic keyword detection)
+        const realtimeSuggestions = document.getElementById('realtimeSuggestions');
+        codeEditor.addEventListener('input', function() {
+            const code = codeEditor.value.toLowerCase();
+            let suggestionsHtml = '<h4>Sugerencias:</h4>';
+
+            if (code.includes('algoritmo') && !code.includes('finalgoritmo')) {
+                suggestionsHtml += '<p>¡No olvides cerrar tu algoritmo con <code>FinAlgoritmo</code>!</p>';
+            } else if (code.includes('definir') && !code.includes('como')) {
+                suggestionsHtml += '<p>Recuerda la sintaxis para definir: <code>Definir variable Como Tipo</code></p>';
+            } else if (code.includes('escribir') && !code.includes('"')) {
+                suggestionsHtml += '<p>Usa comillas dobles para cadenas de texto: <code>Escribir "Tu mensaje"</code></p>';
+            } else if (code.includes('dimension') && !code.includes('[')) {
+                suggestionsHtml += '<p>Para dimensionar arreglos, usa corchetes: <code>Dimension arreglo[tamaño]</code></p>';
+            } else if (code.includes('si') && !code.includes('entonces')) {
+                suggestionsHtml += '<p>La estructura condicional es: <code>Si condicion Entonces ... FinSi</code></p>';
+            } else if (code.includes('para') && !code.includes('hacer')) {
+                suggestionsHtml += '<p>La estructura Para es: <code>Para i <- inicio Hasta fin Con Paso paso Hacer ... FinPara</code></p>';
+            } else {
+                suggestionsHtml += '<p>Empieza escribiendo "Algoritmo" para definir tu programa.</p>';
+                suggestionsHtml += '<p>Usa "Escribir" para mostrar mensajes en la consola.</p>';
+                suggestionsHtml += '<p>Para definir variables, usa "Definir [nombre] Como [tipo]".</p>';
+            }
+            realtimeSuggestions.innerHTML = suggestionsHtml;
+        });
+    </script>
+</body>
+</html>
