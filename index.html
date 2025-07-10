@@ -94,12 +94,12 @@
             <h2>Bienvenido</h2>
             <p>Formando profesionales en informática y tecnología para el futuro.</p>
 
-            <div class="noticias-integradas" style="margin-top: 2rem; border-top: 1px solid rgba(0, 172, 193, 0.3); padding-top: 1.5rem;">
+            <div class="noticias-integradas">
                 <h3>Noticias recientes</h3>
                 <ul id="lista-noticias">
-                    <!-- Las noticias se cargarán aquí automáticamente -->
+                    <!-- Las noticias se cargarán aquí dinámicamente -->
                 </ul>
-                <button id="toggle-noticias" class="dynamic-content-card" style="margin: 1rem auto 0 auto; width: auto; padding: 0.6rem 1.2rem; font-size: 0.9rem; background-color: rgba(0, 172, 193, 0.25); border-color: #00ACC1; color: #E0F7FA;">Otras Noticias</button>
+                <button id="toggle-noticias" class="dynamic-content-card">Otras Noticias</button>
             </div>
         </section>
 
@@ -107,13 +107,13 @@
             <section id="descargas-section" class="descargas">
                 <h2>Descarga Directa de Contenido Teórico</h2>
                 <div id="dynamic-download-panel" class="descargas-content">
-                    <!-- El contenido dinámico se cargará aquí -->
+                    <!-- El contenido dinámico de descargas se cargará aquí -->
                 </div>
             </section>
 
             <section id="articulos-educativos-section" class="articulos-educativos">
                 <h3>Artículos Destacados</h3>
-                <div id="ofimatica-preview-container">
+                <div class="preview-articulo">
                     <div class="etiqueta-articulo">Ofimática I - Undécimo</div>
                     <h2>Destreza del Teclado: Clave para la Productividad</h2>
                     <p>La velocidad y precisión al escribir en el teclado son habilidades que, una vez adquiridas, les ahorrarán incontables horas de trabajo. No se trata solo de escribir rápido, sino de hacerlo sin mirar el teclado, lo que les permite concentrarse en el contenido.</p>
@@ -214,7 +214,10 @@
         }
 
         function renderizarNoticias() {
-            if(!listaNoticiasElement) return;
+            if(!listaNoticiasElement) {
+                if(toggleNoticiasBtn) toggleNoticiasBtn.style.display = 'none';
+                return;
+            }
             listaNoticiasElement.innerHTML = '';
 
             const noticiasAMostrar = mostrandoTodasLasNoticias ? todasLasNoticiasOriginal : todasLasNoticiasOriginal.slice(0, noticiasPorDefectoVisibles);
@@ -227,7 +230,7 @@
 
             if (todasLasNoticiasOriginal.length > noticiasPorDefectoVisibles) {
                 if(toggleNoticiasBtn) {
-                    toggleNoticiasBtn.style.display = 'inline-block'; // o 'block' según el estilo deseado
+                    toggleNoticiasBtn.style.display = 'inline-block';
                     toggleNoticiasBtn.textContent = mostrandoTodasLasNoticias ? "Mostrar Menos Noticias" : "Otras Noticias";
                 }
             } else {
@@ -242,7 +245,7 @@
             });
         }
 
-        cargarNoticias();
+        cargarNoticias(); // Carga inicial
 
     </script>
 </body>

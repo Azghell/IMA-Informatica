@@ -4,114 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artículo: Destreza con el Teclado - ISEMED</title>
-    <link rel="stylesheet" href="../../estilos.css"> <!-- CSS Global -->
+    <link rel="stylesheet" href="../../estilos.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@400;700&family=Roboto:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
-        /* Estilos originales del artículo (proporcionados por el usuario) */
-        /* Estos estilos se aplican al contenido dentro de .ofimatica-article-content-original */
-        .ofimatica-article-content-original {
-            background-color: #f0f4f8;
-            color: #2d3748;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-            margin: 2rem auto; /* Margen para separar del header/footer y centrar */
+        /* Estilos para el contenido específico del artículo en esta página */
+        .article-container {
             max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .ofimatica-article-content-original h1,
-        .ofimatica-article-content-original h2,
-        .ofimatica-article-content-original h3,
-        .ofimatica-article-content-original h4 {
-            color: #2c5282;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .ofimatica-article-content-original h1 {
-            text-align: center;
+        .article-container h1 {
+            color: #1A2238;
             margin-bottom: 1.5rem;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
         }
-        .ofimatica-article-content-original h2 {
+        .article-container h2 {
+            color: #00ACC1;
             margin-top: 2rem;
             margin-bottom: 1rem;
-            border-bottom: 2px solid #a0aec0;
+            font-family: 'Montserrat', sans-serif;
+            border-bottom: 2px solid #00ACC1;
             padding-bottom: 0.5rem;
+            font-size: 1.5rem;
         }
-        .ofimatica-article-content-original p,
-        .ofimatica-article-content-original ul,
-        .ofimatica-article-content-original li {
+        .article-container p,
+        .article-container ul { /* Aplicar a ul también */
             line-height: 1.8;
             margin-bottom: 1rem;
             font-family: 'Roboto', sans-serif;
+            color: #454545;
+            font-size: 1rem; /* Tamaño de fuente base para el artículo */
         }
-        .ofimatica-article-content-original ul {
+        .article-container ul {
             list-style-position: inside;
             padding-left: 0;
         }
-        .ofimatica-article-content-original ul li {
+        .article-container ul li {
             margin-bottom: 0.5rem;
             padding-left: 1.2em;
             position: relative;
         }
-        .ofimatica-article-content-original ul li::before {
+        .article-container ul li::before {
             content: '•';
-            color: #4299e1; /* Azul de acento para viñetas */
+            color: #00ACC1;
             position: absolute;
             left: 0;
         }
-        .ofimatica-article-content-original img {
+        .article-container img {
             max-width: 100%;
             height: auto;
             display: block;
             margin: 1.5rem auto;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .ofimatica-article-content-original figcaption {
+        .article-container figcaption {
             text-align: center;
             font-style: italic;
             color: #666;
             margin-top: 0.5rem;
             font-size: 0.9em;
         }
-        .ofimatica-article-content-original .exercise-box { /* Si existía esta clase */
-            background-color: #e2e8f0;
-            border-left: 4px solid #4299e1;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-        .ofimatica-article-content-original .code-example { /* Si existía esta clase */
-            background-color: #1a202c;
-            color: #e2e8f0;
-            padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        .ofimatica-article-content-original .inline-key { /* Si existía esta clase */
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #4a5568;
-            color: #e2e8f0;
-            padding: 0.2rem 0.5rem;
-            border-radius: 0.25rem;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.8rem;
-            box-shadow: 0 2px 0 #2d3748;
-            border-bottom: 1px solid #2d3748;
-            height: 1.5rem;
-            margin: 0 0.2rem;
-            vertical-align: middle;
-        }
         .boton-regreso-wrapper {
             text-align: center;
             margin-top: 2rem;
             margin-bottom: 2rem;
         }
+        /* Los estilos de .dynamic-content-card se heredan de estilos.css */
     </style>
 </head>
 <body>
@@ -141,9 +106,9 @@
                             <li><a href="../../Informatica_I/partes_computadora.html">Partes de la Computadora</a></li>
                         </ul>
                     </li>
-                    <li class="has-submenu">
+                    <li class="has-submenu open"> <!-- Mantener abierto el menú de Undécimo y Ofimática I -->
                         <a href="#">Undécimo &#9656;</a>
-                        <ul class="submenu">
+                        <ul class="submenu" style="max-height: 1000px; opacity: 1;">
                             <li class="has-submenu">
                                 <a href="#">Informática Aplicada I &#9656;</a>
                                 <ul class="submenu">
@@ -151,9 +116,9 @@
                                     <li><a href="../Informatica_Aplicada_I/dipositivos_almac.html">Dispositivos de Almacenamiento</a></li>
                                 </ul>
                             </li>
-                            <li class="has-submenu open"> <!-- Marcar como open para que se vea el submenú -->
+                            <li class="has-submenu open"> <!-- Mantener abierto Ofimática I -->
                                 <a href="#">Ofimática I &#9656;</a>
-                                <ul class="submenu" style="max-height: 500px; opacity: 1;"> <!-- Estilo para mostrarlo -->
+                                <ul class="submenu" style="max-height: 1000px; opacity: 1;">
                                     <li><a href="procesadores_texto.html">Procesadores de Texto</a></li>
                                     <li><a href="ofimatica.html">Destreza con el Teclado (Artículo)</a></li>
                                 </ul>
@@ -199,8 +164,7 @@
     </nav>
 
     <main>
-        <article class="ofimatica-article-content-original">
-            <!-- Contenido original del artículo (el HTML que me proporcionaste) -->
+        <article class="article-container">
             <h1>Destreza del Teclado: Clave para la Productividad</h1>
             <p>La velocidad y precisión al escribir en el teclado son habilidades que, una vez adquiridas, les ahorrarán incontables horas de trabajo. No se trata solo de escribir rápido, sino de hacerlo sin mirar el teclado, lo que les permite concentrarse en el contenido.</p>
             <p>La mecanografía al tacto (o "touch typing") es la capacidad de escribir sin mirar el teclado, utilizando todos los dedos de ambas manos. Esto no solo aumenta la velocidad, sino que también mejora la ergonomía y reduce la fatiga.</p>
@@ -219,7 +183,6 @@
                 <li><strong>Profesionalismo:</strong> Es una habilidad valorada en muchos entornos laborales.</li>
             </ul>
 
-            <!-- Secciones añadidas -->
             <h2>Ejercicios Prácticos</h2>
             <p>La práctica constante es clave. Dedica al menos 15-30 minutos diarios a ejercicios de mecanografía. Existen muchas herramientas online gratuitas que puedes utilizar:</p>
             <ul>

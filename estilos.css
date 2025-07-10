@@ -678,6 +678,99 @@ main.article-view-active #ofimatica-full-article-section.ofimatica-article-conte
     padding: 2rem 5%;
 }
 
+/* === Estilos para la Nueva Estructura de index.html === */
+.noticias-integradas {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 172, 193, 0.3); /* Cian verdoso con opacidad */
+}
+
+/* #toggle-noticias hereda de .dynamic-content-card y tiene estilos inline.
+   Se pueden añadir más específicos aquí si es necesario. ej:
+#toggle-noticias {
+    font-weight: 500;
+}
+*/
+
+.contenido-principal-columnas {
+    display: grid;
+    grid-template-columns: 1fr; /* Default para móviles, una columna */
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.articulos-educativos {
+    /* Hereda estilos de 'section' base. */
+    /* Se pueden añadir paddings o márgenes específicos si se necesita diferenciarla más */
+}
+
+.articulos-educativos h3 { /* Para el título "Artículos Destacados" */
+    color: #80DEEA;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.preview-articulo { /* Contenedor para cada preview de artículo */
+    background: rgba(38, 51, 85, 0.7); /* Similar a .descargas-content para consistencia */
+    border-radius: 10px;
+    padding: 1.2rem;
+    border: 1px solid rgba(0, 172, 193, 0.15);
+    margin-bottom: 1.5rem; /* Espacio si hay múltiples artículos */
+}
+.preview-articulo h2{ /* Para el título del preview del artículo */
+    color: #80DEEA;
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+    text-align: left;
+}
+.preview-articulo p {
+    font-size: 0.9rem;
+    color: #B0BEC5;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.etiqueta-articulo {
+    display: inline-block;
+    background-color: #00ACC1;
+    color: #ffffff;
+    padding: 0.4rem 0.9rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem; /* Más espacio debajo de la etiqueta */
+    letter-spacing: 0.5px;
+}
+
+/* Ajuste responsivo para las columnas y el layout general de main */
+/* La media query @media (min-width: 768px) ya existe y define 'main' con 'max-width: 900px;' y gap.
+   Solo necesitamos definir las columnas para .contenido-principal-columnas aquí. */
+@media (min-width: 768px) {
+    .contenido-principal-columnas {
+        grid-template-columns: 1fr 1fr; /* Dos columnas iguales para descargas y artículos */
+    }
+    /* La sección #bienvenida-section (que ahora contiene noticias)
+       y .contenido-principal-columnas se apilarán verticalmente por defecto bajo 'main'
+       si 'main' es display:grid con grid-template-columns: 1fr (o display:block).
+       El 'gap' de 'main' se aplicará entre ellas.
+       No es necesario modificar el grid de 'main' aquí si esa es la intención.
+    */
+}
+
+/* En la media query @media (max-width: 767px) de estilos.css: */
+/* main {
+    max-width: 95%;  Esto ya está
+    gap: 1rem; (el gap de main es entre bienvenida y contenido-columnas)
+   }
+   .contenido-principal-columnas {
+       grid-template-columns: 1fr; // Esto ya es el default y se define fuera de la media query
+       gap: 1rem; // Podría ajustarse si es diferente al gap de main, o heredar.
+   }
+*/
+
 /* Estilos para la nueva estructura de index.html */
 .noticias-integradas {
     margin-top: 2rem;
