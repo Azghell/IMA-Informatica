@@ -1,10 +1,31 @@
 [
     {
+        "fecha": "09/07/2025",
+        "grado": "General",
+        "tipo": "Actualización de Estructura",
+        "descripcion": "Se han estandarizado y corregido los directorios y nombres de archivos de todas las presentaciones y documentos descargables para una mejor organización y acceso.",
+        "enlace": "#"
+    },
+    {
+        "fecha": "09/07/2025",
+        "grado": "Undécimo A",
+        "tipo": "Nuevo Artículo",
+        "descripcion": "Descubre el nuevo artículo interactivo 'Destreza del Teclado: Clave para la Productividad' en la sección de Ofimática I, con ejercicios y recursos prácticos.",
+        "enlace": "#ofimatica-preview-section"
+    },
+    {
+        "fecha": "09/07/2025",
+        "grado": "Duodécimo A",
+        "tipo": "Contenido Consolidado",
+        "descripcion": "El contenido de 'Fundamentos de Diseño y Tecnología' ha sido consolidado dentro del documento 'Fundamentos de JavaScript' para la clase de Diseño Web II.",
+        "enlace": "III_BTP_A/dw_II/fundamentos_js.html"
+    },
+    {
         "fecha": "14/06/2025",
         "grado": "Décimo A",
         "tipo": "Diapositiva agregada",
         "descripcion": "Historia de la Computación",
-        "enlace": "Informatica_I/Historia_Computacion.htm"
+        "enlace": "Informatica_I/historia_computacion.html"
     },
     {
         "fecha": "13/06/2025",
