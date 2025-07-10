@@ -616,9 +616,38 @@ section {
     border: 1px solid #00796B; /* Borde sutil verde azulado oscuro */
 }
 
-.hidden {
-    display: none !important;
+/* Transiciones suaves para ocultar/mostrar secciones */
+#bienvenida-section,
+#noticias-section,
+#descargas-section,
+#ofimatica-preview-section,
+#ofimatica-full-article-section {
+    transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out, padding 0.5s ease-in-out, margin 0.5s ease-in-out, visibility 0.5s;
+    overflow: hidden; /* Necesario para la transición de max-height */
 }
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0 !important; /* Forzar el colapso */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-width: 0 !important; /* Ocultar bordes también */
+}
+/* Estilos para cuando no está oculto (asegurar que max-height permita ver el contenido) */
+#bienvenida-section:not(.hidden),
+#noticias-section:not(.hidden),
+#descargas-section:not(.hidden),
+#ofimatica-preview-section:not(.hidden),
+#ofimatica-full-article-section:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+    max-height: 2000px; /* Un valor suficientemente grande para el contenido, ajustar si es necesario */
+    /* Los paddings y margins originales de las secciones se restaurarán automáticamente al quitar .hidden */
+}
+
 
 .back-to-home-container {
     text-align: center;
@@ -633,16 +662,8 @@ section {
     font-size: 1rem; /* Tamaño de fuente */
 }
 
-/* Asegurar que los estilos de III_BTP_A/estilos.css no sobreescriban estos si se usan en la misma página */
-/* Esto es solo un placeholder, ya que no podemos editar directamente III_BTP_A/estilos.css desde aquí */
-/* Si III_BTP_A/index.html usa estilos.css global, estos cambios aplicarán. */
-/* Si III_BTP_A/index.html usa su propio III_BTP_A/estilos.css, ese archivo necesitará cambios similares. */
-
-/* Para II_BTP_A/Informatica_Aplicada_I/estilos.css, se mantendrán sus estilos XP únicos. */
-/* No se aplicarán estos cambios globales a las presentaciones que simulan SO. */
-
 main.article-view-active {
-    max-width: none; /* Permitir que main ocupe todo el ancho */
+    max-width: none;
     padding: 0;
     margin: 0;
 }
@@ -656,11 +677,3 @@ main.article-view-active #ofimatica-full-article-section.ofimatica-article-conte
     box-sizing: border-box;
     padding: 2rem 5%;
 }
-
-/* Opcional: Ocultar header y sidebar en modo artículo para inmersión */
-/*
-body.article-mode header,
-body.article-mode .sidebar {
-    display: none;
-}
-*/

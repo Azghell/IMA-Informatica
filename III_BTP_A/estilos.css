@@ -14,9 +14,6 @@
 
 /* Este archivo es una copia del estilos.css principal para mantener la consistencia,
    asumiendo que III_BTP_A/index.html está enlazando a su propio III_BTP_A/estilos.css.
-   Si III_BTP_A/index.html enlaza al estilos.css global, este archivo no es estrictamente necesario
-   o podría eliminarse si se quiere una única fuente de verdad para los estilos.
-   Por ahora, se replicarán los estilos para asegurar que las páginas en III_BTP_A/ también se actualicen.
 */
 
 body, html {
@@ -67,10 +64,10 @@ header {
 }
 /* Asegurar que las rutas de logo y bandera sean correctas para esta ubicación */
 header .logo {
-    content: url('../imagenes/logo.png'); /* Corregida ruta de imagen */
+    content: url('../imagenes/logo.png');
 }
 header .bandera {
-    content: url('../imagenes/bandera-de-honduras.png'); /* Corregida ruta de imagen */
+    content: url('../imagenes/bandera-de-honduras.png');
 }
 
 
@@ -131,7 +128,7 @@ header .bandera {
     background: linear-gradient(145deg, #1A2238 60%, #263355 100%);
     box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
     padding-top: 3.5rem;
-    transition: left 0.45s cubic-bezier(0.23, 1, 0.32, 1); /* Transición 'easeOutQuint' para suavidad */
+    transition: left 0.45s cubic-bezier(0.23, 1, 0.32, 1);
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -148,11 +145,11 @@ header .bandera {
     color: #80DEEA;
     cursor: pointer;
     margin: 0 1.8rem 1.8rem 0;
-    transition: color 0.35s ease, transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Transición con rebote */
+    transition: color 0.35s ease, transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 #close-btn:hover {
     color: #E0F7FA;
-    transform: rotate(180deg) scale(1.15); /* Rotación y escala más pronunciada */
+    transform: rotate(180deg) scale(1.15);
 }
 .sidebar ul {
     list-style: none;
@@ -172,46 +169,46 @@ header .bandera {
     transition: background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
                 color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
                 transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
-                box-shadow 0.3s ease-in-out; /* Transiciones más dinámicas */
+                box-shadow 0.3s ease-in-out;
     letter-spacing: 0.5px;
     position: relative;
 }
 .sidebar a:hover {
-    background: #00C9D2; /* Un cian un poco más brillante para hover */
-    color: #0A101F; /* Texto aún más oscuro para contraste */
-    transform: translateX(10px) scale(1.03); /* Mayor desplazamiento y escala */
-    box-shadow: 0 4px 12px rgba(0, 201, 210, 0.3); /* Sombra de color cian */
+    background: #00C9D2;
+    color: #0A101F;
+    transform: translateX(10px) scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 201, 210, 0.3);
 }
 
 .sidebar ul ul {
     display: none;
-    background: rgba(20, 28, 50, 0.85); /* Ligeramente más opaco */
+    background: rgba(20, 28, 50, 0.85);
     margin-left: 20px;
     border-radius: 6px;
-    box-shadow: inset 0 2px 8px rgba(0, 172, 193, 0.2); /* Sombra interna más notable */
+    box-shadow: inset 0 2px 8px rgba(0, 172, 193, 0.2);
     padding: 0.6rem 0;
     position: static;
     overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1), /* Animación más suave (easeOutQuint) */
+    transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1),
                 opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
                 transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     max-height: 0;
     opacity: 0;
-    transform: translateY(-10px); /* Efecto de entrada desde arriba */
+    transform: translateY(-10px);
 }
 
 .sidebar li.has-submenu.open > ul {
     display: block;
     max-height: 600px;
     opacity: 1;
-    transform: translateY(0); /* Regresar a posición original */
+    transform: translateY(0);
 }
 
 .sidebar li.has-submenu > a {
     cursor: pointer;
     position: relative;
 }
-.sidebar li.has-submenu > a::after { /* Indicador de submenú más estilizado */
+.sidebar li.has-submenu > a::after {
     content: '›';
     position: absolute;
     right: 20px;
@@ -222,7 +219,7 @@ header .bandera {
     transition: transform 0.3s ease-in-out;
 }
 .sidebar li.has-submenu.open > a::after {
-    transform: translateY(-50%) rotate(90deg); /* Flecha rota al abrir */
+    transform: translateY(-50%) rotate(90deg);
 }
 
 .sidebar ul ul li a {
@@ -338,7 +335,7 @@ section {
     transition: background-color 0.35s cubic-bezier(0.25, 0.1, 0.25, 1),
                 transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55),
                 box-shadow 0.35s ease-in-out,
-                color 0.35s ease; /* Transiciones mejoradas */
+                color 0.35s ease;
     text-align: center;
     color: #E0F7FA;
     font-size: 1rem;
@@ -350,9 +347,9 @@ section {
     width: calc(100% - 2.4rem);
     box-sizing: border-box;
     position: relative;
-    overflow: hidden; /* Para efectos de hover */
+    overflow: hidden;
 }
-.dynamic-content-card::before { /* Pseudo-elemento para animación de fondo en hover */
+.dynamic-content-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -368,16 +365,16 @@ section {
     left: 100%;
 }
 
-.dynamic-content-card > * { /* Asegurar que el contenido de la tarjeta esté sobre el pseudo-elemento */
+.dynamic-content-card > * {
     position: relative;
     z-index: 1;
 }
 
 .dynamic-content-card:hover {
-    background-color: #00C9D2; /* Cian más brillante al pasar el mouse */
-    color: #0A101F; /* Texto más oscuro para contraste */
-    transform: translateY(-3px) scale(1.03); /* Elevación y escala más notorias */
-    box-shadow: 0 6px 18px rgba(0, 201, 210, 0.35); /* Sombra cian más fuerte */
+    background-color: #00C9D2;
+    color: #0A101F;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 18px rgba(0, 201, 210, 0.35);
 }
 
 .dynamic-content-card.back-button {
@@ -392,7 +389,7 @@ section {
     box-shadow: 0 6px 18px rgba(255, 109, 71, 0.35);
     transform: translateY(-3px) scale(1.03);
 }
-.dynamic-content-card.back-button::before { /* Desactivar animación de barrido para botón de regreso si se prefiere */
+.dynamic-content-card.back-button::before {
     display: none;
 }
 
@@ -429,7 +426,6 @@ section {
     width: 26px;
     margin-right: 10px;
     animation: pulse-glow 2.5s infinite ease-in-out;
-    /* Asegurar que la ruta sea correcta para esta ubicación */
     content: url('../imagenes/descargas.png'); /* Corregida ruta de imagen */
 }
 
@@ -623,8 +619,37 @@ section {
     border: 1px solid #00796B;
 }
 
+/* Transiciones suaves para ocultar/mostrar secciones */
+#bienvenida-section,
+#noticias-section,
+#descargas-section,
+#ofimatica-preview-section,
+#ofimatica-full-article-section {
+    transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out, padding 0.5s ease-in-out, margin 0.5s ease-in-out, visibility 0.5s;
+    overflow: hidden; /* Necesario para la transición de max-height */
+}
+
 .hidden {
-    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0 !important; /* Forzar el colapso */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-width: 0 !important; /* Ocultar bordes también */
+}
+
+/* Estilos para cuando no está oculto (asegurar que max-height permita ver el contenido) */
+#bienvenida-section:not(.hidden),
+#noticias-section:not(.hidden),
+#descargas-section:not(.hidden),
+#ofimatica-preview-section:not(.hidden),
+#ofimatica-full-article-section:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+    max-height: 2000px; /* Un valor suficientemente grande para el contenido, ajustar si es necesario */
+    /* Los paddings y margins originales de las secciones se restaurarán automáticamente al quitar .hidden */
 }
 
 .back-to-home-container {
@@ -640,7 +665,6 @@ section {
     font-size: 1rem;
 }
 
-/* Estilos para vista de artículo si III_BTP_A/index.html llegara a usarla */
 main.article-view-active {
     max-width: none;
     padding: 0;

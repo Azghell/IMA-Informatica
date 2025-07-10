@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="estilos.css">
     <!-- Enlace a Google Fonts para 'Inter' y 'Montserrat', 'Roboto', 'Roboto Mono' -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@400;700&family=Roboto:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
-    <style>
-        /* Estilos específicos para los elementos dinámicos de descarga se han movido a estilos.css */
-        /* Solo estilos muy específicos de esta página podrían quedar aquí, o mejor, moverlos también. */
-    </style>
 </head>
 <body>
     <div class="background"></div>
@@ -34,7 +30,7 @@
                     <li class="has-submenu">
                         <a href="#">Décimo &#9656;</a>
                         <ul class="submenu">
-                            <li><a href="Informatica_I/historia_computacion.html">Historia de la Computación</a></li>
+                            <li><a href="Informatica_I/historia_computacion.htm">Historia de la Computación</a></li>
                             <li><a href="Informatica_I/partes_computadora.html">Partes de la Computadora</a></li>
                         </ul>
                     </li>
@@ -45,7 +41,7 @@
                                 <a href="#">Informática Aplicada I &#9656;</a>
                                 <ul class="submenu">
                                     <li><a href="II_BTP_A/Informatica_Aplicada_I/sistemas_operativos.html">Sistemas Operativos</a></li>
-                                    <li><a href="II_BTP_A/Informatica_Aplicada_I/dispositivos_almac.html">Dispositivos de Almacenamiento</a></li>
+                                    <li><a href="II_BTP_A/Informatica_Aplicada_I/dipositivos_almac.html">Dispositivos de Almacenamiento</a></li>
                                 </ul>
                             </li>
                             <li class="has-submenu">
@@ -219,7 +215,7 @@
         const noticiasSection = document.getElementById('noticias-section');
         const descargasSection = document.getElementById('descargas-section');
         const ofimaticaPreviewSection = document.getElementById('ofimatica-preview-section');
-        const mainElement = document.querySelector('main'); // Referencia al elemento main
+        const mainElement = document.querySelector('main');
 
         if (readMoreBtn) {
             readMoreBtn.addEventListener('click', loadOfimaticaArticle);
@@ -243,7 +239,7 @@
                 `;
                 document.getElementById('back-to-home-btn').addEventListener('click', showMainContent);
 
-                mainElement.classList.add('article-view-active'); // Añadir clase a main
+                mainElement.classList.add('article-view-active');
                 bienvenidaSection.classList.add('hidden');
                 noticiasSection.classList.add('hidden');
                 descargasSection.classList.add('hidden');
@@ -253,17 +249,17 @@
             } catch (error) {
                 console.error('Error al cargar el artículo de Ofimática:', error);
                 const errorMessage = document.createElement('div');
-                errorMessage.className = 'dynamic-content-card back-button'; // Reutilizar estilo para mensaje de error
+                errorMessage.className = 'dynamic-content-card back-button';
                 errorMessage.textContent = 'No se pudo cargar el artículo de Ofimática. Inténtalo de nuevo más tarde.';
                 ofimaticaFullArticleSection.innerHTML = '';
                 ofimaticaFullArticleSection.appendChild(errorMessage);
-                mainElement.classList.add('article-view-active'); // También añadir clase si hay error para consistencia
+                mainElement.classList.add('article-view-active');
                 ofimaticaFullArticleSection.classList.remove('hidden');
             }
         }
 
         function showMainContent() {
-            mainElement.classList.remove('article-view-active'); // Quitar clase de main
+            mainElement.classList.remove('article-view-active');
             ofimaticaFullArticleSection.classList.add('hidden');
             bienvenidaSection.classList.remove('hidden');
             noticiasSection.classList.remove('hidden');
