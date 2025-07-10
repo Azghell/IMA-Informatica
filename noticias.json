@@ -1,19 +1,5 @@
 [
     {
-        "fecha": "10/07/2025",
-        "grado": "General",
-        "tipo": "Actualización del Sitio",
-        "descripcion": "¡El portal ISEMED ha sido actualizado! Disfruta de un diseño mejorado, nueva paleta de colores, animaciones más fluidas y mejor compatibilidad con dispositivos móviles. ¡Explora los cambios!",
-        "enlace": "#"
-    },
-    {
-        "fecha": "10/07/2025",
-        "grado": "General",
-        "tipo": "Contenido Actualizado",
-        "descripcion": "Todo el contenido de clases, presentaciones y material descargable ha sido revisado y actualizado para facilitar tu aprendizaje.",
-        "enlace": "#"
-    },
-    {
         "fecha": "09/07/2025",
         "grado": "General",
         "tipo": "Actualización de Estructura",
@@ -25,7 +11,7 @@
         "grado": "Undécimo A",
         "tipo": "Nuevo Artículo",
         "descripcion": "Descubre el nuevo artículo interactivo 'Destreza del Teclado: Clave para la Productividad' en la sección de Ofimática I, con ejercicios y recursos prácticos.",
-        "enlace": "#ofimatica-preview-section"
+        "enlace": "II_BTP_A/Ofimatica_I/ofimatica.html"
     },
     {
         "fecha": "09/07/2025",

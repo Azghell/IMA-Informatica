@@ -9,22 +9,22 @@
     <style>
         /* Estilos para el contenido específico del artículo en esta página */
         .article-container {
-            max-width: 800px;
+            max-width: 800px; /* Ancho máximo del contenido del artículo */
             margin: 2rem auto; /* Margen para separar del header/footer y centrar */
             padding: 2rem;
-            background-color: #fff; /* Fondo blanco para el contenido del artículo */
+            background-color: #ffffff; /* Fondo blanco para el contenido del artículo */
             color: #333; /* Texto oscuro para el artículo */
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .article-container h1 {
-            color: #1A2238;
+            color: #1A2238; /* Azul oscuro del header global */
             margin-bottom: 1.5rem;
             text-align: center;
             font-family: 'Montserrat', sans-serif;
         }
         .article-container h2 {
-            color: #00ACC1;
+            color: #00ACC1; /* Cian del acento global */
             margin-top: 2rem;
             margin-bottom: 1rem;
             font-family: 'Montserrat', sans-serif;
@@ -40,11 +40,19 @@
             color: #454545;
         }
         .article-container ul {
-            list-style-position: inside;
-            padding-left: 20px;
+            list-style-position: inside; /* Para que las viñetas no se salgan */
+            padding-left: 0; /* Resetear padding para controlar con li */
         }
         .article-container ul li {
             margin-bottom: 0.5rem;
+            padding-left: 1.2em; /* Espacio para la viñeta */
+            position: relative;
+        }
+        .article-container ul li::before { /* Viñeta personalizada si se desea */
+            content: '•';
+            color: #00ACC1;
+            position: absolute;
+            left: 0;
         }
         .article-container img {
             max-width: 100%;
@@ -59,49 +67,29 @@
             font-style: italic;
             color: #666;
             margin-top: 0.5rem;
+            font-size: 0.9em;
         }
-        .boton-regreso-articulo {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 10px 20px;
-            background-color: #00ACC1; /* Color de acento */
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            font-weight: 600;
-        }
-        .boton-regreso-articulo:hover {
-            background-color: #008C9E; /* Un poco más oscuro al pasar el mouse */
-        }
-        /* Adaptar el contenido del artículo a la paleta oscura si se prefiere */
-        /* Si se quiere que el artículo también tenga fondo oscuro:
-        body { background-color: #101727; }
-        .article-container { background-color: #1A2238; color: #CFD8DC; border: 1px solid #00ACC1;}
-        .article-container h1 { color: #80DEEA; }
-        .article-container h2 { color: #00ACC1; border-bottom-color: #80DEEA;}
-        .article-container p, .article-container ul, .article-container li { color: #B0BEC5; }
-        .article-container figcaption { color: #90A4AE; }
-        */
+        /* No es necesario .dynamic-content-card aquí si el botón de regreso usa una clase diferente o estilos directos */
     </style>
 </head>
 <body>
 
-    <div class="background"></div> <!-- Asume que estilos.css maneja la ruta de la imagen de fondo -->
+    <div class="background"></div>
     <header>
         <button id="menu-btn">&#9776;</button>
-        <img src="../../imagenes/logo.png" alt="Logo ISEMED" class="logo">
+        <!-- Rutas corregidas para imágenes del banner -->
+        <img src="imagenes/logo.png" alt="Logo ISEMED" class="logo">
         <div class="titulo-principal">
             <div class="instituto">Instituto Maria Auxiliadora</div>
             <div class="subtitulo">sistema isemed</div>
             <div class="subtitulo">Área de Informática</div>
         </div>
-        <img src="../../imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" class="bandera">
+        <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" class="bandera">
     </header>
     <nav id="sidebar" class="sidebar">
         <button id="close-btn">&times;</button>
         <ul>
-            <li><a href="../../index.html">Inicio</a></li> <!-- Corregido para apuntar a la raíz -->
+            <li><a href="../../index.html">Inicio</a></li>
             <li class="has-submenu">
                 <a href="#">Presentaciones &#9662;</a>
                 <ul class="submenu">
@@ -126,7 +114,8 @@
                                 <a href="#">Ofimática I &#9656;</a>
                                 <ul class="submenu">
                                     <li><a href="procesadores_texto.html">Procesadores de Texto</a></li>
-                                    <!-- El artículo actual no necesita estar en el menú ya que estamos en él -->
+                                    <!-- Aquí podría ir un enlace a este mismo artículo si se desea, o quitarlo -->
+                                    <!-- <li><a href="ofimatica.html">Destreza con el Teclado</a></li> -->
                                 </ul>
                             </li>
                             <li class="has-submenu">
@@ -176,7 +165,8 @@
             <p>La mecanografía al tacto (o "touch typing") es la capacidad de escribir sin mirar el teclado, utilizando todos los dedos de ambas manos. Esto no solo aumenta la velocidad, sino que también mejora la ergonomía y reduce la fatiga.</p>
 
             <figure style="text-align: center;">
-              <img src="../../imagenes/manosteclado.jpg" alt="Posición correcta de las manos en el teclado" style="max-width: 500px; margin: 1em auto; border-radius: 8px;">
+              <!-- Asumiendo que manosteclado.jpg está en II_BTP_A/Ofimatica_I/imagenes/ -->
+              <img src="imagenes/manosteclado.jpg" alt="Posición correcta de las manos en el teclado" style="max-width: 500px; margin: 1em auto; border-radius: 8px;">
               <figcaption>Posición correcta de las manos para la mecanografía al tacto.</figcaption>
             </figure>
 
@@ -197,15 +187,13 @@
                 <li><a href="https://www.ratatype.es/" target="_blank" rel="noopener noreferrer">Ratatype</a></li>
             </ul>
             <p>Comienza enfocándote en la precisión sobre la velocidad. La velocidad vendrá con la práctica y la memoria muscular.</p>
-            <p>Recuerda mantener una postura correcta: espalda recta, pies apoyados en el suelo y muñecas flotando ligeramente sobre el teclado, sin apoyarlas.</p>
 
-            <!-- Placeholder para más contenido del artículo -->
             <h2>Más Consejos</h2>
-            <p>Explora diferentes técnicas de digitación, como el método de las teclas guía (ASDF JKLÑ). Aprende a usar los dedos correctos para cada tecla y evita mirar el teclado a toda costa. Con el tiempo, tus dedos encontrarán las teclas automáticamente.</p>
-            <p>¡La perseverancia es tu mejor aliada en este aprendizaje!</p>
+            <p>Recuerda mantener una postura correcta: espalda recta, pies apoyados en el suelo y muñecas flotando ligeramente sobre el teclado, sin apoyarlas. Evita la tentación de mirar el teclado, incluso si al principio escribes más lento. Con el tiempo, tus dedos aprenderán la ubicación de cada tecla por memoria muscular.</p>
+            <p>Utiliza software de mecanografía que te proporcione retroalimentación sobre tu precisión y velocidad. Establece metas pequeñas y celebra tus progresos. ¡La perseverancia es tu mejor aliada en este aprendizaje!</p>
 
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="../../index.html" class="boton-regreso-articulo">‹ Regresar a la Página Principal</a>
+            <div style="text-align: center; margin-top: 2rem; margin-bottom: 2rem;">
+                <a href="../../index.html" class="dynamic-content-card" style="margin: 0 auto; width: auto; padding: 0.8rem 1.5rem; background-color: #00ACC1; color: white; border-color: #008C9E;">‹ Regresar a la Página Principal</a>
             </div>
         </article>
     </main>
@@ -216,7 +204,7 @@
         const sidebar = document.getElementById('sidebar');
         const closeBtn = document.getElementById('close-btn');
 
-        if (menuBtn && sidebar && closeBtn) { // Verificar que los elementos existen
+        if (menuBtn && sidebar && closeBtn) {
             menuBtn.onclick = () => sidebar.classList.add('active');
             closeBtn.onclick = () => sidebar.classList.remove('active');
 

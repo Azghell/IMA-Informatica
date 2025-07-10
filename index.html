@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio - ISEMED</title>
     <link rel="stylesheet" href="estilos.css">
-    <!-- Enlace a Google Fonts para 'Inter' y 'Montserrat', 'Roboto', 'Roboto Mono' -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@400;700&family=Roboto:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -48,6 +47,7 @@
                                 <a href="#">Ofimática I &#9656;</a>
                                 <ul class="submenu">
                                     <li><a href="II_BTP_A/Ofimatica_I/procesadores_texto.html">Procesadores de Texto</a></li>
+                                    <li><a href="II_BTP_A/Ofimatica_I/ofimatica.html">Destreza con el Teclado (Artículo)</a></li>
                                 </ul>
                             </li>
                             <li class="has-submenu">
@@ -91,37 +91,42 @@
     </nav>
     <main>
         <section id="bienvenida-section" class="bienvenida">
-            <h2>Bienvenido a ISEMED</h2>
+            <h2>Bienvenido</h2>
             <p>Formando profesionales en informática y tecnología para el futuro.</p>
-        </section>
-        <section id="noticias-section" class="noticias">
-            <h3>Noticias recientes</h3>
-            <ul id="lista-noticias">
-                <!-- Las noticias se cargarán aquí automáticamente -->
-            </ul>
-        </section>
 
-        <section id="descargas-section" class="descargas">
-            <h2>Descarga Directa de Contenido Teórico</h2>
-            <div id="dynamic-download-panel" class="descargas-content">
-                <!-- El contenido dinámico se cargará aquí -->
+            <div class="noticias-integradas" style="margin-top: 2rem; border-top: 1px solid rgba(0, 172, 193, 0.3); padding-top: 1.5rem;">
+                <h3>Noticias recientes</h3>
+                <ul id="lista-noticias">
+                    <!-- Las noticias se cargarán aquí automáticamente -->
+                </ul>
+                <button id="toggle-noticias" class="dynamic-content-card" style="margin: 1rem auto 0 auto; width: auto; padding: 0.6rem 1.2rem; font-size: 0.9rem; background-color: rgba(0, 172, 193, 0.25); border-color: #00ACC1; color: #E0F7FA;">Otras Noticias</button>
             </div>
         </section>
 
-        <section id="ofimatica-preview-section" class="bienvenida">
-            <h2>Destreza del Teclado: Clave para la Productividad</h2>
-            <p>La velocidad y precisión al escribir en el teclado son habilidades que, una vez adquiridas, les ahorrarán incontables horas de trabajo. No se trata solo de escribir rápido, sino de hacerlo sin mirar el teclado, lo que les permite concentrarse en el contenido.</p>
-            <p>La mecanografía al tacto (o "touch typing") es la capacidad de escribir sin mirar el teclado, utilizando todos los dedos de ambas manos. Esto no solo aumenta la velocidad, sino que también mejora la ergonomía y reduce la fatiga.</p>
-            <div style="text-align: center; margin-top: 1rem;">
-                <button id="read-more-ofimatica" class="dynamic-content-card">
-                    Leer más
-                </button>
-            </div>
-        </section>
+        <div class="contenido-principal-columnas">
+            <section id="descargas-section" class="descargas">
+                <h2>Descarga Directa de Contenido Teórico</h2>
+                <div id="dynamic-download-panel" class="descargas-content">
+                    <!-- El contenido dinámico se cargará aquí -->
+                </div>
+            </section>
 
-        <section id="ofimatica-full-article-section" class="hidden ofimatica-article-content">
-            <!-- El contenido de ofimatica.html se cargará aquí dinámicamente -->
-        </section>
+            <section id="articulos-educativos-section" class="articulos-educativos">
+                <h3>Artículos Destacados</h3>
+                <div id="ofimatica-preview-container">
+                    <div class="etiqueta-articulo">Ofimática I - Undécimo</div>
+                    <h2>Destreza del Teclado: Clave para la Productividad</h2>
+                    <p>La velocidad y precisión al escribir en el teclado son habilidades que, una vez adquiridas, les ahorrarán incontables horas de trabajo. No se trata solo de escribir rápido, sino de hacerlo sin mirar el teclado, lo que les permite concentrarse en el contenido.</p>
+                    <p>La mecanografía al tacto (o "touch typing") es la capacidad de escribir sin mirar el teclado, utilizando todos los dedos de ambas manos. Esto no solo aumenta la velocidad, sino que también mejora la ergonomía y reduce la fatiga.</p>
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="II_BTP_A/Ofimatica_I/ofimatica.html" class="dynamic-content-card">
+                            Leer más sobre Destreza con el Teclado
+                        </a>
+                    </div>
+                </div>
+                <!-- Aquí podrían ir otros previews de artículos en el futuro -->
+            </section>
+        </div>
     </main>
     <script>
         const documentos = {
@@ -191,82 +196,54 @@
             });
         });
 
+        let todasLasNoticiasOriginal = [];
+        let mostrandoTodasLasNoticias = false;
+        const noticiasPorDefectoVisibles = 4;
+        const listaNoticiasElement = document.getElementById('lista-noticias');
+        const toggleNoticiasBtn = document.getElementById('toggle-noticias');
+
         async function cargarNoticias() {
             try {
                 const response = await fetch('noticias.json?_=' + new Date().getTime());
-                const noticias = await response.json();
-                const lista = document.getElementById('lista-noticias');
-                lista.innerHTML = '';
-                noticias.forEach(noticia => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<strong>${noticia.fecha}</strong> - <strong>${noticia.grado}</strong>: ${noticia.tipo} sobre <a href="${noticia.enlace}">${noticia.descripcion}</a>.`;
-                    lista.appendChild(li);
-                });
+                todasLasNoticiasOriginal = await response.json();
+                renderizarNoticias();
             } catch (e) {
-                document.getElementById('lista-noticias').innerHTML = '<li>No se pudieron cargar las noticias.</li>';
+                if(listaNoticiasElement) listaNoticiasElement.innerHTML = '<li>No se pudieron cargar las noticias.</li>';
+                if(toggleNoticiasBtn) toggleNoticiasBtn.style.display = 'none';
             }
         }
+
+        function renderizarNoticias() {
+            if(!listaNoticiasElement) return;
+            listaNoticiasElement.innerHTML = '';
+
+            const noticiasAMostrar = mostrandoTodasLasNoticias ? todasLasNoticiasOriginal : todasLasNoticiasOriginal.slice(0, noticiasPorDefectoVisibles);
+
+            noticiasAMostrar.forEach(noticia => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${noticia.fecha}</strong> - <strong>${noticia.grado}</strong>: ${noticia.tipo} sobre <a href="${noticia.enlace}">${noticia.descripcion}</a>.`;
+                listaNoticiasElement.appendChild(li);
+            });
+
+            if (todasLasNoticiasOriginal.length > noticiasPorDefectoVisibles) {
+                if(toggleNoticiasBtn) {
+                    toggleNoticiasBtn.style.display = 'inline-block'; // o 'block' según el estilo deseado
+                    toggleNoticiasBtn.textContent = mostrandoTodasLasNoticias ? "Mostrar Menos Noticias" : "Otras Noticias";
+                }
+            } else {
+                if(toggleNoticiasBtn) toggleNoticiasBtn.style.display = 'none';
+            }
+        }
+
+        if(toggleNoticiasBtn) {
+            toggleNoticiasBtn.addEventListener('click', () => {
+                mostrandoTodasLasNoticias = !mostrandoTodasLasNoticias;
+                renderizarNoticias();
+            });
+        }
+
         cargarNoticias();
-        setInterval(cargarNoticias, 10000);
 
-        const readMoreBtn = document.getElementById('read-more-ofimatica');
-        const ofimaticaFullArticleSection = document.getElementById('ofimatica-full-article-section');
-        const bienvenidaSection = document.getElementById('bienvenida-section');
-        const noticiasSection = document.getElementById('noticias-section');
-        const descargasSection = document.getElementById('descargas-section');
-        const ofimaticaPreviewSection = document.getElementById('ofimatica-preview-section');
-        const mainElement = document.querySelector('main');
-
-        if (readMoreBtn) {
-            readMoreBtn.addEventListener('click', loadOfimaticaArticle);
-        }
-
-        async function loadOfimaticaArticle() {
-            try {
-                const response = await fetch('II_BTP_A/Ofimatica_I/ofimatica.html');
-                const text = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(text, 'text/html');
-                const articleContent = doc.body.innerHTML;
-
-                ofimaticaFullArticleSection.innerHTML = `
-                    <div class="back-to-home-container">
-                        <button id="back-to-home-btn" class="dynamic-content-card back-button">
-                            Regresar a Inicio
-                        </button>
-                    </div>
-                    ${articleContent}
-                `;
-                document.getElementById('back-to-home-btn').addEventListener('click', showMainContent);
-
-                mainElement.classList.add('article-view-active');
-                bienvenidaSection.classList.add('hidden');
-                noticiasSection.classList.add('hidden');
-                descargasSection.classList.add('hidden');
-                ofimaticaPreviewSection.classList.add('hidden');
-                ofimaticaFullArticleSection.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } catch (error) {
-                console.error('Error al cargar el artículo de Ofimática:', error);
-                const errorMessage = document.createElement('div');
-                errorMessage.className = 'dynamic-content-card back-button';
-                errorMessage.textContent = 'No se pudo cargar el artículo de Ofimática. Inténtalo de nuevo más tarde.';
-                ofimaticaFullArticleSection.innerHTML = '';
-                ofimaticaFullArticleSection.appendChild(errorMessage);
-                mainElement.classList.add('article-view-active');
-                ofimaticaFullArticleSection.classList.remove('hidden');
-            }
-        }
-
-        function showMainContent() {
-            mainElement.classList.remove('article-view-active');
-            ofimaticaFullArticleSection.classList.add('hidden');
-            bienvenidaSection.classList.remove('hidden');
-            noticiasSection.classList.remove('hidden');
-            descargasSection.classList.remove('hidden');
-            ofimaticaPreviewSection.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
     </script>
 </body>
 </html>
