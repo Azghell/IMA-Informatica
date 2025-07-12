@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador de Imágenes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: calc(100vh - 40px);
+        }
+        
+        header {
+            grid-column: 1 / -1;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            color: #1a2a6c;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .sidebar {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff7e5f;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .directory-list {
+            list-style: none;
+            padding-left: 10px;
+        }
+        
+        .directory-item {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .directory-item:hover {
+            background: rgba(255, 126, 95, 0.2);
+        }
+        
+        .directory-item.active {
+            background: rgba(255, 126, 95, 0.4);
+            font-weight: bold;
+        }
+        
+        .directory-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            align-content: start;
+        }
+        
+        .image-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .image-container {
+            height: 150px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .image-card:hover .image-container img {
+            transform: scale(1.05);
+        }
+        
+        .image-info {
+            padding: 12px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .image-name {
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .image-size {
+            font-size: 0.8rem;
+            color: #aaa;
+            text-align: center;
+        }
+        
+        .path-info {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .path-info i {
+            color: #92fe9d;
+        }
+        
+        .status-bar {
+            grid-column: 1 / -1;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .selected-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr auto;
+            }
+            
+            .sidebar {
+                max-height: 300px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .content {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            
+            .image-card {
+                height: 180px;
+            }
+            
+            .image-container {
+                height: 120px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-images"></i> Administrar Imágenes</h1>
+            <div class="header-actions">
+                <button class="btn"><i class="fas fa-home"></i> Inicio</button>
+                <button class="btn"><i class="fas fa-share-alt"></i> Compartir</button>
+                <button class="btn"><i class="fas fa-cloud-upload-alt"></i> Subir</button>
+            </div>
+        </header>
+        
+        <aside class="sidebar">
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-folder"></i> Archivo</h2>
+                <ul class="directory-list">
+                    <li class="directory-item active"><i class="fas fa-home"></i> Inicio</li>
+                    <li class="directory-item"><i class="fas fa-share-alt"></i> Compartir</li>
+                    <li class="directory-item"><i class="fas fa-heart"></i> Vida</li>
+                    <li class="directory-item"><i class="fas fa-tools"></i> Herramientas de imagen</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-desktop"></i> Escritorio</h2>
+                <ul class="directory-list">
+                    <li class="directory-item"><i class="fas fa-bolt"></i> Acceso rápido</li>
+                    <li class="directory-item"><i class="fas fa-desktop"></i> Escritorio</li>
+                    <li class="directory-item"><i class="fas fa-download"></i> Descargas</li>
+                    <li class="directory-item"><i class="fas fa-file-alt"></i> Documentos</li>
+                    <li class="directory-item"><i class="fas fa-image active"></i> Imágenes</li>
+                    <li class="directory-item"><i class="fas fa-trophy"></i> concurso 25</li>
+                    <li class="directory-item"><i class="fas fa-folder"></i> Ofimatica_1</li>
+                    <li class="directory-item"><i class="fas fa-cloud-upload-alt"></i> subir a la plata!</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-hdd"></i> OneDrive - Personal</h2>
+                <ul class="directory-list">
+                    <li class="directory-item"><i class="fas fa-computer"></i> Este equipo</li>
+                    <li class="directory-item"><i class="fas fa-download"></i> Descargas</li>
+                    <li class="directory-item"><i class="fas fa-file-alt"></i> Documentos</li>
+                    <li class="directory-item"><i class="fas fa-desktop"></i> Escritorio</li>
+                    <li class="directory-item"><i class="fas fa-image"></i> Imágenes</li>
+                    <li class="directory-item"><i class="fas fa-music"></i> Música</li>
+                    <li class="directory-item"><i class="fas fa-cube"></i> Objetos 3D</li>
+                    <li class="directory-item"><i class="fas fa-film"></i> Videos</li>
+                    <li class="directory-item"><i class="fas fa-hard-drive"></i> Disco local (C:)</li>
+                </ul>
+            </div>
+            
+            <div class="path-info">
+                <i class="fas fa-info-circle"></i>
+                <div>Todas las imágenes se cargan desde: informatica_I/*.jpg</div>
+            </div>
+        </aside>
+        
+        <main class="content">
+            <!-- Imágenes de la carpeta informatica_I -->
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/abaco.jpg" alt="Ábaco">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">abaco.jpg</div>
+                    <div class="image-size">245 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/almacenamiento_intro.jpg" alt="Almacenamiento">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">almacenamiento_intro.jpg</div>
+                    <div class="image-size">320 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/android_logo.jpg" alt="Android Logo">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">android_logo.jpg</div>
+                    <div class="image-size">180 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/Apple_1.jpg" alt="Apple I">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">Apple_1.jpg</div>
+                    <div class="image-size">415 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/apple2.jpg" alt="Apple II">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">apple2.jpg</div>
+                    <div class="image-size">398 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/arpanet.jpg" alt="ARPANET">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">arpanet.jpg</div>
+                    <div class="image-size">350 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/bandera-de-honduras.jpg" alt="Bandera Honduras">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">bandera-de-honduras.jpg</div>
+                    <div class="image-size">210 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/cd_dvd_bluray.jpg" alt="CD/DVD">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">cd_dvd_bluray.jpg</div>
+                    <div class="image-size">275 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/Circuito_Integrado.jpg" alt="Circuito Integrado">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">Circuito_Integrado.jpg</div>
+                    <div class="image-size">420 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/cloud_storage.jpg" alt="Cloud Storage">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">cloud_storage.jpg</div>
+                    <div class="image-size">380 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/cpu.jpg" alt="CPU">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">cpu.jpg</div>
+                    <div class="image-size">295 KB</div>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="informatica_I/desktop.jpg" alt="Desktop">
+                </div>
+                <div class="image-info">
+                    <div class="image-name">desktop.jpg</div>
+                    <div class="image-size">325 KB</div>
+                </div>
+            </div>
+            
+            <!-- Más imágenes seguirían aquí -->
+        </main>
+        
+        <footer class="status-bar">
+            <div class="selected-count">
+                <i class="far fa-check-circle"></i>
+                <span>0 elementos seleccionados</span>
+            </div>
+            <div class="file-count">
+                <i class="far fa-images"></i>
+                <span>70 elementos</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seleccionar elementos del directorio
+            const directoryItems = document.querySelectorAll('.directory-item');
+            
+            directoryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remover clase activa de todos los elementos
+                    directoryItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Agregar clase activa al elemento clickeado
+                    this.classList.add('active');
+                    
+                    // Aquí iría la lógica para cargar el contenido del directorio seleccionado
+                });
+            });
+            
+            // Seleccionar imágenes
+            const imageCards = document.querySelectorAll('.image-card');
+            const selectedCount = document.querySelector('.selected-count span');
+            let selectedItems = 0;
+            
+            imageCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    
+                    if (this.classList.contains('active')) {
+                        selectedItems++;
+                        this.style.border = "2px solid #00c9ff";
+                    } else {
+                        selectedItems--;
+                        this.style.border = "";
+                    }
+                    
+                    selectedCount.textContent = `${selectedItems} ${selectedItems === 1 ? 'elemento' : 'elementos'} seleccionados`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
