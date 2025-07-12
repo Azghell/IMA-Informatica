@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrador de Imágenes</title>
+    <title>Evolución de la Computación - Proporción Corregida</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,493 +14,759 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background: linear-gradient(135deg, #0c1923, #1a2e40, #243b55);
             color: #fff;
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 15px;
+            font-size: 0.9rem;
         }
         
         .container {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            grid-template-rows: auto 1fr;
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-            height: calc(100vh - 40px);
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            transform: scale(0.95);
+            transform-origin: top;
         }
         
         header {
-            grid-column: 1 / -1;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            width: 100%;
         }
         
         h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            text-shadow: 0 0 10px rgba(0, 201, 255, 0.3);
         }
         
-        .header-actions {
-            display: flex;
-            gap: 15px;
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a1d6ff;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.4;
         }
         
-        .btn {
+        .timeline-container {
+            width: 100%;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-bar {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .timeline-progress {
+            height: 100%;
+            width: 0;
             background: linear-gradient(to right, #00c9ff, #92fe9d);
-            color: #1a2a6c;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
+            transition: width 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        
+        .year-counter {
+            position: absolute;
+            top: -45px;
+            left: 0;
+            font-size: 2.5rem;
             font-weight: bold;
-            cursor: pointer;
+            color: #92fe9d;
+            text-shadow: 0 0 8px rgba(146, 254, 157, 0.7);
+            transition: left 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        
+        .slides-container {
+            width: 100%;
+            height: 480px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(10, 25, 47, 0.9);
+            margin-bottom: 20px;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            padding: 25px;
+            transition: right 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+        }
+        
+        .slide.active {
+            right: 0;
+            opacity: 1;
+        }
+        
+        .slide-image {
+            flex: 1;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            justify-content: center;
+            padding: 15px;
         }
         
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        .slide-image img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            transform: scale(0.9);
+            transition: transform 0.6s ease;
         }
         
-        .sidebar {
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
+        .slide.active .slide-image img {
+            transform: scale(1);
+        }
+        
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             padding: 20px;
-            overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
         }
         
-        .section {
-            margin-bottom: 25px;
-        }
-        
-        .section-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #ff7e5f;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .directory-list {
-            list-style: none;
-            padding-left: 10px;
-        }
-        
-        .directory-item {
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .directory-item:hover {
-            background: rgba(255, 126, 95, 0.2);
-        }
-        
-        .directory-item.active {
-            background: rgba(255, 126, 95, 0.4);
+        .slide-year {
+            font-size: 3.8rem;
             font-weight: bold;
+            color: #00c9ff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 201, 255, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease 0.2s;
         }
         
-        .directory-item i {
-            width: 20px;
+        .slide.active .slide-year {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-title {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            color: #92fe9d;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease 0.4s;
+        }
+        
+        .slide.active .slide-title {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-description {
+            font-size: 1rem;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease 0.6s;
+        }
+        
+        .slide.active .slide-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .future-slide {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            padding: 30px;
+        }
+        
+        .future-content {
             text-align: center;
         }
         
-        .content {
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            padding: 20px;
-            overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        .future-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+        
+        .future-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .tech-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-            align-content: start;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
         
-        .image-card {
+        .tech-item {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            height: 220px;
-            display: flex;
-            flex-direction: column;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
         }
         
-        .image-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        .tech-item:hover {
+            transform: translateY(-8px);
             background: rgba(255, 255, 255, 0.15);
         }
         
-        .image-container {
-            height: 150px;
-            overflow: hidden;
+        .tech-item i {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #00c9ff;
+        }
+        
+        .tech-item h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+        
+        .tech-item p {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .nav-buttons {
             display: flex;
-            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .nav-button {
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            color: #0f2027;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .nav-button:disabled {
+            background: #555;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .progress-indicator {
+            display: flex;
             justify-content: center;
+            margin-top: 15px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        .image-card:hover .image-container img {
-            transform: scale(1.05);
+        .progress-dot.active {
+            background: #00c9ff;
+            transform: scale(1.2);
         }
         
-        .image-info {
-            padding: 12px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .image-name {
-            font-size: 0.9rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        
-        .image-size {
-            font-size: 0.8rem;
-            color: #aaa;
-            text-align: center;
-        }
-        
-        .path-info {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .path-info i {
-            color: #92fe9d;
-        }
-        
-        .status-bar {
-            grid-column: 1 / -1;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-        }
-        
-        .selected-count {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .file-count {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Responsive */
         @media (max-width: 900px) {
-            .container {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto 1fr auto;
+            .slide {
+                flex-direction: column;
+                padding: 15px;
             }
             
-            .sidebar {
-                max-height: 300px;
-            }
-        }
-        
-        @media (max-width: 600px) {
-            .content {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            .slide-image {
+                padding: 10px;
+                max-height: 40%;
             }
             
-            .image-card {
-                height: 180px;
+            .slide-content {
+                padding: 10px;
             }
             
-            .image-container {
-                height: 120px;
+            .slide-year {
+                font-size: 3rem;
+            }
+            
+            .slide-title {
+                font-size: 1.6rem;
             }
             
             h1 {
-                font-size: 1.8rem;
+                font-size: 2.2rem;
             }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .slides-container {
+                height: 520px;
+            }
+        }
+        
+        @keyframes yearCounter {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        
+        .counter-animation {
+            animation: yearCounter 0.4s ease;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            top: -12px;
+            height: 28px;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .timeline-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            max-width: 300px;
+            display: none;
+        }
+        
+        .timeline-bar:hover .timeline-info {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-images"></i> Administrar Imágenes</h1>
-            <div class="header-actions">
-                <button class="btn"><i class="fas fa-home"></i> Inicio</button>
-                <button class="btn"><i class="fas fa-share-alt"></i> Compartir</button>
-                <button class="btn"><i class="fas fa-cloud-upload-alt"></i> Subir</button>
-            </div>
+            <h1><i class="fas fa-history"></i> Evolución de la Computación</h1>
+            <p class="subtitle">Proporción temporal corregida - Ahora con escala cronológica precisa</p>
         </header>
         
-        <aside class="sidebar">
-            <div class="section">
-                <h2 class="section-title"><i class="fas fa-folder"></i> Archivo</h2>
-                <ul class="directory-list">
-                    <li class="directory-item active"><i class="fas fa-home"></i> Inicio</li>
-                    <li class="directory-item"><i class="fas fa-share-alt"></i> Compartir</li>
-                    <li class="directory-item"><i class="fas fa-heart"></i> Vida</li>
-                    <li class="directory-item"><i class="fas fa-tools"></i> Herramientas de imagen</li>
-                </ul>
+        <div class="timeline-container">
+            <div class="year-counter">1600</div>
+            <div class="timeline-bar">
+                <div class="timeline-progress"></div>
+                <!-- Los marcadores se generarán dinámicamente con JS -->
             </div>
-            
-            <div class="section">
-                <h2 class="section-title"><i class="fas fa-desktop"></i> Escritorio</h2>
-                <ul class="directory-list">
-                    <li class="directory-item"><i class="fas fa-bolt"></i> Acceso rápido</li>
-                    <li class="directory-item"><i class="fas fa-desktop"></i> Escritorio</li>
-                    <li class="directory-item"><i class="fas fa-download"></i> Descargas</li>
-                    <li class="directory-item"><i class="fas fa-file-alt"></i> Documentos</li>
-                    <li class="directory-item"><i class="fas fa-image active"></i> Imágenes</li>
-                    <li class="directory-item"><i class="fas fa-trophy"></i> concurso 25</li>
-                    <li class="directory-item"><i class="fas fa-folder"></i> Ofimatica_1</li>
-                    <li class="directory-item"><i class="fas fa-cloud-upload-alt"></i> subir a la plata!</li>
-                </ul>
+            <div class="timeline-info">
+                <strong>Proporción corregida:</strong> La barra ahora refleja con precisión la distancia temporal entre eventos basada en años reales, no en conteo de slides.
             </div>
-            
-            <div class="section">
-                <h2 class="section-title"><i class="fas fa-hdd"></i> OneDrive - Personal</h2>
-                <ul class="directory-list">
-                    <li class="directory-item"><i class="fas fa-computer"></i> Este equipo</li>
-                    <li class="directory-item"><i class="fas fa-download"></i> Descargas</li>
-                    <li class="directory-item"><i class="fas fa-file-alt"></i> Documentos</li>
-                    <li class="directory-item"><i class="fas fa-desktop"></i> Escritorio</li>
-                    <li class="directory-item"><i class="fas fa-image"></i> Imágenes</li>
-                    <li class="directory-item"><i class="fas fa-music"></i> Música</li>
-                    <li class="directory-item"><i class="fas fa-cube"></i> Objetos 3D</li>
-                    <li class="directory-item"><i class="fas fa-film"></i> Videos</li>
-                    <li class="directory-item"><i class="fas fa-hard-drive"></i> Disco local (C:)</li>
-                </ul>
-            </div>
-            
-            <div class="path-info">
-                <i class="fas fa-info-circle"></i>
-                <div>Todas las imágenes se cargan desde: informatica_I/*.jpg</div>
-            </div>
-        </aside>
+        </div>
         
-        <main class="content">
-            <!-- Imágenes de la carpeta informatica_I -->
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/abaco.jpg" alt="Ábaco">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">abaco.jpg</div>
-                    <div class="image-size">245 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/almacenamiento_intro.jpg" alt="Almacenamiento">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">almacenamiento_intro.jpg</div>
-                    <div class="image-size">320 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/android_logo.jpg" alt="Android Logo">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">android_logo.jpg</div>
-                    <div class="image-size">180 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/Apple_1.jpg" alt="Apple I">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">Apple_1.jpg</div>
-                    <div class="image-size">415 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/apple2.jpg" alt="Apple II">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">apple2.jpg</div>
-                    <div class="image-size">398 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/arpanet.jpg" alt="ARPANET">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">arpanet.jpg</div>
-                    <div class="image-size">350 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/bandera-de-honduras.jpg" alt="Bandera Honduras">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">bandera-de-honduras.jpg</div>
-                    <div class="image-size">210 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/cd_dvd_bluray.jpg" alt="CD/DVD">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">cd_dvd_bluray.jpg</div>
-                    <div class="image-size">275 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/Circuito_Integrado.jpg" alt="Circuito Integrado">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">Circuito_Integrado.jpg</div>
-                    <div class="image-size">420 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/cloud_storage.jpg" alt="Cloud Storage">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">cloud_storage.jpg</div>
-                    <div class="image-size">380 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/cpu.jpg" alt="CPU">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">cpu.jpg</div>
-                    <div class="image-size">295 KB</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <div class="image-container">
-                    <img src="informatica_I/desktop.jpg" alt="Desktop">
-                </div>
-                <div class="image-info">
-                    <div class="image-name">desktop.jpg</div>
-                    <div class="image-size">325 KB</div>
-                </div>
-            </div>
-            
-            <!-- Más imágenes seguirían aquí -->
-        </main>
+        <!-- Botones de navegación en posición superior -->
+        <div class="nav-buttons">
+            <button class="nav-button" id="prevBtn" disabled>
+                <i class="fas fa-arrow-left"></i> Anterior
+            </button>
+            <button class="nav-button" id="nextBtn">
+                Siguiente <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
         
-        <footer class="status-bar">
-            <div class="selected-count">
-                <i class="far fa-check-circle"></i>
-                <span>0 elementos seleccionados</span>
+        <div class="slides-container">
+            <!-- Slide 1: Ábaco -->
+            <div class="slide active">
+                <div class="slide-image">
+                    <img src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=800&ixid=MnwxfDB8MXxyYW5kb218MHx8YWJhY3VzfHx8fHx8MTY4OTUxNDA3NQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source" alt="Ábaco antiguo">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1600</div>
+                    <h2 class="slide-title">Ábaco</h2>
+                    <p class="slide-description">Considerado el primer dispositivo de cálculo, el ábaco se originó en la antigua Mesopotamia y fue perfeccionado por culturas como la china y romana. Permite realizar operaciones aritméticas básicas mediante cuentas deslizantes.</p>
+                </div>
             </div>
-            <div class="file-count">
-                <i class="far fa-images"></i>
-                <span>70 elementos</span>
+            
+            <!-- Slide 2: Pascalina -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Pascaline-CnAM_823-1-IMG_1506-black.jpg/800px-Pascaline-CnAM_823-1-IMG_1506-black.jpg" alt="Pascalina">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1642</div>
+                    <h2 class="slide-title">Pascalina</h2>
+                    <p class="slide-description">Inventada por Blaise Pascal, fue la primera calculadora mecánica capaz de realizar sumas y restas de forma directa. Utilizaba una serie de ruedas dentadas para representar números decimales.</p>
+                </div>
             </div>
-        </footer>
+            
+            <!-- Slide 3: Máquina Analítica -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://images.unsplash.com/photo-1581093458799-7a0d5f5a1a9c?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=800&ixid=MnwxfDB8MXxyYW5kb218MHx8YW5hbHl0aWNhbCBlbmdpbmV8fHx8fHwxNjg5NTE0MjQ2&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source" alt="Máquina Analítica">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1837</div>
+                    <h2 class="slide-title">Máquina Analítica</h2>
+                    <p class="slide-description">Diseñada por Charles Babbage, es considerada el primer concepto de computadora programable. Su diseño incluía componentes equivalentes a la unidad aritmética-lógica, memoria y flujo de control.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 4: Máquina tabuladora -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Hollerith.jpg/800px-Hollerith.jpg" alt="Máquina Tabuladora">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1890</div>
+                    <h2 class="slide-title">Máquina Tabuladora</h2>
+                    <p class="slide-description">Desarrollada por Herman Hollerith para el censo de EE.UU., utilizaba tarjetas perforadas para procesar datos. Esta máquina redujo el tiempo de procesamiento de años a meses.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 5: Válvulas de vacío -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Vacuum_tubes_banner.jpg/1280px-Vacuum_tubes_banner.jpg" alt="Válvulas de Vacío">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1904</div>
+                    <h2 class="slide-title">Válvulas de Vacío</h2>
+                    <p class="slide-description">Inventadas por John Ambrose Fleming, permitieron el desarrollo de las primeras computadoras electrónicas. Estas válvulas actuaban como interruptores y amplificadores en circuitos electrónicos.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 6: Z3 -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Zuse_Z3_Deutsches_Museum.JPG/800px-Zuse_Z3_Deutsches_Museum.JPG" alt="Z3">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1941</div>
+                    <h2 class="slide-title">Z3 - Primera Computadora Programable</h2>
+                    <p class="slide-description">Desarrollada por Konrad Zuse, fue la primera máquina programable y completamente automática. Utilizaba relés electromecánicos y era capaz de realizar cálculos complejos.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 7: ENIAC -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://images.unsplash.com/photo-1594322436404-5a0526db4d13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=800&ixid=MnwxfDB8MXxyYW5kb218MHx8ZW5pYWN8fHx8fHwxNjg5NTE0MzEw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source" alt="ENIAC">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1946</div>
+                    <h2 class="slide-title">ENIAC</h2>
+                    <p class="slide-description">La primera computadora digital electrónica de propósito general. Ocupaba 167 m², pesaba 27 toneladas y consumía 150 kW. Fue desarrollada por el Ejército de EE.UU. para cálculos de artillería.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 8: Transistor -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://images.unsplash.com/photo-1624953587687-daf255b6b80a?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=800&ixid=MnwxfDB8MXxyYW5kb218MHx8dHJhbnNpc3Rvcnx8fHx8fHwxNjg5NTE0NDAz&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source" alt="Transistor">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1947</div>
+                    <h2 class="slide-title">Invención del Transistor</h2>
+                    <p class="slide-description">Desarrollado en los laboratorios Bell por Bardeen, Brattain y Shockley, el transistor revolucionó la electrónica. Reemplazó a los tubos de vacío, permitiendo dispositivos más pequeños y eficientes.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 9: IBM 701 -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/IBM_701console.jpg/800px-IBM_701console.jpg" alt="IBM 701">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1953</div>
+                    <h2 class="slide-title">IBM 701</h2>
+                    <p class="slide-description">Primera computadora científica comercial de IBM. Conocida como "Defense Calculator", fue diseñada para aplicaciones científicas y militares. Podía realizar 2.200 multiplicaciones por segundo.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 10: Circuito Integrado -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/IC_chip.JPG/1280px-IC_chip.JPG" alt="Circuito Integrado">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1958</div>
+                    <h2 class="slide-title">Circuito Integrado</h2>
+                    <p class="slide-description">Inventado por Jack Kilby de Texas Instruments, permitió integrar múltiples componentes electrónicos en un solo chip. Esta innovación hizo posible la miniaturización de las computadoras.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 11: ARPANET -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=800&ixid=MnwxfDB8MXxyYW5kb218MHx8aW50ZXJuZXR8fHx8fHwxNjg5NTE0NDYz&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source" alt="ARPANET">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1969</div>
+                    <h2 class="slide-title">Nacimiento de ARPANET</h2>
+                    <p class="slide-description">Precursora de Internet, envió su primer mensaje entre UCLA y Stanford. Este proyecto militar evolucionó hacia una red global que transformó la comunicación, comercio y sociedad.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 12: Microprocesador -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Intel_4004.jpg/800px-Intel_4004.jpg" alt="Microprocesador">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1971</div>
+                    <h2 class="slide-title">Primer Microprocesador</h2>
+                    <p class="slide-description">Intel 4004, el primer microprocesador disponible comercialmente. Este chip de 4 bits contenía 2,300 transistores y marcó el inicio de la revolución de las computadoras personales.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 13: Apple I -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Apple_I_Computer.jpg/800px-Apple_I_Computer.jpg" alt="Apple I">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1976</div>
+                    <h2 class="slide-title">Apple I</h2>
+                    <p class="slide-description">Primer producto de Apple, diseñado por Steve Wozniak. Vendido como placa base con CPU, memoria y chip de video, requería teclado y monitor. Solo se fabricaron 200 unidades.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 14: World Wide Web -->
+            <div class="slide">
+                <div class="slide-image">
+                    <img src="https://images.unsplash.com/photo-1550439062-609e1531270e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=800&ixid=MnwxfDB8MXxyYW5kb218MHx8d29ybGQgd2lkZSB3ZWJ8fHx8fHwxNjg5NTE1MDA5&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source" alt="World Wide Web">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-year">1989</div>
+                    <h2 class="slide-title">World Wide Web</h2>
+                    <p class="slide-description">Inventada por Tim Berners-Lee en el CERN, creó un sistema de información accesible globalmente. Combinó hipertexto, Internet y multimedia, revolucionando el acceso a la información.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 15: Futuro (estilo cinta) -->
+            <div class="slide future-slide">
+                <div class="future-content">
+                    <h2><i class="fas fa-rocket"></i> El Futuro de la Computación</h2>
+                    <p>Estamos en el umbral de revoluciones tecnológicas que transformarán nuestra relación con las computadoras:</p>
+                    
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <i class="fas fa-atom"></i>
+                            <h3>Computación Cuántica</h3>
+                            <p>Ordenadores que aprovechan la física cuántica para resolver problemas imposibles para computadoras actuales</p>
+                        </div>
+                        
+                        <div class="tech-item">
+                            <i class="fas fa-brain"></i>
+                            <h3>Inteligencia Artificial</h3>
+                            <p>Sistemas capaces de aprender, razonar y crear con capacidad cada vez más similar a la humana</p>
+                        </div>
+                        
+                        <div class="tech-item">
+                            <i class="fas fa-dna"></i>
+                            <h3>Bioinformática</h3>
+                            <p>Fusión de biología y computación para medicina personalizada y tratamientos revolucionarios</p>
+                        </div>
+                        
+                        <div class="tech-item">
+                            <i class="fas fa-microchip"></i>
+                            <h3>Nanotecnología</h3>
+                            <p>Computación a escala molecular con dispositivos miles de veces más pequeños y eficientes</p>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-top: 25px; font-style: italic; color: #ffcc00;">"El futuro ya está aquí, solo que no está uniformemente distribuido" - William Gibson</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="progress-indicator">
+            <div class="progress-dot active"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Seleccionar elementos del directorio
-            const directoryItems = document.querySelectorAll('.directory-item');
+            const slides = document.querySelectorAll('.slide');
+            const progressDots = document.querySelectorAll('.progress-dot');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const yearCounter = document.querySelector('.year-counter');
+            const timelineProgress = document.querySelector('.timeline-progress');
+            const timelineBar = document.querySelector('.timeline-bar');
             
-            directoryItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Remover clase activa de todos los elementos
-                    directoryItems.forEach(i => i.classList.remove('active'));
+            // Años reales de cada evento (el último es el futuro, asignamos 2023)
+            const years = [1600, 1642, 1837, 1890, 1904, 1941, 1946, 1947, 1953, 1958, 1969, 1971, 1976, 1989, 2023];
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+            
+            // Calcula la posición proporcional basada en años reales
+            function calculatePosition(year) {
+                const minYear = Math.min(...years);
+                const maxYear = Math.max(...years);
+                const range = maxYear - minYear;
+                
+                // Si es el primer evento, posición 0%
+                if (year === minYear) return 0;
+                
+                // Si es el último evento, posición 100%
+                if (year === maxYear) return 100;
+                
+                // Calcula la posición proporcional
+                return ((year - minYear) / range) * 100;
+            }
+            
+            // Genera marcadores en la línea de tiempo basados en años reales
+            function createTimelineMarkers() {
+                // Elimina marcadores existentes
+                document.querySelectorAll('.timeline-marker').forEach(marker => marker.remove());
+                
+                // Crea nuevos marcadores proporcionales
+                years.forEach(year => {
+                    const position = calculatePosition(year);
+                    const marker = document.createElement('div');
+                    marker.className = 'timeline-marker';
+                    marker.style.left = `${position}%`;
+                    marker.title = `Año: ${year} (${position.toFixed(1)}%)`;
+                    timelineBar.appendChild(marker);
+                });
+            }
+            
+            // Función para animar el contador de años
+            function animateYearCounter(targetYear) {
+                const startYear = parseInt(yearCounter.textContent);
+                const duration = 800; // 0.8 segundos
+                const increment = targetYear > startYear ? 1 : -1;
+                const range = Math.abs(targetYear - startYear);
+                const stepTime = Math.min(duration / range, 10);
+                
+                let current = startYear;
+                const timer = setInterval(() => {
+                    current += increment;
+                    yearCounter.textContent = current;
                     
-                    // Agregar clase activa al elemento clickeado
-                    this.classList.add('active');
+                    // Aplicar animación de escalado
+                    yearCounter.classList.add('counter-animation');
+                    setTimeout(() => {
+                        yearCounter.classList.remove('counter-animation');
+                    }, 250);
                     
-                    // Aquí iría la lógica para cargar el contenido del directorio seleccionado
+                    if (current === targetYear) {
+                        clearInterval(timer);
+                    }
+                }, stepTime);
+            }
+            
+            // Función para mostrar un slide específico
+            function showSlide(n) {
+                // Ocultar slide actual
+                slides[currentSlide].classList.remove('active');
+                progressDots[currentSlide].classList.remove('active');
+                
+                // Actualizar índice del slide
+                currentSlide = (n + totalSlides) % totalSlides;
+                
+                // Mostrar nuevo slide
+                slides[currentSlide].classList.add('active');
+                progressDots[currentSlide].classList.add('active');
+                
+                // Actualizar año
+                const targetYear = years[currentSlide];
+                animateYearCounter(targetYear);
+                
+                // Actualizar barra de progreso con proporción temporal real
+                const position = calculatePosition(targetYear);
+                timelineProgress.style.width = `${position}%`;
+                
+                // Actualizar posición del contador de año
+                yearCounter.style.left = `${position}%`;
+                
+                // Actualizar estado de los botones
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+            }
+            
+            // Crear marcadores de tiempo proporcionales
+            createTimelineMarkers();
+            
+            // Event listeners para botones
+            nextBtn.addEventListener('click', () => {
+                showSlide(currentSlide + 1);
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                showSlide(currentSlide - 1);
+            });
+            
+            // Event listeners para los puntos de progreso
+            progressDots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    showSlide(index);
                 });
             });
             
-            // Seleccionar imágenes
-            const imageCards = document.querySelectorAll('.image-card');
-            const selectedCount = document.querySelector('.selected-count span');
-            let selectedItems = 0;
+            // Autoavance cada 8 segundos
+            let autoSlide = setInterval(() => {
+                if (currentSlide < totalSlides - 1) {
+                    showSlide(currentSlide + 1);
+                }
+            }, 8000);
             
-            imageCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    
-                    if (this.classList.contains('active')) {
-                        selectedItems++;
-                        this.style.border = "2px solid #00c9ff";
-                    } else {
-                        selectedItems--;
-                        this.style.border = "";
+            // Pausar autoavance cuando el mouse está sobre la presentación
+            const slidesContainer = document.querySelector('.slides-container');
+            slidesContainer.addEventListener('mouseenter', () => {
+                clearInterval(autoSlide);
+            });
+            
+            slidesContainer.addEventListener('mouseleave', () => {
+                autoSlide = setInterval(() => {
+                    if (currentSlide < totalSlides - 1) {
+                        showSlide(currentSlide + 1);
                     }
-                    
-                    selectedCount.textContent = `${selectedItems} ${selectedItems === 1 ? 'elemento' : 'elementos'} seleccionados`;
-                });
+                }, 8000);
             });
         });
     </script>
