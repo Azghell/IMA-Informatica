@@ -332,13 +332,13 @@
                             { title: "Fundamentos de Sistemas Operativos", file: "II_BTP_A/Informatica_Aplicada_I/fundamentos_de_sistemas_operativos.pdf" }
                         ]
                     },
-                    { // Moved Ofimática I to Undécimo
+                    {
                         name: "Ofimática I",
                         topics: [
                             { title: "Procesadores de Texto", file: "II_BTP_A/Ofimatica_I/procesadores_de_texto.pdf" }
                         ]
                     },
-                    { // Moved Análisis y Diseño de Sistemas to Undécimo
+                    {
                         name: "Análisis y Diseño de Sistemas",
                         topics: [
                             { title: "Análisis y Diseño de Sistemas", file: "II_BTP_A/analisis_diseno/analisis_y_diseno_de_sistemas.pdf" },
@@ -518,7 +518,7 @@
             topicDivInformaticaAplicadaI_Undecimo.className = 'absolute left-full top-0 mt-0 w-64 bg-white rounded-lg shadow-lg py-2 opacity-0 invisible group-hover/subject:opacity-100 group-hover/subject:visible transition-all duration-300 ease-in-out transform scale-95 group-hover/subject:scale-100 origin-left';
             topicDivInformaticaAplicadaI_Undecimo.innerHTML = `
                 <a href="II_BTP_A/Informatica_Aplicada_I/sistemas_operativos.html" target="_blank" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-200">Sistemas Operativos</a>
-                <a href="II_BTP_A/Informatica_Aplicada_I/dispositivos_almac.html" target="_blank" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-200">Dispositivos de Almacenamiento</a>
+                <a href="II_BTP_A/Informatica_Aplicada_I/dipositivos_almac.html" target="_blank" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-200">Dispositivos de Almacenamiento</a>
             `;
             subjectSubDivInformaticaAplicadaI_Undecimo.appendChild(topicDivInformaticaAplicadaI_Undecimo);
             subjectDivUndecimo.appendChild(subjectSubDivInformaticaAplicadaI_Undecimo);
@@ -709,7 +709,7 @@
             let topicMenuMobileInformaticaAplicadaI_Undecimo = topicContainerMobileInformaticaAplicadaI_Undecimo.querySelector('div');
             topicMenuMobileInformaticaAplicadaI_Undecimo.innerHTML = `
                 <a href="II_BTP_A/Informatica_Aplicada_I/sistemas_operativos.html" target="_blank" class="block text-gray-500 hover:text-blue-300 text-sm py-1 transition-colors duration-200" onclick="closeMobileMenu()">Sistemas Operativos</a>
-                <a href="II_BTP_A/Informatica_Aplicada_I/dispositivos_almac.html" target="_blank" class="block text-gray-500 hover:text-blue-300 text-sm py-1 transition-colors duration-200" onclick="closeMobileMenu()">Dispositivos de Almacenamiento</a>
+                <a href="II_BTP_A/Informatica_Aplicada_I/dipositivos_almac.html" target="_blank" class="block text-gray-500 hover:text-blue-300 text-sm py-1 transition-colors duration-200" onclick="closeMobileMenu()">Dispositivos de Almacenamiento</a>
             `;
             subjectMenuMobileUndecimo.appendChild(subjectDivMobileInformaticaAplicadaI_Undecimo);
 
@@ -945,7 +945,7 @@
             selectedSubjectData.topics.forEach(topic => {
                 const link = document.createElement('a');
                 link.href = topic.file; // Corrected download link
-                link.download = true; // Suggests download
+                link.download = topic.file.split('/').pop(); // Suggests download with original filename
                 link.className = 'flex items-center justify-between p-4 bg-blue-50 hover:bg-blue-100 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 ease-in-out border border-blue-200';
                 link.innerHTML = `
                     <span class="text-lg font-medium text-blue-800">${topic.title}</span>
