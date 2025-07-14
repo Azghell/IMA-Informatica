@@ -368,6 +368,47 @@ body {
     }
 }
 
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .xp-desktop-icons {
+        display: none; /* Ocultar iconos de escritorio en móvil */
+    }
+    .presentation-container {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        border: none;
+    }
+    .slide-content {
+        padding: 1.5rem;
+        margin: 1rem;
+        width: calc(100% - 2rem);
+    }
+    .slide h2 {
+        font-size: 1.8rem;
+    }
+    .slide p, .slide ul, .slide ol {
+        font-size: 1rem;
+    }
+    .nav-button {
+        padding: 6px 16px;
+        font-size: 0.9rem;
+    }
+    .xp-taskbar {
+        height: 30px;
+    }
+    .xp-start-btn {
+        height: 28px;
+    }
+    .xp-task-btn {
+        height: 28px;
+        font-size: 0.9rem;
+    }
+    .xp-taskbar-clock {
+        font-size: 0.85rem;
+    }
+}
+
 .xp-taskbar {
     position: fixed;
     left: 0;
