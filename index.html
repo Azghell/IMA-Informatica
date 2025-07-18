@@ -182,24 +182,23 @@
 <body class="font-inter antialiased text-gray-900">
 
     <!-- Header -->
-    <header class="bg-white shadow-md py-0 px-1 md:px-3 fixed w-full z-50"> <!-- Reduced vertical padding -->
+    <header class="bg-white shadow-md py-0 px-1 md:px-3 fixed w-full z-50">
         <div class="container mx-auto flex justify-between items-center">
             <!-- Logo -->
-            <a href="#" class="flex items-center space-x-4"> <!-- Adjusted space-x to 4 -->
-                <img src="imagenes/logo.png" alt="Logo" width="120" height="auto"> <!-- Adjusted width -->
+            <a href="index.html" class="flex items-center space-x-4">
+                <img src="imagenes/logo.png" alt="Logo" width="120" height="auto">
                 <span class="text-2xl font-bold text-blue-800">Area de Informatica</span>
             </a>
 
             <!-- Desktop Navigation -->
-            <nav class="hidden md:flex space-x-6"> <!-- Adjusted space-x -->
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Inicio</a>
+            <nav class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Inicio</a>
                 <!-- Nested Dropdown for Grados (Cursos) -->
                 <div class="relative group">
                     <button class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none">
                         Cursos <span class="ml-1 text-xs">&#9662;</span>
                     </button>
                     <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out transform scale-95 group-hover:scale-100 origin-top">
-                        <!-- Grados will be injected here by JS -->
                         <div id="desktop-grades-menu"></div>
                     </div>
                 </div>
@@ -209,17 +208,15 @@
                         Recursos Adicionales <span class="ml-1 text-xs">&#9662;</span>
                     </button>
                     <div class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out transform scale-95 group-hover:scale-100 origin-top">
-                        <!-- Recursos Adicionales will be injected here by JS -->
                         <div id="desktop-additional-resources-menu"></div>
                     </div>
                 </div>
-                <!-- "Aprende Pseudocodigo aqui" link for desktop -->
                 <a href="pseudocode.html" target="_blank" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Pseudocódigo</a>
                 <a href="https://wa.me/50488422786" target="_blank" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Contacto</a>
             </nav>
 
             <!-- Flag Image for Desktop -->
-            <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" width="120" height="auto" class="hidden md:block"> <!-- Adjusted width -->
+            <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" width="120" height="auto" class="hidden md:block">
 
             <!-- Mobile Hamburger Menu -->
             <div class="md:hidden">
@@ -238,8 +235,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-            <nav class="flex flex-col space-y-5 mt-12 w-full px-5"> <!-- Adjusted space-y and mt/px -->
-                <a href="#" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Inicio</a>
+            <nav class="flex flex-col space-y-5 mt-12 w-full px-5">
+                <a href="index.html" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Inicio</a>
                 <!-- Mobile Grados Menu (Cursos) -->
                 <div class="w-full">
                     <button id="mobile-courses-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 flex justify-between items-center transition-colors duration-200">
@@ -264,15 +261,14 @@
                         </div>
                     </div>
                 </div>
-                <!-- "Aprende Pseudocodigo aqui" link for mobile -->
                 <a href="pseudocode.js" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Pseudocódigo</a>
                 <a href="https://wa.me/50488422786" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Contacto</a>
             </nav>
         </div>
     </header>
 
-    <main class="mt-[5rem]"> <!-- Adjusted top margin to compensate for header height -->
-        <!-- Hero Section (Welcome Banner) - Rewritten from scratch -->
+    <main class="mt-[5rem]">
+        <!-- Hero Section (Welcome Banner) -->
         <section class="relative bg-gradient-to-r from-blue-600 to-purple-700 text-white flex items-center justify-center py-20 md:py-28 min-h-[200px]">
             <div class="container mx-auto px-5 text-center z-10">
                 <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-up">
@@ -290,24 +286,74 @@
             </div>
         </section>
 
-        <!-- Content Download Section -->
+        <!-- Combined Content Sections -->
         <section class="py-12 md:py-20 bg-gray-50">
             <div class="container mx-auto px-5 text-center">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-10">
-                    Descarga Contenido de Clases
+                <h2 id="main-content-title" class="text-2xl md:text-3xl font-bold text-gray-800 mb-10">
+                    Contenido y Actividades
                 </h2>
 
-                <div class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xl border border-gray-200">
-                    <div id="content-back-button-container" class="text-left mb-5 hidden">
-                        <button id="content-back-button" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">
-                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                            Volver
-                        </button>
+                <!-- Main content area for download and initial activity menu -->
+                <div id="main-content-sections" class="flex flex-col md:flex-row justify-center items-start gap-8">
+                    <!-- Content Download Section -->
+                    <div id="download-section" class="w-full md:w-1/2 max-w-2xl bg-white p-6 rounded-2xl shadow-xl border border-gray-200">
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-6">
+                            Contenido de Clases
+                        </h3>
+                        <div id="content-back-button-container" class="text-left mb-5 hidden">
+                            <button id="content-back-button" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                                Volver
+                            </button>
+                        </div>
+
+                        <div id="content-display-area" class="min-h-[160px] flex flex-col justify-center items-center">
+                            <!-- Initial button or dynamic content will be injected here -->
+                        </div>
                     </div>
 
-                    <div id="content-display-area" class="min-h-[160px] flex flex-col justify-center items-center">
-                        <!-- Initial button or dynamic content will be injected here -->
+                    <!-- Actividad Práctica Section -->
+                    <div id="activity-section" class="w-full md:w-1/2 max-w-2xl bg-white p-6 rounded-2xl shadow-xl border border-gray-200">
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-6">
+                            Actividades
+                        </h3>
+
+                        <!-- Initial button for Actividades Practicas -->
+                        <div id="initial-activity-menu" class="flex flex-col items-center justify-center min-h-[300px]">
+                            <button id="show-activities-button" class="px-8 py-4 rounded-xl font-bold text-xl
+                                        bg-purple-600 text-white hover:bg-purple-700
+                                        transition-all duration-300 ease-in-out
+                                        shadow-lg hover:shadow-xl transform hover:-translate-y-1
+                                        focus:outline-none focus:ring-4 focus:ring-purple-300">
+                                Ver Actividades Prácticas
+                            </button>
+                        </div>
+
+                        <!-- List of Games Menu -->
+                        <div id="game-list-menu" class="hidden flex-col items-center justify-center min-h-[300px] animate-fade-in-down">
+                            <h4 class="text-xl font-semibold text-gray-700 mb-6">Selecciona una actividad:</h4>
+                            <div class="grid grid-cols-1 gap-4 w-full max-w-sm">
+                                <button id="select-peripherals-game-button" class="px-6 py-3 rounded-xl font-semibold text-lg
+                                            bg-blue-500 text-white hover:bg-blue-600
+                                            transition-all duration-300 ease-in-out
+                                            shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                    Periféricos Entrada/Salida
+                                </button>
+                                <!-- More game buttons can be added here -->
+                            </div>
+                            <button id="back-to-main-activities-button" class="mt-8 px-6 py-3 rounded-xl font-semibold text-base
+                                        bg-gray-600 text-white hover:bg-gray-700
+                                        transition-all duration-300 ease-in-out
+                                        shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-300">
+                                Volver
+                            </button>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Placeholder for dynamically loaded game content -->
+                <div id="dynamically-loaded-game-container" class="hidden max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xl border border-gray-200 mt-10">
+                    <!-- Game HTML will be loaded here -->
                 </div>
             </div>
         </section>
@@ -322,7 +368,7 @@
             <div class="flex justify-center space-x-5">
                 <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Privacidad</a>
                 <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Términos</a>
-                <a href="#" class="text-400 hover:text-white transition-colors duration-200">Soporte</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Soporte</a>
             </div>
         </div>
     </footer>
@@ -386,8 +432,19 @@
 
         // Data for additional resources (HTML files, separate menu)
         const additionalResourcesData = [
-            { title: "Destreza en el teclado", file: "II_BTP_A/Ofimatica_I/articulo-destreza.html" },
-            { title: "Línea de tiempo de la computación", file: "Informatica_I/articulo_lineadetiempo.html" }
+            {
+                category: "Articulos",
+                items: [
+                    { title: "Destreza en el teclado", file: "II_BTP_A/Ofimatica_I/articulo-destreza.html" },
+                    { title: "Línea de tiempo de la computación", file: "Informatica_I/articulo_lineadetiempo.html" }
+                ]
+            },
+            {
+                category: "Actividades Practicas",
+                items: [
+                    { title: "Periféricos Entrada/Salida", action: "load-peripherals-game" } // Action to load the game dynamically
+                ]
+            }
         ];
 
         // Data for downloads (PDF files for download section)
@@ -411,7 +468,7 @@
                         name: "Informática Aplicada I",
                         topics: [
                             { title: "Dispositivos de Almacenamiento", file: "II_BTP_A/Informatica_Aplicada_I/dispositivos_de_almacenamiento.pdf" },
-                            { title: "Fundamentos de Sistemas Operativos", file: "II_BTP_A/Informatica_Aplicada_I/fundamentos_de_sistemas_operativos.pdf" },
+                            { title: "Fundamentos de Sistemas Operativos", file: "II_BTP_A/Informatica_Aplicada_I/sistemas_operativos.pdf" },
                             { title: "Terminal de Comandos", file: "II_BTP_A/Informatica_Aplicada_I/terminal_comando.pdf" } // PDF for download
                         ]
                     },
@@ -634,13 +691,37 @@
             // Render 'Recursos Adicionales'
             const desktopAdditionalResourcesMenu = document.getElementById('desktop-additional-resources-menu');
             desktopAdditionalResourcesMenu.innerHTML = ''; // Clear previous content
-            additionalResourcesData.forEach(resource => {
-                let resourceLink = document.createElement('a');
-                resourceLink.href = resource.file; // HTML for additional resources
-                resourceLink.target = '_blank';
-                resourceLink.className = 'block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-200';
-                resourceLink.textContent = resource.title;
-                desktopAdditionalResourcesMenu.appendChild(resourceLink);
+            additionalResourcesData.forEach(resourceCategory => {
+                let categoryDiv = document.createElement('div');
+                categoryDiv.className = 'relative group/resource-cat';
+                let categoryButton = document.createElement('button');
+                categoryButton.className = 'block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-200 focus:outline-none';
+                categoryButton.innerHTML = `${resourceCategory.category} <span class="float-right text-xs">&#9656;</span>`;
+                categoryDiv.appendChild(categoryButton);
+
+                let itemsDiv = document.createElement('div');
+                itemsDiv.className = 'absolute left-full top-0 mt-0 w-64 bg-white rounded-lg shadow-lg py-2 opacity-0 invisible group-hover/resource-cat:opacity-100 group-hover/resource-cat:visible transition-all duration-300 ease-in-out transform scale-95 group-hover/resource-cat:scale-100 origin-left';
+                
+                resourceCategory.items.forEach(item => {
+                    let itemLink = document.createElement('a');
+                    if (item.action === 'load-peripherals-game') {
+                        itemLink.href = '#'; // Prevent default navigation
+                        itemLink.dataset.action = 'load-peripherals-game';
+                        itemLink.onclick = (e) => {
+                            e.preventDefault();
+                            loadPeripheralsGameFromHeader(); // Call function to load game from header
+                            closeMobileMenu(); // Close menu after selection
+                        };
+                    } else {
+                        itemLink.href = item.file;
+                        itemLink.target = '_blank';
+                    }
+                    itemLink.className = 'block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-200';
+                    itemLink.textContent = item.title;
+                    itemsDiv.appendChild(itemLink);
+                });
+                categoryDiv.appendChild(itemsDiv);
+                desktopAdditionalResourcesMenu.appendChild(categoryDiv);
             });
         }
 
@@ -730,14 +811,66 @@
             });
 
             // Render 'Recursos Adicionales' for mobile
-            additionalResourcesData.forEach(resource => {
-                const resourceLink = document.createElement('a');
-                resourceLink.href = resource.file; // HTML for additional resources
-                resourceLink.target = '_blank';
-                resourceLink.className = 'block px-2 py-1 text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200';
-                resourceLink.textContent = resource.title;
-                resourceLink.onclick = closeMobileMenu; // Close menu when a topic is clicked
-                mobileAdditionalResourcesMenu.appendChild(resourceLink);
+            additionalResourcesData.forEach(resourceCategory => {
+                const categoryToggle = document.createElement('button');
+                categoryToggle.className = 'w-full text-gray-700 hover:text-blue-600 font-semibold text-lg text-left py-2 flex justify-between items-center transition-colors duration-200 border-b border-gray-200';
+                categoryToggle.innerHTML = `${resourceCategory.category} <span class="transform transition-transform duration-300">&#9656;</span>`;
+                mobileAdditionalResourcesMenu.appendChild(categoryToggle);
+
+                const itemsContainer = document.createElement('div');
+                itemsContainer.className = 'mobile-menu-item-container hidden-height pl-4';
+                mobileAdditionalResourcesMenu.appendChild(itemsContainer);
+
+                categoryToggle.addEventListener('click', () => {
+                    // Close currently active category element if different
+                    if (activeMobileGradeElement && activeMobileGradeElement !== itemsContainer) {
+                        activeMobileGradeElement.classList.remove('visible-height');
+                        activeMobileGradeElement.classList.add('hidden-height');
+                        activeMobileGradeElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
+                        activeMobileGradeElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
+                    }
+                    // Toggle current category element
+                    itemsContainer.classList.toggle('hidden-height');
+                    itemsContainer.classList.toggle('visible-height');
+                    categoryToggle.querySelector('span').classList.toggle('rotate-90');
+                    categoryToggle.querySelector('span').classList.toggle('rotate-0');
+                    activeMobileGradeElement = itemsContainer.classList.contains('visible-height') ? itemsContainer : null;
+
+                    // Close other top-level mobile menus
+                    mobileGradesContainer.classList.remove('visible-height');
+                    mobileGradesContainer.classList.add('hidden-height');
+                    mobileCoursesArrow.classList.remove('rotate-90');
+                    mobileCoursesArrow.classList.add('rotate-0');
+
+                    // Close any open sub-menus
+                    if (activeMobileSubjectElement) {
+                        activeMobileSubjectElement.classList.remove('visible-height');
+                        activeMobileSubjectElement.classList.add('hidden-height');
+                        activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
+                        activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
+                        activeMobileSubjectElement = null;
+                    }
+                });
+
+                resourceCategory.items.forEach(item => {
+                    const itemLink = document.createElement('a');
+                    if (item.action === 'load-peripherals-game') {
+                        itemLink.href = '#';
+                        itemLink.dataset.action = 'load-peripherals-game';
+                        itemLink.onclick = (e) => {
+                            e.preventDefault();
+                            loadPeripheralsGameFromHeader();
+                            closeMobileMenu();
+                        };
+                    } else {
+                        itemLink.href = item.file;
+                        itemLink.target = '_blank';
+                    }
+                    itemLink.className = 'block px-2 py-1 text-gray-500 hover:text-blue-400 text-sm transition-colors duration-200';
+                    itemLink.textContent = item.title;
+                    itemLink.onclick = closeMobileMenu; // Close menu when a topic is clicked
+                    itemsContainer.appendChild(itemLink);
+                });
             });
         }
 
@@ -745,6 +878,7 @@
         const contentDisplayArea = document.getElementById('content-display-area');
         const contentBackButtonContainer = document.getElementById('content-back-button-container');
         const contentBackButton = document.getElementById('content-back-button');
+        const downloadSection = document.getElementById('download-section');
 
         function animateContentTransition(callback) {
             contentDisplayArea.classList.add('animate-fade-out-up');
@@ -849,17 +983,112 @@
             });
         });
 
+        // --- DOM Elements for Main Content & Activity Section ---
+        const mainContentSections = document.getElementById('main-content-sections');
+        const mainContentTitle = document.getElementById('main-content-title'); // Title above both sections
+
+        const activitySection = document.getElementById('activity-section');
+        const initialActivityMenu = document.getElementById('initial-activity-menu');
+        const showActivitiesButton = document.getElementById('show-activities-button');
+        const gameListMenu = document.getElementById('game-list-menu');
+        const selectPeripheralsGameButton = document.getElementById('select-peripherals-game-button');
+        const backToMainActivitiesButton = document.getElementById('back-to-main-activities-button');
+        const dynamicallyLoadedGameContainer = document.getElementById('dynamically-loaded-game-container');
+
+        // --- Functions for Activity Section Flow ---
+        function showMainContentSections() {
+            mainContentSections.classList.remove('hidden');
+            mainContentSections.classList.add('flex');
+            dynamicallyLoadedGameContainer.classList.add('hidden');
+            mainContentTitle.textContent = 'Contenido y Actividades';
+            renderInitialActivityButton(); // Ensure activity menu is reset
+        }
+
+        // Function to load the peripherals game HTML and JS
+        async function loadPeripheralsGame() {
+            mainContentSections.classList.add('hidden'); // Hide both download and initial activity sections
+            mainContentSections.classList.remove('flex');
+            dynamicallyLoadedGameContainer.classList.remove('hidden'); // Show only the game container
+            mainContentTitle.textContent = 'Juego de Periféricos'; // Update main title
+
+            try {
+                const htmlResponse = await fetch('juegos/perifericos.html');
+                const gameHtml = await htmlResponse.text();
+                dynamicallyLoadedGameContainer.innerHTML = gameHtml;
+
+                // Dynamically load the game's JavaScript
+                const script = document.createElement('script');
+                script.src = 'js/perifericos_juego.js';
+                script.onload = () => {
+                    // Once the script is loaded, initialize the game elements
+                    if (window.initializePeripheralsGame) {
+                        window.initializePeripheralsGame();
+                    }
+                };
+                // Append the script to the body or the game container
+                dynamicallyLoadedGameContainer.appendChild(script);
+
+            } catch (error) {
+                console.error('Error al cargar el juego de periféricos:', error);
+                dynamicallyLoadedGameContainer.innerHTML = '<p class="text-red-500">Error al cargar el juego. Por favor, inténtalo de nuevo más tarde.</p>';
+                // Optionally, provide a button to return to main content
+                const errorButton = createCustomButton('Volver al Inicio', showMainContentSections, 'mt-4');
+                dynamicallyLoadedGameContainer.appendChild(errorButton);
+            }
+        }
+
+        // This function will be called from the header menu to load the game
+        function loadPeripheralsGameFromHeader() {
+            showMainContentSections(); // Ensure main content areas are visible first
+            loadPeripheralsGame(); // Then load the game itself
+        }
+
+        // This function will be called by the game's JavaScript to return to the main content
+        window.returnToMainContent = function() {
+            dynamicallyLoadedGameContainer.innerHTML = ''; // Clear game content
+            // Remove any dynamically added script tags to prevent re-initialization issues
+            const oldScript = document.querySelector('script[src="js/perifericos_juego.js"]');
+            if (oldScript) {
+                oldScript.remove();
+            }
+            showMainContentSections(); // Return to the main content layout
+            renderInitialActivityButton(); // Show the initial "Ver Actividades Prácticas" button
+        };
+
+        function renderInitialActivityButton() {
+            initialActivityMenu.classList.remove('hidden');
+            initialActivityMenu.classList.add('flex');
+            gameListMenu.classList.add('hidden');
+            gameListMenu.classList.remove('flex');
+            // dynamicallyLoadedGameContainer.classList.add('hidden'); // This is handled by showMainContentSections
+        }
+
+        function renderActivityList() {
+            initialActivityMenu.classList.add('hidden');
+            initialActivityMenu.classList.remove('flex');
+            gameListMenu.classList.remove('hidden');
+            gameListMenu.classList.add('flex');
+            dynamicallyLoadedGameContainer.classList.add('hidden'); // Ensure game is hidden
+            mainContentTitle.textContent = 'Actividades'; // Update main title
+        }
+
+        // Event Listeners for Activity Section Navigation
+        showActivitiesButton.addEventListener('click', renderActivityList);
+        selectPeripheralsGameButton.addEventListener('click', loadPeripheralsGame); // Call load function
+        backToMainActivitiesButton.addEventListener('click', renderInitialActivityButton);
+
         // --- Initialize on DOMContentLoaded ---
         document.addEventListener('DOMContentLoaded', () => {
             // Set current year in footer
             document.getElementById('current-year').textContent = new Date().getFullYear();
 
-            // Render initial content for download section
-            renderInitialContentButton();
-
             // Render desktop and mobile navigation menus
             renderDesktopNav();
             renderMobileNav();
+
+            // Initialize content sections: show download initial button and activity initial button
+            renderInitialContentButton();
+            renderInitialActivityButton(); // This will also ensure main content sections are visible
         });
     </script>
 </body>
