@@ -176,13 +176,19 @@
         /* Ensure header is at the very top */
         header {
             top: 0 !important;
+            transition: transform 0.3s ease-in-out; /* Smooth transition for hiding/showing */
+        }
+
+        /* Class to hide the header */
+        .header-hidden {
+            transform: translateY(-100%); /* Move header completely out of view */
         }
     </style>
 </head>
 <body class="font-inter antialiased text-gray-900">
 
     <!-- Header -->
-    <header class="bg-white shadow-md py-0 px-1 md:px-3 fixed w-full z-50">
+    <header id="main-header" class="bg-white shadow-md py-0 px-1 md:px-3 fixed w-full z-50">
         <div class="container mx-auto flex justify-between items-center">
             <!-- Logo -->
             <a href="index.html" class="flex items-center space-x-4">
@@ -1006,6 +1012,9 @@
 
         // Function to load the peripherals game HTML and JS
         async function loadPeripheralsGame() {
+            // Hide the header immediately when loading the game
+            mainHeader.classList.add('header-hidden');
+
             mainContentSections.classList.add('hidden'); // Hide both download and initial activity sections
             mainContentSections.classList.remove('flex');
             dynamicallyLoadedGameContainer.classList.remove('hidden'); // Show only the game container
@@ -1045,6 +1054,9 @@
 
         // This function will be called by the game's JavaScript to return to the main content
         window.returnToMainContent = function() {
+            // Show the header immediately when returning to main content
+            mainHeader.classList.remove('header-hidden');
+
             dynamicallyLoadedGameContainer.innerHTML = ''; // Clear game content
             // Remove any dynamically added script tags to prevent re-initialization issues
             const oldScript = document.querySelector('script[src="js/perifericos_juego.js"]');
@@ -1076,6 +1088,25 @@
         showActivitiesButton.addEventListener('click', renderActivityList);
         selectPeripheralsGameButton.addEventListener('click', loadPeripheralsGame); // Call load function
         backToMainActivitiesButton.addEventListener('click', renderInitialActivityButton);
+
+        // --- Header Hide/Show on Scroll Logic ---
+        const mainHeader = document.getElementById('main-header');
+        let lastScrollTop = 0;
+        const scrollThreshold = 50; // Pixels to scroll before header hides/shows
+
+        window.addEventListener('scroll', () => {
+            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScrollTop > lastScrollTop && currentScrollTop > mainHeader.offsetHeight + scrollThreshold) {
+                // Scrolling down
+                mainHeader.classList.add('header-hidden');
+            } else if (currentScrollTop < lastScrollTop) {
+                // Scrolling up
+                mainHeader.classList.remove('header-hidden');
+            }
+            lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+        });
+
 
         // --- Initialize on DOMContentLoaded ---
         document.addEventListener('DOMContentLoaded', () => {
