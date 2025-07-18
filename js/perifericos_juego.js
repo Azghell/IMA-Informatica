@@ -31,7 +31,7 @@ let startTime;
 let gameStarted = false;
 let answerBlocked = false; // To prevent multiple clicks on answer buttons for a single question
 
-// DOM Elements for Game - These will be available after the HTML is loaded
+// DOM Elements for Game - These will be assigned inside initializePeripheralsGame
 let startMenu;
 let startGameButton;
 let gamePlayArea;
@@ -47,11 +47,9 @@ let resultScreen;
 let correctAnswersDisplay;
 let incorrectAnswersDisplay;
 let finalTimeDisplay;
-let retryGameButton;
-let exitGameButton;
-let totalAttemptsDisplay; // New: Total Attempts display
-let bestScoreDisplay;     // New: Best Score display
-let gameHistoryList;      // New: Game History List
+let totalAttemptsDisplay; // Total Attempts display
+let bestScoreDisplay;     // Best Score display
+let gameHistoryList;      // Game History List
 
 let localGameStorage; // Variable to hold the gameDataStorage object passed from index.html
 
@@ -60,6 +58,7 @@ let localGameStorage; // Variable to hold the gameDataStorage object passed from
 function initializePeripheralsGame(gameDataStorage) {
     localGameStorage = gameDataStorage; // Store the passed object
 
+    // Assign DOM elements AFTER the HTML is loaded into the container
     startMenu = document.getElementById('start-menu');
     startGameButton = document.getElementById('start-game-button');
     gamePlayArea = document.getElementById('game-play-area');
@@ -75,17 +74,27 @@ function initializePeripheralsGame(gameDataStorage) {
     correctAnswersDisplay = document.getElementById('correct-answers');
     incorrectAnswersDisplay = document.getElementById('incorrect-answers');
     finalTimeDisplay = document.getElementById('final-time');
-    retryGameButton = document.getElementById('retry-game-button');
-    exitGameButton = document.getElementById('exit-game-button');
-    totalAttemptsDisplay = document.getElementById('total-attempts'); // Get new elements
-    bestScoreDisplay = document.getElementById('best-score');         // Get new elements
-    gameHistoryList = document.getElementById('game-history-list');   // Get new elements
+    totalAttemptsDisplay = document.getElementById('total-attempts'); 
+    bestScoreDisplay = document.getElementById('best-score');         
+    gameHistoryList = document.getElementById('game-history-list');   
+
+    // Console log to confirm initialization and element finding
+    console.log("initializePeripheralsGame: Elementos DOM inicializados.");
+    if (!startMenu || !startGameButton || !correctAnswersDisplay) {
+        console.error("initializePeripheralsGame: ¡ERROR! No se encontraron todos los elementos DOM esperados.");
+    }
 
     // Attach Event Listeners
     startGameButton.addEventListener('click', startGame);
     endGameButton.addEventListener('click', endGame);
     retryGameButton.addEventListener('click', resetGame);
-    exitGameButton.addEventListener('click', exitGame);
+    // Ensure exitGame is called from the window object
+    document.getElementById('exit-game-button').addEventListener('click', () => {
+        if (window.returnToMainContent) {
+            window.returnToMainContent();
+        }
+    });
+
 
     answerButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -248,6 +257,9 @@ function endGame() {
         timestamp: new Date().toISOString() // ISO string for easy sorting and display
     };
 
+    // Console log to verify values before display
+    console.log(`endGame: Puntuación final: ${score}, Errores finales: ${errors}, Tiempo final: ${formatTime(finalTimeSeconds)}`);
+
     // Save the current game session
     if (localGameStorage) {
         localGameStorage.saveGameSession('peripheralsGame', sessionData);
@@ -295,15 +307,10 @@ function resetGame() {
         bestScoreDisplay.textContent = localGameStorage.getBestScore('peripheralsGame');
         gameHistoryList.innerHTML = '<li class="text-sm text-gray-500">No hay historial de juegos.</li>'; // Clear history on reset
     }
-}
-
-// Function to call the main index.html to return to main content
-function exitGame() {
-    resetGame(); // Reset game state
-    // Call a function defined in the global scope of index.html
-    if (window.returnToMainContent) {
-        window.returnToMainContent();
-    }
+    // Also reset correct/incorrect answers display on reset
+    correctAnswersDisplay.textContent = 0;
+    incorrectAnswersDisplay.textContent = 0;
+    finalTimeDisplay.textContent = '00:00';
 }
 
 // Expose initializePeripheralsGame to the global scope so index.html can call it
