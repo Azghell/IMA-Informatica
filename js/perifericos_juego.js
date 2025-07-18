@@ -49,9 +49,17 @@ let incorrectAnswersDisplay;
 let finalTimeDisplay;
 let retryGameButton;
 let exitGameButton;
+let totalAttemptsDisplay; // New: Total Attempts display
+let bestScoreDisplay;     // New: Best Score display
+let gameHistoryList;      // New: Game History List
+
+let localGameStorage; // Variable to hold the gameDataStorage object passed from index.html
 
 // Function to initialize DOM elements and attach event listeners
-function initializeGameElements() {
+// This function now accepts the gameDataStorage object
+function initializePeripheralsGame(gameDataStorage) {
+    localGameStorage = gameDataStorage; // Store the passed object
+
     startMenu = document.getElementById('start-menu');
     startGameButton = document.getElementById('start-game-button');
     gamePlayArea = document.getElementById('game-play-area');
@@ -69,6 +77,9 @@ function initializeGameElements() {
     finalTimeDisplay = document.getElementById('final-time');
     retryGameButton = document.getElementById('retry-game-button');
     exitGameButton = document.getElementById('exit-game-button');
+    totalAttemptsDisplay = document.getElementById('total-attempts'); // Get new elements
+    bestScoreDisplay = document.getElementById('best-score');         // Get new elements
+    gameHistoryList = document.getElementById('game-history-list');   // Get new elements
 
     // Attach Event Listeners
     startGameButton.addEventListener('click', startGame);
@@ -229,6 +240,39 @@ function endGame() {
     resultScreen.classList.remove('hidden');
     resultScreen.classList.add('flex');
 
+    const finalTimeSeconds = Math.floor((Date.now() - startTime) / 1000);
+    const sessionData = {
+        score: score,
+        errors: errors,
+        time: formatTime(finalTimeSeconds),
+        timestamp: new Date().toISOString() // ISO string for easy sorting and display
+    };
+
+    // Save the current game session
+    if (localGameStorage) {
+        localGameStorage.saveGameSession('peripheralsGame', sessionData);
+        // Update display with aggregated stats
+        totalAttemptsDisplay.textContent = localGameStorage.getTotalAttempts('peripheralsGame');
+        bestScoreDisplay.textContent = localGameStorage.getBestScore('peripheralsGame');
+        
+        // Display recent history
+        const history = localGameStorage.getGameHistory('peripheralsGame').slice(-5).reverse(); // Last 5, most recent first
+        gameHistoryList.innerHTML = ''; // Clear previous history
+        if (history.length > 0) {
+            history.forEach((session, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'text-sm text-gray-600 mb-1';
+                const date = new Date(session.timestamp).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                const time = new Date(session.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                listItem.textContent = `Intento ${history.length - index}: Puntos: ${session.score}, Errores: ${session.errors}, Tiempo: ${session.time} (${date} ${time})`;
+                gameHistoryList.appendChild(listItem);
+            });
+        } else {
+            gameHistoryList.innerHTML = '<li class="text-sm text-gray-500">No hay historial de juegos.</li>';
+        }
+    }
+
+
     correctAnswersDisplay.textContent = score;
     incorrectAnswersDisplay.textContent = errors;
     finalTimeDisplay.textContent = timerDisplay.textContent;
@@ -244,6 +288,13 @@ function resetGame() {
     timerDisplay.textContent = '00:00';
     peripheralCard.classList.remove('border-green-500', 'border-red-500'); // Reset border color
     clearInterval(timerInterval); // Ensure timer is stopped
+
+    // Update initial stats display
+    if (localGameStorage) {
+        totalAttemptsDisplay.textContent = localGameStorage.getTotalAttempts('peripheralsGame');
+        bestScoreDisplay.textContent = localGameStorage.getBestScore('peripheralsGame');
+        gameHistoryList.innerHTML = '<li class="text-sm text-gray-500">No hay historial de juegos.</li>'; // Clear history on reset
+    }
 }
 
 // Function to call the main index.html to return to main content
@@ -255,5 +306,5 @@ function exitGame() {
     }
 }
 
-// Expose initializeGameElements to the global scope so index.html can call it
-window.initializePeripheralsGame = initializeGameElements;
+// Expose initializePeripheralsGame to the global scope so index.html can call it
+window.initializePeripheralsGame = initializePeripheralsGame;
