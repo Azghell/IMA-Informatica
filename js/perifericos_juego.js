@@ -58,55 +58,65 @@ let localGameStorage; // Variable to hold the gameDataStorage object passed from
 function initializePeripheralsGame(gameDataStorage) {
     localGameStorage = gameDataStorage; // Store the passed object
 
-    // Assign DOM elements AFTER the HTML is loaded into the container
-    startMenu = document.getElementById('start-menu');
-    startGameButton = document.getElementById('start-game-button');
-    gamePlayArea = document.getElementById('game-play-area');
-    timerDisplay = document.getElementById('timer');
-    scoreDisplay = document.getElementById('score-display');
-    peripheralCard = document.getElementById('peripheral-card');
-    peripheralImage = document.getElementById('peripheral-image');
-    peripheralName = document.getElementById('peripheral-name');
-    peripheralDescription = document.getElementById('peripheral-description');
-    answerButtons = document.querySelectorAll('.answer-button'); // Re-query
-    endGameButton = document.getElementById('end-game-button');
-    resultScreen = document.getElementById('result-screen');
-    correctAnswersDisplay = document.getElementById('correct-answers');
-    incorrectAnswersDisplay = document.getElementById('incorrect-answers');
-    finalTimeDisplay = document.getElementById('final-time');
-    totalAttemptsDisplay = document.getElementById('total-attempts'); 
-    bestScoreDisplay = document.getElementById('best-score');         
-    gameHistoryList = document.getElementById('game-history-list');   
-
-    // Console log to confirm initialization and element finding
-    console.log("initializePeripheralsGame: Elementos DOM inicializados.");
-    if (!startMenu || !startGameButton || !correctAnswersDisplay || !totalAttemptsDisplay) {
-        console.error("initializePeripheralsGame: ¡ERROR! No se encontraron todos los elementos DOM esperados. Esto podría causar errores.");
-    }
-
-    // Attach Event Listeners
-    startGameButton.addEventListener('click', startGame);
-    endGameButton.addEventListener('click', endGame);
-    retryGameButton.addEventListener('click', resetGame);
-    
-    // Simplified exit logic: reset game state and then return to main content
-    document.getElementById('exit-game-button').addEventListener('click', () => {
-        resetGame(); // Ensure game state is reset
-        if (window.returnToMainContent) {
-            window.returnToMainContent();
-        }
-    });
-
-    answerButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            checkAnswer(button.dataset.type);
-        });
-    });
-
-    // Initial state for the game, with a slight delay to ensure DOM is ready
+    // Use a setTimeout to ensure all DOM elements are parsed and available
+    // before attempting to get their references and attach listeners.
     setTimeout(() => {
+        // Assign DOM elements AFTER the HTML is loaded into the container
+        startMenu = document.getElementById('start-menu');
+        startGameButton = document.getElementById('start-game-button');
+        gamePlayArea = document.getElementById('game-play-area');
+        timerDisplay = document.getElementById('timer');
+        scoreDisplay = document.getElementById('score-display');
+        peripheralCard = document.getElementById('peripheral-card');
+        peripheralImage = document.getElementById('peripheral-image');
+        peripheralName = document.getElementById('peripheral-name');
+        peripheralDescription = document.getElementById('peripheral-description');
+        answerButtons = document.querySelectorAll('.answer-button'); // Re-query
+        endGameButton = document.getElementById('end-game-button');
+        resultScreen = document.getElementById('result-screen');
+        correctAnswersDisplay = document.getElementById('correct-answers');
+        incorrectAnswersDisplay = document.getElementById('incorrect-answers');
+        finalTimeDisplay = document.getElementById('final-time');
+        totalAttemptsDisplay = document.getElementById('total-attempts'); 
+        bestScoreDisplay = document.getElementById('best-score');         
+        gameHistoryList = document.getElementById('game-history-list');   
+
+        // Console log to confirm initialization and element finding
+        console.log("initializePeripheralsGame: Elementos DOM inicializados.");
+        if (!startMenu || !startGameButton || !correctAnswersDisplay || !totalAttemptsDisplay) {
+            console.error("initializePeripheralsGame: ¡ERROR! No se encontraron todos los elementos DOM esperados. Esto podría causar errores.");
+        }
+
+        // Attach Event Listeners - MOVED INSIDE THIS setTimeout
+        if (startGameButton) startGameButton.addEventListener('click', startGame);
+        if (endGameButton) endGameButton.addEventListener('click', endGame);
+        // Ensure retryGameButton is not null before attaching listener
+        const retryGameButton = document.getElementById('retry-game-button'); // Re-get inside here
+        if (retryGameButton) retryGameButton.addEventListener('click', resetGame);
+        
+        // Simplified exit logic: reset game state and then return to main content
+        const exitGameButton = document.getElementById('exit-game-button'); // Re-get inside here
+        if (exitGameButton) {
+            exitGameButton.addEventListener('click', () => {
+                resetGame(); // Ensure game state is reset
+                if (window.returnToMainContent) {
+                    window.returnToMainContent();
+                }
+            });
+        }
+
+        if (answerButtons) {
+            answerButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    checkAnswer(button.dataset.type);
+                });
+            });
+        }
+
+        // Initial state for the game, now that elements are guaranteed to be ready
         resetGame();
-    }, 50); // 50ms delay
+
+    }, 200); // 200ms delay to ensure DOM is fully ready
 }
 
 
@@ -126,40 +136,46 @@ function formatTime(seconds) {
 }
 
 function updateTimer() {
-    const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-    timerDisplay.textContent = formatTime(elapsedTime);
+    if (timerDisplay) { // Add check here too, though less likely to be null after init
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        timerDisplay.textContent = formatTime(elapsedTime);
+    }
 }
 
 function displayPeripheral() {
     if (currentPeripheralIndex < shuffledPeripherals.length) {
         const peripheral = shuffledPeripherals[currentPeripheralIndex];
-        peripheralName.textContent = peripheral.name;
-        peripheralDescription.textContent = peripheral.description;
-        if (peripheral.image) {
+        if (peripheralName) peripheralName.textContent = peripheral.name;
+        if (peripheralDescription) peripheralDescription.textContent = peripheral.description;
+        if (peripheral.image && peripheralImage) {
             peripheralImage.src = peripheral.image;
             peripheralImage.classList.remove('hidden');
             // Fallback for image loading errors
             peripheralImage.onerror = function() {
                 this.src = `https://placehold.co/200x200/cccccc/000000?text=${encodeURIComponent(peripheral.name)}`;
             };
-        } else {
+        } else if (peripheralImage) {
             peripheralImage.classList.add('hidden');
         }
-        peripheralCard.classList.remove('border-green-500', 'border-red-500'); // Reset border color
-        answerButtons.forEach(button => {
-            button.disabled = false; // Enable buttons
-            button.classList.remove('opacity-50', 'bg-green-700', 'bg-red-700', 'bg-purple-700', 'bg-blue-700'); // Reset button styles
-            button.classList.add(
-                button.dataset.type === 'entrada' ? 'bg-blue-500' :
-                button.dataset.type === 'salida' ? 'bg-red-500' :
-                button.dataset.type === 'ambos' ? 'bg-purple-500' : 'bg-green-500'
-            );
-            button.classList.add(
-                button.dataset.type === 'entrada' ? 'hover:bg-blue-600' :
-                button.dataset.type === 'salida' ? 'hover:bg-red-600' :
-                button.dataset.type === 'ambos' ? 'hover:bg-purple-600' : 'hover:bg-green-600'
-            );
-        });
+        if (peripheralCard) peripheralCard.classList.remove('border-green-500', 'border-red-500'); // Reset border color
+        
+        // Ensure answerButtons is not null before iterating
+        if (answerButtons) {
+            answerButtons.forEach(button => {
+                button.disabled = false; // Enable buttons
+                button.classList.remove('opacity-50', 'bg-green-700', 'bg-red-700', 'bg-purple-700', 'bg-blue-700'); // Reset button styles
+                button.classList.add(
+                    button.dataset.type === 'entrada' ? 'bg-blue-500' :
+                    button.dataset.type === 'salida' ? 'bg-red-500' :
+                    button.dataset.type === 'ambos' ? 'bg-purple-500' : 'bg-green-500'
+                );
+                button.classList.add(
+                    button.dataset.type === 'entrada' ? 'hover:bg-blue-600' :
+                    button.dataset.type === 'salida' ? 'hover:bg-red-600' :
+                    button.dataset.type === 'ambos' ? 'hover:bg-purple-600' : 'hover:bg-green-600'
+                );
+            });
+        }
         answerBlocked = false; // Allow answering for the new peripheral
     } else {
         endGame(); // End game if no more peripherals
@@ -174,11 +190,11 @@ function checkAnswer(selectedType) {
     const correctType = peripheral.correctType;
     const selectedButton = document.querySelector(`.answer-button[data-type="${selectedType}"]`);
 
-    answerButtons.forEach(button => button.disabled = true); // Disable all answer buttons immediately
+    if (answerButtons) answerButtons.forEach(button => button.disabled = true); // Disable all answer buttons immediately
 
     if (selectedType === correctType) {
         score++;
-        peripheralCard.classList.add('border-green-500');
+        if (peripheralCard) peripheralCard.classList.add('border-green-500');
         if (selectedButton) {
             selectedButton.classList.remove(
                 selectedButton.dataset.type === 'entrada' ? 'bg-blue-500' :
@@ -190,7 +206,7 @@ function checkAnswer(selectedType) {
     } else {
         errors++;
         score--; // Deduct a point for incorrect answer
-        peripheralCard.classList.add('border-red-500');
+        if (peripheralCard) peripheralCard.classList.add('border-red-500');
         if (selectedButton) {
             selectedButton.classList.remove(
                 selectedButton.dataset.type === 'entrada' ? 'bg-blue-500' :
@@ -210,7 +226,7 @@ function checkAnswer(selectedType) {
             correctAnswerButton.classList.add('bg-green-700'); // Or a distinct highlight color
         }
     }
-    scoreDisplay.textContent = score;
+    if (scoreDisplay) scoreDisplay.textContent = score;
 
     // Auto-advance to the next peripheral after a shorter delay
     setTimeout(() => {
@@ -224,19 +240,19 @@ function checkAnswer(selectedType) {
 }
 
 function startGame() {
-    startMenu.classList.add('hidden');
-    startMenu.classList.remove('flex'); // Ensure flex is removed
-    gamePlayArea.classList.remove('hidden');
-    gamePlayArea.classList.add('flex');
-    resultScreen.classList.add('hidden');
-    resultScreen.classList.remove('flex'); // Ensure flex is removed
+    if (startMenu) startMenu.classList.add('hidden');
+    if (startMenu) startMenu.classList.remove('flex'); // Ensure flex is removed
+    if (gamePlayArea) gamePlayArea.classList.remove('hidden');
+    if (gamePlayArea) gamePlayArea.classList.add('flex');
+    if (resultScreen) resultScreen.classList.add('hidden');
+    if (resultScreen) resultScreen.classList.remove('flex'); // Ensure flex is removed
 
     shuffledPeripherals = shuffleArray([...peripherals]); // Create a shuffled copy
     currentPeripheralIndex = 0;
     score = 0;
     errors = 0;
-    scoreDisplay.textContent = score;
-    timerDisplay.textContent = '00:00'; // Reset timer display
+    if (scoreDisplay) scoreDisplay.textContent = score;
+    if (timerDisplay) timerDisplay.textContent = '00:00'; // Reset timer display
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 1000);
     gameStarted = true;
@@ -247,10 +263,10 @@ function endGame() {
     clearInterval(timerInterval);
     gameStarted = false;
 
-    gamePlayArea.classList.add('hidden');
-    gamePlayArea.classList.remove('flex');
-    resultScreen.classList.remove('hidden');
-    resultScreen.classList.add('flex');
+    if (gamePlayArea) gamePlayArea.classList.add('hidden');
+    if (gamePlayArea) gamePlayArea.classList.remove('flex');
+    if (resultScreen) resultScreen.classList.remove('hidden');
+    if (resultScreen) resultScreen.classList.add('flex');
 
     const finalTimeSeconds = Math.floor((Date.now() - startTime) / 1000);
     const sessionData = {
@@ -296,14 +312,14 @@ function endGame() {
 }
 
 function resetGame() {
-    startMenu.classList.remove('hidden');
-    startMenu.classList.add('flex');
-    gamePlayArea.classList.add('hidden');
-    gamePlayArea.classList.remove('flex');
-    resultScreen.classList.add('hidden');
-    resultScreen.classList.remove('flex');
-    timerDisplay.textContent = '00:00';
-    peripheralCard.classList.remove('border-green-500', 'border-red-500'); // Reset border color
+    if (startMenu) startMenu.classList.remove('hidden');
+    if (startMenu) startMenu.classList.add('flex');
+    if (gamePlayArea) gamePlayArea.classList.add('hidden');
+    if (gamePlayArea) gamePlayArea.classList.remove('flex');
+    if (resultScreen) resultScreen.classList.add('hidden');
+    if (resultScreen) resultScreen.classList.remove('flex');
+    if (timerDisplay) timerDisplay.textContent = '00:00';
+    if (peripheralCard) peripheralCard.classList.remove('border-green-500', 'border-red-500'); // Reset border color
     clearInterval(timerInterval); // Ensure timer is stopped
 
     // Update initial stats display
