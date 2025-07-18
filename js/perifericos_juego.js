@@ -80,21 +80,22 @@ function initializePeripheralsGame(gameDataStorage) {
 
     // Console log to confirm initialization and element finding
     console.log("initializePeripheralsGame: Elementos DOM inicializados.");
-    if (!startMenu || !startGameButton || !correctAnswersDisplay) {
-        console.error("initializePeripheralsGame: ¡ERROR! No se encontraron todos los elementos DOM esperados.");
+    if (!startMenu || !startGameButton || !correctAnswersDisplay || !totalAttemptsDisplay) {
+        console.error("initializePeripheralsGame: ¡ERROR! No se encontraron todos los elementos DOM esperados. Esto podría causar errores.");
     }
 
     // Attach Event Listeners
     startGameButton.addEventListener('click', startGame);
     endGameButton.addEventListener('click', endGame);
     retryGameButton.addEventListener('click', resetGame);
-    // Ensure exitGame is called from the window object
+    
+    // Simplified exit logic: reset game state and then return to main content
     document.getElementById('exit-game-button').addEventListener('click', () => {
+        resetGame(); // Ensure game state is reset
         if (window.returnToMainContent) {
             window.returnToMainContent();
         }
     });
-
 
     answerButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -102,8 +103,10 @@ function initializePeripheralsGame(gameDataStorage) {
         });
     });
 
-    // Initial state for the game
-    resetGame();
+    // Initial state for the game, with a slight delay to ensure DOM is ready
+    setTimeout(() => {
+        resetGame();
+    }, 50); // 50ms delay
 }
 
 
@@ -264,30 +267,32 @@ function endGame() {
     if (localGameStorage) {
         localGameStorage.saveGameSession('peripheralsGame', sessionData);
         // Update display with aggregated stats
-        totalAttemptsDisplay.textContent = localGameStorage.getTotalAttempts('peripheralsGame');
-        bestScoreDisplay.textContent = localGameStorage.getBestScore('peripheralsGame');
+        if (totalAttemptsDisplay) totalAttemptsDisplay.textContent = localGameStorage.getTotalAttempts('peripheralsGame');
+        if (bestScoreDisplay) bestScoreDisplay.textContent = localGameStorage.getBestScore('peripheralsGame');
         
         // Display recent history
         const history = localGameStorage.getGameHistory('peripheralsGame').slice(-5).reverse(); // Last 5, most recent first
-        gameHistoryList.innerHTML = ''; // Clear previous history
-        if (history.length > 0) {
-            history.forEach((session, index) => {
-                const listItem = document.createElement('li');
-                listItem.className = 'text-sm text-gray-600 mb-1';
-                const date = new Date(session.timestamp).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                const time = new Date(session.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-                listItem.textContent = `Intento ${history.length - index}: Puntos: ${session.score}, Errores: ${session.errors}, Tiempo: ${session.time} (${date} ${time})`;
-                gameHistoryList.appendChild(listItem);
-            });
-        } else {
-            gameHistoryList.innerHTML = '<li class="text-sm text-gray-500">No hay historial de juegos.</li>';
+        if (gameHistoryList) {
+            gameHistoryList.innerHTML = ''; // Clear previous history
+            if (history.length > 0) {
+                history.forEach((session, index) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'text-sm text-gray-600 mb-1';
+                    const date = new Date(session.timestamp).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                    const time = new Date(session.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                    listItem.textContent = `Intento ${history.length - index}: Puntos: ${session.score}, Errores: ${session.errors}, Tiempo: ${session.time} (${date} ${time})`;
+                    gameHistoryList.appendChild(listItem);
+                });
+            } else {
+                gameHistoryList.innerHTML = '<li class="text-sm text-gray-500">No hay historial de juegos.</li>';
+            }
         }
     }
 
 
-    correctAnswersDisplay.textContent = score;
-    incorrectAnswersDisplay.textContent = errors;
-    finalTimeDisplay.textContent = timerDisplay.textContent;
+    if (correctAnswersDisplay) correctAnswersDisplay.textContent = score;
+    if (incorrectAnswersDisplay) incorrectAnswersDisplay.textContent = errors;
+    if (finalTimeDisplay) finalTimeDisplay.textContent = timerDisplay.textContent;
 }
 
 function resetGame() {
@@ -303,14 +308,14 @@ function resetGame() {
 
     // Update initial stats display
     if (localGameStorage) {
-        totalAttemptsDisplay.textContent = localGameStorage.getTotalAttempts('peripheralsGame');
-        bestScoreDisplay.textContent = localGameStorage.getBestScore('peripheralsGame');
-        gameHistoryList.innerHTML = '<li class="text-sm text-gray-500">No hay historial de juegos.</li>'; // Clear history on reset
+        if (totalAttemptsDisplay) totalAttemptsDisplay.textContent = localGameStorage.getTotalAttempts('peripheralsGame');
+        if (bestScoreDisplay) bestScoreDisplay.textContent = localGameStorage.getBestScore('peripheralsGame');
+        if (gameHistoryList) gameHistoryList.innerHTML = '<li class="text-sm text-gray-500">No hay historial de juegos.</li>'; // Clear history on reset
     }
     // Also reset correct/incorrect answers display on reset
-    correctAnswersDisplay.textContent = 0;
-    incorrectAnswersDisplay.textContent = 0;
-    finalTimeDisplay.textContent = '00:00';
+    if (correctAnswersDisplay) correctAnswersDisplay.textContent = 0;
+    if (incorrectAnswersDisplay) incorrectAnswersDisplay.textContent = 0;
+    if (finalTimeDisplay) finalTimeDisplay.textContent = '00:00';
 }
 
 // Expose initializePeripheralsGame to the global scope so index.html can call it
