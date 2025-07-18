@@ -1001,6 +1001,61 @@
         const backToMainActivitiesButton = document.getElementById('back-to-main-activities-button');
         const dynamicallyLoadedGameContainer = document.getElementById('dynamically-loaded-game-container');
 
+        // --- Game Data Storage Logic ---
+        const gameDataStorage = {
+            localStorageKey: 'gameProgressData',
+            
+            // Loads all game data from Local Storage
+            loadAllGameData() {
+                try {
+                    const data = localStorage.getItem(this.localStorageKey);
+                    return data ? JSON.parse(data) : {};
+                } catch (e) {
+                    console.error("Error loading game data from localStorage:", e);
+                    return {};
+                }
+            },
+
+            // Saves all game data to Local Storage
+            saveAllGameData(data) {
+                try {
+                    localStorage.setItem(this.localStorageKey, JSON.stringify(data));
+                } catch (e) {
+                    console.error("Error saving game data to localStorage:", e);
+                }
+            },
+
+            // Saves a single game session for a specific gameId
+            saveGameSession(gameId, sessionData) {
+                const allGameData = this.loadAllGameData();
+                if (!allGameData[gameId]) {
+                    allGameData[gameId] = [];
+                }
+                allGameData[gameId].push(sessionData);
+                this.saveAllGameData(allGameData);
+            },
+
+            // Gets the history of sessions for a specific gameId
+            getGameHistory(gameId) {
+                const allGameData = this.loadAllGameData();
+                return allGameData[gameId] || [];
+            },
+
+            // Gets the total number of attempts for a specific gameId
+            getTotalAttempts(gameId) {
+                return this.getGameHistory(gameId).length;
+            },
+
+            // Gets the best score for a specific gameId
+            getBestScore(gameId) {
+                const history = this.getGameHistory(gameId);
+                if (history.length === 0) {
+                    return 0;
+                }
+                return Math.max(...history.map(session => session.score));
+            }
+        };
+
         // --- Functions for Activity Section Flow ---
         function showMainContentSections() {
             mainContentSections.classList.remove('hidden');
@@ -1029,9 +1084,9 @@
                 const script = document.createElement('script');
                 script.src = 'js/perifericos_juego.js';
                 script.onload = () => {
-                    // Once the script is loaded, initialize the game elements
+                    // Once the script is loaded, initialize the game elements and pass gameDataStorage
                     if (window.initializePeripheralsGame) {
-                        window.initializePeripheralsGame();
+                        window.initializePeripheralsGame(gameDataStorage); // Pass the storage object
                     }
                 };
                 // Append the script to the body or the game container
