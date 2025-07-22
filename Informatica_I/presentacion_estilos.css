@@ -5,7 +5,9 @@ body {
 }
 
 header {
-    font-size: 90%;
+    font-size: 120%;
+    height: auto;
+    min-height: 0;
 }
 
 footer {
