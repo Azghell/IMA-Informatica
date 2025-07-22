@@ -1237,7 +1237,7 @@
         let lastScrollTop = 0;
         const scrollThreshold = 50; // Pixels to scroll before header hides/shows
 
-        window.addEventListener('scroll', () => {
+        function handleScroll() {
             const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
             if (currentScrollTop > lastScrollTop && currentScrollTop > mainHeader.offsetHeight + scrollThreshold) {
@@ -1248,6 +1248,15 @@
                 mainHeader.classList.remove('header-hidden');
             }
             lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('keydown', function(e) {
+            if (e.key === "ArrowDown") {
+                mainHeader.classList.add('header-hidden');
+            } else if (e.key === "ArrowUp") {
+                mainHeader.classList.remove('header-hidden');
+            }
         });
 
 
