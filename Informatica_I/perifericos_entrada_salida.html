@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="presentacion_estilos.css">
+    <link rel="stylesheet" href="fullscreen_styles.css">
     <style>
         /* Reduce base font size for overall scaling */
         html {
@@ -337,12 +339,86 @@
         .header-hidden {
             transform: translateY(-100%); /* Move header completely out of view */
         }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh; /* Full viewport height */
+            background-color: white;
+            z-index: 40;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 2rem;
+            animation: fadeInDown 0.5s ease-out forwards;
+        }
+
+        .mobile-menu-item-container {
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .mobile-menu-item-container.hidden-height {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .mobile-menu-item-container.visible-height {
+            max-height: 1000px; /* Large enough to contain content */
+            opacity: 1;
+        }
+
+        /* Desktop dropdown specific styles */
+        .group .group-hover\:opacity-100 {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            transform: scale(0.95);
+            transform-origin: top;
+        }
+
+        .group:hover .group-hover\:opacity-100 {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .group\/grade .group-hover\/grade\:opacity-100 {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            transform: scale(0.95);
+            transform-origin: left;
+        }
+
+        .group\/grade:hover .group-hover\/grade\:opacity-100 {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .group\/subject .group-hover\/subject\:opacity-100 {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            transform: scale(0.95);
+            transform-origin: left;
+        }
+
+        .group\/subject:hover .group-hover\/subject\:opacity-100 {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
     </style>
 </head>
-<body class="font-inter antialiased text-gray-900">
+<body class="font-inter antialiased text-gray-900 flex flex-col min-h-screen">
 
     <!-- Header -->
-    <header id="main-header" class="bg-white shadow-md py-0 px-1 md:px-3 fixed w-full z-50">
+    <header id="main-header" class="bg-white shadow-md fixed w-full z-50" style="z-index: 1000;">
         <div class="container mx-auto flex justify-between items-center">
             <!-- Logo -->
             <a href="../index.html" class="flex items-center space-x-4">
@@ -371,8 +447,8 @@
                         <div id="desktop-additional-resources-menu"></div>
                     </div>
                 </div>
-                <a href="../pseudocode.html" target="_blank" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Pseudocódigo</a>
-                <a href="https://wa.me/50488422786" target="_blank" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Contacto</a>
+                <a href="../pseudocode.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Pseudocódigo</a>
+                <a href="https://wa.me/50488422786" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Contacto</a>
             </nav>
 
             <!-- Flag Image for Desktop -->
@@ -421,15 +497,15 @@
                         </div>
                     </div>
                 </div>
-                <a href="../pseudocode.js" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Pseudocódigo</a>
-                <a href="https://wa.me/50488422786" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Contacto</a>
+                <a href="../pseudocode.html" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Pseudocódigo</a>
+                <a href="https://wa.me/50488422786" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Contacto</a>
             </nav>
         </div>
     </header>
 
-    <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center relative">
+    <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center relative flex-grow" style="padding-top: 6rem;">
         <!-- Presentation Slides Container -->
-        <div id="presentation-container" class="relative w-full max-w-4xl bg-white rounded-lg shadow-xl overflow-hidden min-h-[60vh] flex flex-col justify-between">
+        <div id="presentation-container" class="relative w-full max-w-6xl bg-white rounded-lg shadow-xl overflow-hidden flex flex-col justify-between h-[calc(100vh-10rem)]">
 
             <!-- Slide 1: Portada -->
             <div id="slide-1" class="slide active">
@@ -446,7 +522,7 @@
             <div id="slide-2" class="slide">
                 <h2 class="text-indigo-600 font-bold mb-4">1. ¿Qué son los Periféricos?</h2>
                 <p class="text-lg text-gray-700 mb-6">Dispositivos de hardware que permiten la comunicación entre la computadora y el mundo exterior.</p>
-                <img src="imagenes/perifericos-general.png" alt="Image of various computer peripherals" class="max-w-md mx-auto content-image-style">
+                <img src="../imagenes/perifericos-general.png" alt="Image of various computer peripherals" class="max-w-md mx-auto content-image-style">
                 <ul class="list-disc list-inside text-left text-base text-gray-700 mt-6 space-y-2">
                     <li>Se utilizan para <strong>introducir datos</strong> y <strong>obtener resultados</strong>.</li>
                     <li>Son esenciales para la <strong>interacción</strong> con la computadora.</li>
@@ -459,17 +535,17 @@
                 <p class="text-lg text-gray-700 mb-6">Se clasifican según la dirección del flujo de datos.</p>
                 <div class="flex flex-col md:flex-row justify-center items-center gap-8 mt-6">
                     <div class="flex flex-col items-center text-center">
-                        <img src="imagenes/flecha-entrada.png" alt="Flecha de entrada" class="w-20 h-20 mb-2 object-contain">
+                        <img src="../imagenes/flecha-entrada.png" alt="Flecha de entrada" class="w-20 h-20 mb-2 object-contain">
                         <strong class="text-xl text-indigo-700">Entrada</strong>
                         <p class="text-base text-gray-600">Introducen datos.</p>
                     </div>
                     <div class="flex flex-col items-center text-center">
-                        <img src="imagenes/flecha-salida.png" alt="Flecha de salida" class="w-20 h-20 mb-2 object-contain">
+                        <img src="../imagenes/flecha-salida.png" alt="Flecha de salida" class="w-20 h-20 mb-2 object-contain">
                         <strong class="text-xl text-indigo-700">Salida</strong>
                         <p class="text-base text-gray-600">Muestran resultados.</p>
                     </div>
                     <div class="flex flex-col items-center text-center">
-                        <img src="imagenes/flecha-mixta.png" alt="Flecha de doble sentido" class="w-20 h-20 mb-2 object-contain">
+                        <img src="../imagenes/flecha-mixta.png" alt="Flecha de doble sentido" class="w-20 h-20 mb-2 object-contain">
                         <strong class="text-xl text-indigo-700">Mixtos (Entrada/Salida)</strong>
                         <p class="text-base text-gray-600">Ambas funciones.</p>
                     </div>
@@ -482,19 +558,19 @@
                 <p class="text-lg text-gray-700 mb-6">Dispositivos que permiten introducir datos e instrucciones a la computadora.</p>
                 <div class="icon-grid">
                     <div class="icon-item">
-                        <img src="imagenes/teclado.png" alt="Teclado" class="object-contain">
+                        <img src="../imagenes/teclado.png" alt="Teclado" class="object-contain">
                         Teclado
                     </div>
                     <div class="icon-item">
-                        <img src="imagenes/raton.png" alt="Ratón" class="object-contain">
+                        <img src="../imagenes/raton.png" alt="Ratón" class="object-contain">
                         Ratón
                     </div>
                     <div class="icon-item">
-                        <img src="imagenes/microfono.png" alt="Micrófono" class="object-contain">
+                        <img src="../imagenes/microfono.png" alt="Micrófono" class="object-contain">
                         Micrófono
                     </div>
                     <div class="icon-item">
-                        <img src="imagenes/scanner.png" alt="Escáner" class="object-contain">
+                        <img src="../imagenes/scanner.png" alt="Escáner" class="object-contain">
                         Escáner
                     </div>
                 </div>
@@ -512,7 +588,7 @@
                     <li><strong>Lectores de Código de Barras / QR:</strong> Digitalizan información codificada.</li>
                     <li><strong>Sensores (temperatura, movimiento):</strong> Recopilan datos del entorno.</li>
                 </ul>
-                <img src="imagenes/ejemplos-entrada-adicional.png" alt="Image of additional input peripherals" class="max-w-md mx-auto content-image-style">
+                <img src="../imagenes/ejemplos-entrada-adicional.png" alt="Image of additional input peripherals" class="max-w-md mx-auto content-image-style">
             </div>
 
             <!-- Slide 6: Periféricos de Salida -->
@@ -521,19 +597,19 @@
                 <p class="text-lg text-gray-700 mb-6">Dispositivos que muestran o envían los resultados del procesamiento de la computadora.</p>
                 <div class="icon-grid">
                     <div class="icon-item">
-                        <img src="imagenes/monitor.png" alt="Monitor" class="object-contain">
+                        <img src="../imagenes/monitor.png" alt="Monitor" class="object-contain">
                         Monitor
                     </div>
                     <div class="icon-item">
-                        <img src="imagenes/impresora.png" alt="Impresora" class="object-contain">
+                        <img src="../imagenes/impresora.png" alt="Impresora" class="object-contain">
                         Impresora
                     </div>
                     <div class="icon-item">
-                        <img src="imagenes/altavoces.png" alt="Altavoces" class="object-contain">
+                        <img src="../imagenes/altavoces.png" alt="Altavoces" class="object-contain">
                         Altavoces
                     </div>
                     <div class="icon-item">
-                        <img src="imagenes/proyector.png" alt="Proyector" class="object-contain">
+                        <img src="../imagenes/proyector.png" alt="Proyector" class="object-contain">
                         Proyector
                     </div>
                 </div>
@@ -550,7 +626,7 @@
                     <li><strong>Pantallas Braille:</strong> Muestran texto en relieve para personas con discapacidad visual.</li>
                     <li><strong>Actuadores:</strong> Dispositivos que convierten señales eléctricas en movimiento físico (ej. en robótica).</li>
                 </ul>
-                <img src="imagenes/ejemplos-salida-adicional.png" alt="Image of additional output peripherals" class="max-w-md mx-auto content-image-style">
+                <img src="../imagenes/ejemplos-salida-adicional.png" alt="Image of additional output peripherals" class="max-w-md mx-auto content-image-style">
             </div>
 
             <!-- Slide 8: Periféricos de Entrada/Salida (Mixtos) -->
@@ -559,23 +635,23 @@
                 <p class="text-lg text-gray-700 mb-6">Dispositivos que pueden introducir y mostrar/enviar datos simultáneamente.</p>
                 <div class="icon-grid">
                     <div class="icon-item">
-                        <img src="imagenes/pantalla_tactil.png" alt="Pantalla Táctil" class="object-contain">
+                        <img src="../imagenes/pantalla_tactil.png" alt="Pantalla Táctil" class="object-contain">
                         Pantalla Táctil
                     </div>
                     <div class="icon-item">
-                        <img src="imagenes/impresora-multifuncion.png" alt="Impresora Multifunción" class="object-contain">
+                        <img src="../imagenes/impresora-multifuncion.png" alt="Impresora Multifunción" class="object-contain">
                         Impresora Multifunción
                     </div>
                     <div class="icon-item">
-                        <img src="imagenes/pendrive.png" alt="Memoria USB" class="object-contain">
+                        <img src="../imagenes/pendrive.png" alt="Memoria USB" class="object-contain">
                         Memoria USB
-                    </div>
-                    <div class="icon-item">
-                        <img src="imagenes/tarjeta-red.png" alt="Tarjeta de Red" class="object-contain">
-                        Tarjeta de Red
                     </div>
                 </div>
                 <p class="text-base text-gray-600 mt-6">Permiten el flujo de información en ambas direcciones.</p>
+                <div class="icon-item">
+                        <img src="../imagenes/tarjeta-red.png" alt="Tarjeta de Red" class="object-contain">
+                        Tarjeta de Red
+                    </div>
             </div>
 
             <!-- Slide 9: Criterios de Selección -->
@@ -1177,7 +1253,7 @@
         let lastScrollTop = 0;
         const scrollThreshold = 50; // Pixels to scroll before header hides/shows
 
-        window.addEventListener('scroll', () => {
+        function handleScroll() {
             const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
             if (currentScrollTop > lastScrollTop && currentScrollTop > mainHeader.offsetHeight + scrollThreshold) {
@@ -1188,8 +1264,32 @@
                 mainHeader.classList.remove('header-hidden');
             }
             lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('keydown', function(e) {
+            if (e.key === "ArrowDown") {
+                mainHeader.classList.add('header-hidden');
+            } else if (e.key === "ArrowUp") {
+                mainHeader.classList.remove('header-hidden');
+            }
         });
 
+
+        // --- Fullscreen Logic ---
+        function handleFullscreenChange() {
+            const header = document.getElementById('main-header');
+            const footer = document.querySelector('footer');
+            if (document.fullscreenElement) {
+                header.classList.add('hidden-on-fullscreen');
+                footer.classList.add('hidden-on-fullscreen');
+            } else {
+                header.classList.remove('hidden-on-fullscreen');
+                footer.classList.remove('hidden-on-fullscreen');
+            }
+        }
+
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
 
         // --- Initialize on DOMContentLoaded ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -1198,6 +1298,10 @@
             if (currentYearSpan) { // Added a check to prevent TypeError if element is not found
                 currentYearSpan.textContent = new Date().getFullYear();
             }
+
+            // Render desktop and mobile navigation menus
+            renderDesktopNav();
+            renderMobileNav();
 
             // Initialize the first slide directly without calling showSlide,
             // to ensure it's immediately visible and not subject to initial animation issues.
