@@ -9,6 +9,7 @@
     <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="presentacion_estilos.css">
+    <link rel="stylesheet" href="fullscreen_styles.css">
     <style>
         /* Reduce base font size for overall scaling */
         html {
@@ -1259,6 +1260,21 @@
             }
         });
 
+
+        // --- Fullscreen Logic ---
+        function handleFullscreenChange() {
+            const header = document.getElementById('main-header');
+            const footer = document.querySelector('footer');
+            if (document.fullscreenElement) {
+                header.classList.add('hidden-on-fullscreen');
+                footer.classList.add('hidden-on-fullscreen');
+            } else {
+                header.classList.remove('hidden-on-fullscreen');
+                footer.classList.remove('hidden-on-fullscreen');
+            }
+        }
+
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
 
         // --- Initialize on DOMContentLoaded ---
         document.addEventListener('DOMContentLoaded', () => {
