@@ -396,7 +396,7 @@
                         topics: [
                             { title: "Historia de la Computación", file: "Informatica_I/historia_computacion.htm" },
                             { title: "Partes y Tipos de Computadora", file: "Informatica_I/Partes_Computadora.html" },
-                            { title: "Periféricos de entrada y salida", file: "Informatica_I/perifericos_entrada_salida.html" }
+                            { title: "Periféricos Entrada/Salida", file: "Informatica_I/perifericos_entrada_salida.html" } // Nueva entrada
                         ]
                     }
                 ]
@@ -424,7 +424,8 @@
                         topics: [
                             { title: "Análisis y Diseño de Sistemas", file: "II_BTP_A/analisis_diseno/analisis_y_diseno_s.html" },
                             { title: "Rol del Analista de Sistemas", file: "II_BTP_A/analisis_diseno/rol_analista_sistemas.html" },
-                            { title: "Ciclo de Vida del Desarrollo de Software", file: "II_BTP_A/analisis_diseno/ciclo_desarrollo.html" }
+                            { title: "Ciclo de Vida del Desarrollo de Software", file: "II_BTP_A/analisis_diseno/ciclo_desarrollo.html" },
+                            { title: "Gestión de Proyectos de Software", file: "II_BTP_A/analisis_diseno/gestion_proyectos_software.html" } // Nueva entrada
                         ]
                     }
                 ]
@@ -471,7 +472,7 @@
                         topics: [
                             { title: "Historia de la Computación", file: "Informatica_I/historia_de_la_computacion.pdf" },
                             { title: "Partes y Tipos de Computadora", file: "Informatica_I/partes_y_tipos_de_computadora.pdf" },
-                            { title: "Periféricos de entrada y de salida", file: "Informatica_I/perifericos_entrada_salida.pdf" }
+                            { title: "Periféricos Entrada/Salida", file: "Informatica_I/perifericos_entrada_salida.pdf" } // Nueva entrada para descarga
                         ]
                     }
                 ]
@@ -499,7 +500,8 @@
                         topics: [
                             { title: "Análisis y Diseño de Sistemas", file: "II_BTP_A/analisis_diseno/analisis_y_diseno_de_sistemas.pdf" },
                             { title: "Rol del Analista de Sistemas", file: "II_BTP_A/analisis_diseno/rol_del_analista_de_sistemas.pdf" },
-                            { title: "Ciclo de Vida del Desarrollo de Software", file: "II_BTP_A/analisis_diseno/ciclo_desarrollo.pdf" } // PDF for download
+                            { title: "Ciclo de Vida del Desarrollo de Software", file: "II_BTP_A/analisis_diseno/ciclo_desarrollo.pdf" }, // PDF for download
+                            { title: "Gestión de Proyectos de Software", file: "II_BTP_A/analisis_diseno/gestion_proyectos_software.pdf" } // Nueva entrada para descarga
                         ]
                     }
                 ]
@@ -691,7 +693,7 @@
                     subjectData.topics.forEach(topic => {
                         let topicLink = document.createElement('a');
                         topicLink.href = topic.file; // Use topic.file (HTML) for presentations
-                        topicLink.target = '_blank';
+                        // topicLink.target = '_blank'; // REMOVED: No longer opens in new tab
                         topicLink.className = 'block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-200';
                         topicLink.textContent = topic.title;
                         topicDiv.appendChild(topicLink);
@@ -825,7 +827,7 @@
                     subjectData.topics.forEach(topic => {
                         const topicLink = document.createElement('a');
                         topicLink.href = topic.file; // Use topic.file (HTML) for presentations
-                        topicLink.target = '_blank';
+                        // topicLink.target = '_blank'; // REMOVED: No longer opens in new tab
                         topicLink.className = 'block px-2 py-1 text-gray-500 hover:text-blue-400 text-sm transition-colors duration-200';
                         topicLink.textContent = topic.title;
                         topicLink.onclick = closeMobileMenu; // Close menu when a topic is clicked
@@ -981,7 +983,7 @@
             selectedSubjectData.topics.forEach(topic => {
                 const link = document.createElement('a');
                 link.href = topic.file; // Use topic.file (PDF) for downloads
-                link.target = '_blank';
+                link.target = '_blank'; // Ensure PDF opens in a new tab
                 link.className = `
                     flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl font-semibold text-base
                     bg-green-600 text-white hover:bg-green-700
