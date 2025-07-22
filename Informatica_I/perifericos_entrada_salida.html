@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presentación: Periféricos de Entrada y Salida</title>
+    <title>Area de Informatica - Periféricos de Entrada y Salida</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
@@ -126,7 +126,7 @@
             box-shadow: none;
         }
 
-        /* Mobile navigation menu specific styles */
+        /* Mobile menu specific styles */
         .mobile-menu {
             transition: transform 0.3s ease-out;
             transform: translateX(100%); /* Hidden by default */
@@ -328,81 +328,95 @@
         }
     </style>
 </head>
-<body class="font-['Inter'] bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+<body class="font-inter antialiased text-gray-900">
 
-    <!-- Desktop Navigation -->
-    <header class="bg-white shadow-md py-4 px-6 sticky top-0 z-50 hidden md:block">
-        <div class="container mx-auto flex items-center justify-between">
-            <!-- Left Section: Logo -->
-            <a href="https://azghell.github.io/IMA-Informatica" class="flex items-center space-x-2 text-gray-900 hover:text-indigo-600 transition duration-300">
-                <img src="imagenes/logo.png" alt="Logo ISEMED" style="width: 180px; height: auto;">
+    <!-- Header -->
+    <header id="main-header" class="bg-white shadow-md py-0 px-1 md:px-3 fixed w-full z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <a href="../index.html" class="flex items-center space-x-4">
+                <img src="../imagenes/logo.png" alt="Logo" width="120" height="auto">
+                <span class="text-2xl font-bold text-blue-800">Area de Informatica</span>
             </a>
-            
-            <!-- Center Section: Area de Informatica -->
-            <span class="font-extrabold text-2xl text-center flex-grow">Area de Informatica</span>
 
-            <!-- Right Section: Desktop Nav Links -->
-            <nav class="flex space-x-6">
-                <a href="https://azghell.github.io/IMA-Informatica" class="text-gray-600 hover:text-indigo-600 font-medium transition duration-300">Inicio</a>
-                <!-- Dropdown Menu for Asignaturas -->
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="../index.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Inicio</a>
+                <!-- Nested Dropdown for Grados (Cursos) -->
                 <div class="relative group">
-                    <button class="text-gray-600 hover:text-indigo-600 font-medium transition duration-300 focus:outline-none flex items-center">
-                        Asignaturas
-                        <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    <button class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none">
+                        Cursos <span class="ml-1 text-xs">&#9662;</span>
                     </button>
-                    <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 invisible group-hover:visible group-focus-within:visible">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Informática I</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ofimática I</a>
-                        <a href="#" class="block px-4 py-2 =text-sm text-gray-700 hover:bg-gray-100">Informática Aplicada I</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Análisis y Diseño I</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Diseño Web II</a>
+                    <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out transform scale-95 group-hover:scale-100 origin-top">
+                        <div id="desktop-grades-menu"></div>
                     </div>
                 </div>
-                <a href="/fundamentos_ii.pdf" class="text-gray-600 hover:text-indigo-600 font-medium transition duration-300">Contenido de clase</a>
+                <!-- Nested Dropdown for Recursos Adicionales -->
+                <div class="relative group">
+                    <button class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none">
+                        Recursos Adicionales <span class="ml-1 text-xs">&#9662;</span>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out transform scale-95 group-hover:scale-100 origin-top">
+                        <div id="desktop-additional-resources-menu"></div>
+                    </div>
+                </div>
+                <a href="../pseudocode.html" target="_blank" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Pseudocódigo</a>
+                <a href="https://wa.me/50488422786" target="_blank" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Contacto</a>
             </nav>
-        </div>
-    </header>
 
-    <!-- Mobile Navigation (hidden by default, shown on small screens) -->
-    <header class="bg-white shadow-md py-4 px-4 flex justify-between items-center md:hidden">
-        <!-- Logo and Area de Informatica for mobile -->
-        <a href="https://azghell.github.io/IMA-Informatica" class="flex items-center space-x-2 text-gray-900 hover:text-indigo-600 transition duration-300">
-            <img src="imagenes/logo.png" alt="Logo ISEMED" style="width: 180px; height: auto;">
-            <span class="font-extrabold text-xl">Area de Informatica</span>
-        </a>
-        <!-- Hamburger Icon -->
-        <button id="mobile-menu-button" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-        </button>
+            <!-- Flag Image for Desktop -->
+            <img src="../imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" width="120" height="auto" class="hidden md:block">
+
+            <!-- Mobile Hamburger Menu -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path id="mobile-menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
         <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
-        <!-- Mobile Menu Sidebar -->
-        <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-50 p-6 flex flex-col">
-            <button id="close-mobile-menu" class="self-end text-gray-600 hover:text-indigo-600 focus:outline-none mb-4">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <div id="mobile-menu-overlay" class="hidden">
+            <button id="mobile-menu-close-button" class="absolute top-4 right-6 text-gray-700 focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
             </button>
-            <nav class="flex flex-col space-y-4">
-                <a href="https://azghell.github.io/IMA-Informatica" class="text-gray-800 hover:text-indigo-600 font-medium text-lg transition duration-300">Inicio</a>
-                <!-- Mobile Dropdown for Asignaturas -->
-                <div class="relative">
-                    <button id="mobile-asignaturas-button" class="text-gray-800 hover:text-indigo-600 font-medium text-lg transition duration-300 focus:outline-none flex items-center justify-between w-full">
-                        Asignaturas
-                        <svg class="ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            <nav class="flex flex-col space-y-5 mt-12 w-full px-5">
+                <a href="../index.html" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Inicio</a>
+                <!-- Mobile Grados Menu (Cursos) -->
+                <div class="w-full">
+                    <button id="mobile-courses-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 flex justify-between items-center transition-colors duration-200 border-b border-gray-200">
+                        Cursos
+                        <span id="mobile-courses-arrow" class="transform transition-transform duration-300">&#9656;</span>
                     </button>
-                    <div id="mobile-asignaturas-dropdown" class="hidden mt-2 pl-4 flex flex-col space-y-2">
-                        <a href="#" class="block text-base text-gray-700 hover:text-indigo-600">Informática I</a>
-                        <a href="#" class="block text-base text-gray-700 hover:bg-gray-100">Ofimática I</a>
-                        <a href="#" class="block text-base text-gray-700 hover:bg-gray-100">Informática Aplicada I</a>
-                        <a href="#" class="block px-4 py-2 =text-sm text-gray-700 hover:bg-gray-100">Análisis y Diseño I</a>
-                        <a href="#" class="block text-base text-gray-700 hover:bg-gray-100">Diseño Web II</a>
+                    <div id="mobile-grades-container" class="mobile-menu-item-container hidden-height">
+                        <div class="pl-3 pt-1 flex flex-col space-y-2" id="mobile-grades-menu">
+                            <!-- Grades will be injected here by JS -->
+                        </div>
                     </div>
                 </div>
-                <a href="/fundamentos_ii.pdf" class="text-gray-800 hover:text-indigo-600 font-medium text-lg transition duration-300">Contenido de clase</a>
+                <!-- Mobile Recursos Adicionales Menu -->
+                <div class="w-full">
+                    <button id="mobile-additional-resources-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 flex justify-between items-center transition-colors duration-200">
+                        Recursos Adicionales
+                        <span id="mobile-additional-resources-arrow" class="transform transition-transform duration-300">&#9656;</span>
+                    </button>
+                    <div id="mobile-additional-resources-container" class="mobile-menu-item-container hidden-height">
+                        <div class="pl-3 pt-1 flex flex-col space-y-2" id="mobile-additional-resources-menu">
+                            <!-- Additional Resources will be injected here by JS -->
+                        </div>
+                    </div>
+                </div>
+                <a href="../pseudocode.js" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Pseudocódigo</a>
+                <a href="https://wa.me/50488422786" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Contacto</a>
             </nav>
         </div>
     </header>
 
-    <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center relative">
+    <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center relative mt-[5rem]">
         <!-- Presentation Slides Container -->
         <div id="presentation-container" class="relative w-full max-w-4xl bg-white rounded-lg shadow-xl overflow-hidden min-h-[60vh] flex flex-col justify-between">
 
@@ -607,39 +621,20 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-6 px-6 mt-8">
-        <div class="container mx-auto text-center text-sm">
-            <p class="flex items-center justify-center">
-                &copy;&nbsp;<span id="current-year"></span>&nbsp;Instituto Maria Auxiliadora - Area de Informatica ISEMED. Todos los derechos reservados.
-                <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" style="width: 50px; height: auto; margin-left: 0.5rem;">
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-5 text-center">
+            <p class="text-base mb-3">
+                &copy; <span id="current-year"></span> Instituto Maria Auxiliadora - Area de Informatica ISEMED. Todos los derechos reservados.
             </p>
+            <div class="flex justify-center space-x-5">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Privacidad</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Términos</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Soporte</a>
+            </div>
         </div>
     </footer>
 
     <script>
-        // --- Mobile Menu Logic ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-        const mobileAsignaturasButton = document.getElementById('mobile-asignaturas-button');
-        const mobileAsignaturasDropdown = document.getElementById('mobile-asignaturas-dropdown');
-
-        function toggleMobileMenu() {
-            mobileMenu.classList.toggle('open');
-            mobileMenuOverlay.classList.toggle('hidden');
-        }
-
-        mobileMenuButton.addEventListener('click', toggleMobileMenu);
-        closeMobileMenuButton.addEventListener('click', toggleMobileMenu);
-        mobileMenuOverlay.addEventListener('click', toggleMobileMenu); // Close when clicking outside
-
-        mobileAsignaturasButton.addEventListener('click', () => {
-            mobileAsignaturasDropdown.classList.toggle('hidden');
-            // Rotate arrow icon
-            mobileAsignaturasButton.querySelector('svg').classList.toggle('rotate-180');
-        });
-
         // --- Presentation Logic ---
         const slides = document.querySelectorAll('.slide');
         const prevButton = document.getElementById('prev-slide');
@@ -723,25 +718,6 @@
             }
         });
 
-        // Gallery functionality (if any, for future slides)
-        // This section is kept for consistency with the previous presentation structure
-        // but is not directly used in this specific presentation content.
-        const mainGalleryImage = document.getElementById('main-gallery-image');
-        const thumbnails = document.querySelectorAll('.thumbnail');
-
-        if (mainGalleryImage && thumbnails.length > 0) {
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', function() {
-                    const fullSrc = this.getAttribute('data-full-src');
-                    mainGalleryImage.src = fullSrc;
-                    // Optional: add a class to highlight the active thumbnail
-                    thumbnails.forEach(t => t.classList.remove('border-indigo-500'));
-                    this.classList.add('border-indigo-500');
-                });
-            });
-        }
-
-
         // --- Initialize on DOMContentLoaded ---
         document.addEventListener('DOMContentLoaded', () => {
             // Set current year in footer
@@ -755,7 +731,7 @@
             slides[0].classList.add('active');
             slides[0].style.display = 'flex';
             slides[0].style.animationName = ''; // No animation on initial display
-            
+
             currentSlideIndex = 0; // Ensure index is correctly set for the first slide
             updateSlideCounter(); // Update counter for initial display
             updateNavigationButtons(); // Update buttons for initial display
