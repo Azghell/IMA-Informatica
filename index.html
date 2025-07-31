@@ -351,6 +351,12 @@
                                             shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-teal-300">
                                     WebMaster Quiz
                                 </button>
+                                <button id="select-dexterity-game-button" class="px-6 py-3 rounded-xl font-semibold text-lg
+                                            bg-orange-500 text-white hover:bg-orange-600
+                                            transition-all duration-300 ease-in-out
+                                            shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-orange-300">
+                                    Destreza en el Teclado
+                                </button>
                                 <!-- More game buttons can be added here -->
                             </div>
                             <button id="back-to-main-activities-button" class="mt-8 px-6 py-3 rounded-xl font-semibold text-base
@@ -457,7 +463,8 @@
                 category: "Actividades Practicas",
                 items: [
                     { title: "Periféricos Entrada/Salida", action: "load-peripherals-game" }, // Action to load the game dynamically
-                    { title: "WebMaster Quiz", action: "load-webmaster-quiz" } // Nuevo juego
+                    { title: "WebMaster Quiz", action: "load-webmaster-quiz" }, // Existing game
+                    { title: "Destreza en el Teclado", action: "load-dexterity-game" } // New game added here
                 ]
             }
         ];
@@ -737,6 +744,14 @@
                             loadWebMasterQuizFromHeader(); // Call function to load new game from header
                             closeMobileMenu(); // Close menu after selection
                         };
+                    } else if (item.action === 'load-dexterity-game') { // New game
+                        itemLink.href = '#';
+                        itemLink.dataset.action = 'load-dexterity-game';
+                        itemLink.onclick = (e) => {
+                            e.preventDefault();
+                            loadDexterityGameFromHeader(); // Call function to load new game from header
+                            closeMobileMenu(); // Close menu after selection
+                        };
                     }
                     else {
                         itemLink.href = item.file;
@@ -896,6 +911,14 @@
                             loadWebMasterQuizFromHeader();
                             closeMobileMenu();
                         };
+                    } else if (item.action === 'load-dexterity-game') { // New game
+                        itemLink.href = '#';
+                        itemLink.dataset.action = 'load-dexterity-game';
+                        itemLink.onclick = (e) => {
+                            e.preventDefault();
+                            loadDexterityGameFromHeader();
+                            closeMobileMenu();
+                        };
                     }
                     else {
                         itemLink.href = item.file;
@@ -1028,6 +1051,7 @@
         const gameListMenu = document.getElementById('game-list-menu');
         const selectPeripheralsGameButton = document.getElementById('select-peripherals-game-button');
         const selectWebMasterQuizButton = document.getElementById('select-webmaster-quiz-button'); // Nuevo botón
+        const selectDexterityGameButton = document.getElementById('select-dexterity-game-button'); // New button
         const backToMainActivitiesButton = document.getElementById('back-to-main-activities-button');
         const dynamicallyLoadedGameContainer = document.getElementById('dynamically-loaded-game-container');
 
@@ -1151,7 +1175,6 @@
                 script.src = 'js/webmaster_quiz_juego.js';
                 script.onload = () => {
                     // Once the script is loaded, initialize the game elements and pass gameDataStorage
-                    // CORRECTED: Changed initializeWebMasterQuizGame to initQuizGame
                     if (window.initQuizGame) {
                         window.initQuizGame(gameDataStorage); // Pass the storage object
                     }
@@ -1168,8 +1191,44 @@
             }
         }
 
+        // Function to load the new Keyboard Dexterity Game HTML and JS
+        async function loadDexterityGame() {
+            // Hide the header immediately when loading the game
+            mainHeader.classList.add('header-hidden');
 
-        // This function will be called from the header menu to load the game
+            mainContentSections.classList.add('hidden'); // Hide both download and initial activity sections
+            mainContentSections.classList.remove('flex');
+            dynamicallyLoadedGameContainer.classList.remove('hidden'); // Show only the game container
+            mainContentTitle.textContent = 'Destreza en el Teclado'; // Update main title
+
+            try {
+                const htmlResponse = await fetch('juegos/destreza_teclado.html'); // Path to the new game HTML
+                const gameHtml = await htmlResponse.text();
+                dynamicallyLoadedGameContainer.innerHTML = gameHtml;
+
+                // Dynamically load the game's JavaScript
+                const script = document.createElement('script');
+                script.src = 'js/destreza_teclado.js'; // Path to the new game JS
+                script.onload = () => {
+                    // Once the script is loaded, initialize the game elements
+                    if (window.initDexterityGame) {
+                        window.initDexterityGame(); // Call the initialization function for the new game
+                    }
+                };
+                // Append the script to the body or the game container
+                dynamicallyLoadedGameContainer.appendChild(script);
+
+            } catch (error) {
+                console.error('Error al cargar el juego de Destreza en el Teclado:', error);
+                dynamicallyLoadedGameContainer.innerHTML = '<p class="text-red-500">Error al cargar el juego. Por favor, inténtalo de nuevo más tarde.</p>';
+                // Optionally, provide a button to return to main content
+                const errorButton = createCustomButton('Volver al Inicio', showMainContentSections, 'mt-4');
+                dynamicallyLoadedGameContainer.appendChild(errorButton);
+            }
+        }
+
+
+        // This function will be called from the header menu to load the peripherals game
         function loadPeripheralsGameFromHeader() {
             showMainContentSections(); // Ensure main content areas are visible first
             loadPeripheralsGame(); // Then load the game itself
@@ -1179,6 +1238,12 @@
         function loadWebMasterQuizFromHeader() {
             showMainContentSections(); // Ensure main content areas are visible first
             loadWebMasterQuiz(); // Then load the game itself
+        }
+
+        // This function will be called from the header menu to load the new game (Dexterity Game)
+        function loadDexterityGameFromHeader() {
+            showMainContentSections(); // Ensure main content areas are visible first
+            loadDexterityGame(); // Then load the game itself
         }
 
         // This function will be called by the game's JavaScript to return to the main content
@@ -1196,6 +1261,10 @@
             if (oldWebMasterQuizScript) { // NEW
                 oldWebMasterQuizScript.remove(); // NEW
             } // NEW
+            const oldDexterityScript = document.querySelector('script[src="js/destreza_teclado.js"]'); // New game script
+            if (oldDexterityScript) {
+                oldDexterityScript.remove();
+            }
 
             showMainContentSections(); // Return to the main content layout
             renderInitialActivityButton(); // Show the initial "Ver Actividades Prácticas" button
@@ -1222,6 +1291,7 @@
         showActivitiesButton.addEventListener('click', renderActivityList);
         selectPeripheralsGameButton.addEventListener('click', loadPeripheralsGame); // Call load function
         selectWebMasterQuizButton.addEventListener('click', loadWebMasterQuiz); // NEW: Call load function for WebMaster Quiz
+        selectDexterityGameButton.addEventListener('click', loadDexterityGame); // NEW: Call load function for Dexterity Game
         backToMainActivitiesButton.addEventListener('click', renderInitialActivityButton);
 
         // --- Header Hide/Show on Scroll Logic ---
