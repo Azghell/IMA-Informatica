@@ -175,7 +175,7 @@
 </head>
 <body class="antialiased">
     <!-- Encabezado -->
-    <header class="w-full bg-white p-4 shadow-md flex justify-between items-center z-50 transition-transform duration-500 ease-in-out">
+    <header id="page-header" class="w-full bg-white p-4 shadow-md flex justify-between items-center z-50">
         <div class="flex items-center space-x-4">
             <img src="https://azghell.github.io/IMA-Informatica/imagenes/logo.png" alt="Logo de la institución" style="width: 180px; height: auto;">
             <h1 class="text-xl font-bold text-gray-800">Introducción a los Sistemas de Numeración</h1>
@@ -372,7 +372,7 @@
                 <h3 class="text-4xl mb-6 text-blue-500">Tarea Asignada</h3>
                 <div class="bg-gray-100 p-8 rounded-lg shadow-inner max-w-3xl">
                     <p class="text-xl text-gray-700 mb-4">
-                        <strong>Ejercicios de conversión:</strong> Termina la Tabla ASCII y Realiza los ejercicios de conversión en el contenido de la clase.
+                        <strong>Ejercicios de conversión:</strong> Realiza los ejercicios de conversión de la guía de estudio asignada.
                     </p>
                 </div>
             </div>
@@ -387,7 +387,7 @@
     </main>
 
     <!-- Pie de página -->
-    <footer class="w-full bg-gray-800 text-white text-center text-sm z-50 transition-transform duration-500 ease-in-out">
+    <footer id="page-footer" class="w-full bg-gray-800 text-white text-center text-sm z-50">
         <div class="flex items-center justify-center space-x-2">
             <img src="https://azghell.github.io/IMA-Informatica/imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" width="80" height="auto">
             <p>© 2025 Instituto María Auxiliadora, Sistema ISEMED. Todos los derechos reservados.</p>
@@ -406,8 +406,8 @@
         const nextButton = document.getElementById('next-btn');
         const prevButton = document.getElementById('prev-btn');
         const slideCounter = document.getElementById('slide-counter');
-        const header = document.querySelector('header');
-        const footer = document.querySelector('footer');
+        const header = document.getElementById('page-header');
+        const footer = document.getElementById('page-footer');
         let currentSlideIndex = 0;
         let isTransitioning = false;
         const quizContainer = document.getElementById('quiz-container');
@@ -454,27 +454,28 @@
         prevButton.addEventListener('click', () => {
             showSlide(currentSlideIndex - 1);
         });
-
+        
+        // Maneja el modo de pantalla completa para ocultar/mostrar elementos al presionar F11
         document.addEventListener('keydown', (event) => {
+            // Navegación con las flechas del teclado
             if (event.key === 'ArrowRight') {
                 showSlide(currentSlideIndex + 1);
             } else if (event.key === 'ArrowLeft') {
                 showSlide(currentSlideIndex - 1);
             }
+            
+            // Ocultar/mostrar el encabezado y el pie de página al presionar F11
+            if (event.key === 'F11') {
+                if (header.style.display === 'none') {
+                    header.style.display = 'flex';
+                    footer.style.display = 'flex';
+                } else {
+                    header.style.display = 'none';
+                    footer.style.display = 'none';
+                }
+            }
         });
         
-        // Función para manejar la visibilidad del header y footer en pantalla completa
-        function handleFullscreenChange() {
-            if (document.fullscreenElement) {
-                header.classList.add('opacity-0', 'pointer-events-none');
-                footer.classList.add('opacity-0', 'pointer-events-none');
-            } else {
-                header.classList.remove('opacity-0', 'pointer-events-none');
-                footer.classList.remove('opacity-0', 'pointer-events-none');
-            }
-        }
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-
         // --- Lógica del Quiz Estático ---
         const quizQuestions = [
             {
@@ -504,8 +505,8 @@
             },
             {
                 question: "¿Cuál es el valor posicional del dígito '1' en el número binario 1000?",
-                options: ["2^3 (8)", "2^0 (1)", "2^1 (2)", "2^2 (4)"],
-                correctAnswer: "2^3 (8)"
+                options: ["2<sup>3</sup> (8)", "2<sup>0</sup> (1)", "2<sup>1</sup> (2)", "2<sup>2</sup> (4)"],
+                correctAnswer: "2<sup>3</sup> (8)"
             },
             {
                 question: "¿Qué sistema de numeración es fundamental para las computadoras y por qué?",
