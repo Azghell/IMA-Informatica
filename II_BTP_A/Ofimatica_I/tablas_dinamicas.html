@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablas Dinámicas Interactivas</title>
+    <title>Modelo de Datos en Excel</title>
     <!-- CDN de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
@@ -116,29 +116,6 @@
             border-color: #ef4444;
         }
         
-        /* Estilo para tablas de valores */
-        .value-table {
-            border-collapse: collapse;
-            font-size: 0.9em;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
-            overflow: hidden;
-            width: 100%;
-            max-width: 500px;
-        }
-        .value-table th, .value-table td {
-            border: 1px solid #ddd;
-            padding: 12px 15px;
-            text-align: center;
-        }
-        .value-table thead tr {
-            background-color: #3b82f6; /* Azul de Tailwind */
-            color: #ffffff;
-        }
-        .value-table tbody tr:nth-of-type(even) {
-            background-color: #f3f4f6; /* Gris claro de Tailwind */
-        }
-
         /* Estilos de la infografía */
         .infographic-step {
             display: flex;
@@ -169,25 +146,6 @@
             background-color: #f3f4f6;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .infographic-connector {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 2px;
-            height: 100%;
-            background-color: #d1d5db;
-        }
-        .infographic-circle {
-            width: 20px;
-            height: 20px;
-            background-color: #4f46e5;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
         .infographic-text strong {
             color: #1e40af;
         }
@@ -207,7 +165,42 @@
                 width: 100%;
             }
         }
+        
+        .data-model-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2rem;
+        }
 
+        .relationship-diagram {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .relationship-diagram-horizontal {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .relationship-image {
+            max-width: 90%;
+            height: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .relationship-diagram-horizontal {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -234,47 +227,45 @@
             <!-- Diapositiva 1: Portada -->
             <div id="slide-1" class="slide active">
                 <img src="https://azghell.github.io/IMA-Informatica/imagenes/logo.png" alt="Logo del instituto" class="w-48 sm:w-64 md:w-80 h-auto mb-4 sm:mb-8">
-                <h2 class="text-xl sm:text-2xl mb-2 sm:mb-4 text-blue-600">Formato de Tablas</h2>
+                <h2 class="text-xl sm:text-2xl mb-2 sm:mb-4 text-blue-600">Modelo de Datos en Excel</h2>
                 <p class="text-sm sm:text-base text-gray-600">Ofimática I</p>
                 <div class="mt-4 sm:mt-8 text-xs sm:text-sm text-gray-500">
                     <p>Lic. Pablo Antonio Peña Mancia</p>
-                    <p>Fecha: Domingo 28 de septiembre</p>
+                    <p>Fecha: 28 de septiembre</p>
                     <p>Grado: Undécimo de Informática</p>
                 </div>
             </div>
 
-            <!-- Diapositiva 2: ¿Qué son las Tablas Dinámicas? -->
+            <!-- Diapositiva 2: ¿Qué es un Modelo de Datos? -->
             <div id="slide-2" class="slide">
-                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¿Qué son las Tablas Dinámicas?</h3>
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¿Qué es un Modelo de Datos?</h3>
                 <p class="text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl">
-                    Una <strong>tabla dinámica</strong> es una herramienta de las hojas de cálculo que te permite resumir, analizar, explorar y presentar datos de forma dinámica. Se crean a partir de una tabla de datos 'brutos' y permiten ver la información desde diferentes perspectivas con solo arrastrar y soltar campos.
+                    Un <strong>modelo de datos</strong> es una colección de tablas relacionadas que te permite combinar datos de diferentes fuentes y realizar análisis avanzados. Funciona como una base de datos interna, donde puedes conectar información de ventas, productos, clientes, etc., para analizarlos de forma conjunta.
                 </p>
-                <div class="mt-8 flex justify-center w-full">
-                    
-                </div>
+                
             </div>
 
-            <!-- Diapositiva 3: ¿Para qué funcionan? -->
+            <!-- Diapositiva 3: ¿Por qué usar un Modelo de Datos? -->
             <div id="slide-3" class="slide">
-                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¿Para qué funcionan las Tablas Dinámicas?</h3>
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¿Por qué usar un Modelo de Datos?</h3>
                 <ul class="mt-2 sm:mt-4 text-left text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl list-disc list-inside space-y-2 sm:space-y-4">
-                    <li><strong>Resumir datos complejos:</strong> Agrupan y agregan grandes volúmenes de datos para obtener un resumen rápido y comprensible.</li>
-                    <li><strong>Análisis Exploratorio:</strong> Permiten 'jugar' con los datos para encontrar tendencias, patrones y valores atípicos.</li>
-                    <li><strong>Creación de Informes:</strong> Son ideales para generar informes resumidos y personalizados sin necesidad de crear fórmulas complejas.</li>
-                    <li><strong>Toma de Decisiones:</strong> Al presentar la información de manera clara, ayudan a tomar decisiones más informadas.</li>
+                    <li><strong>Manejo de grandes volúmenes de datos:</strong> Permite trabajar con millones de filas sin afectar el rendimiento de Excel.</li>
+                    <li><strong>Análisis desde múltiples tablas:</strong> Puedes usar datos de varias tablas para crear informes y tablas dinámicas.</li>
+                    <li><strong>Flexibilidad y eficiencia:</strong> Evita la necesidad de usar `BUSCARV` o `VLOOKUP` complejos para vincular datos.</li>
+                    <li><strong>Creación de relaciones:</strong> Define cómo se conectan las tablas entre sí, como "un producto tiene muchas ventas".</li>
                 </ul>
             </div>
 
-            <!-- Diapositiva 4: Elementos Clave de una Tabla Dinámica -->
+            <!-- Diapositiva 4: Componentes Clave -->
             <div id="slide-4" class="slide">
-                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Elementos Clave de una Tabla Dinámica</h3>
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Componentes Clave</h3>
                 <div class="flex flex-col md:flex-row justify-center items-center md:items-start w-full max-w-5xl md:space-x-8">
                     <div class="w-full md:w-1/2 text-left">
                         <ul class="mt-2 sm:mt-4 text-base sm:text-xl text-gray-700 leading-relaxed list-disc list-inside space-y-2 sm:space-y-4">
-                            <li><strong>Filas:</strong> Muestran los datos en la parte izquierda de la tabla.</li>
-                            <li><strong>Columnas:</strong> Muestran los datos en la parte superior de la tabla.</li>
-                            <li><strong>Valores:</strong> Son los datos que se agregan (suman, cuentan, promedian, etc.).</li>
-                            <li><strong>Filtros:</strong> Permiten restringir los datos mostrados a ciertos criterios.</li>
+                            <li><strong>Tablas:</strong> Cada tabla de datos es una parte fundamental del modelo.</li>
+                            <li><strong>Relaciones:</strong> Las conexiones que estableces entre tablas a través de una columna común (ej. ID de producto).</li>
+                            <li><strong>Medidas (DAX):</strong> Fórmulas que realizas para calcular valores como sumas, promedios o conteos.</li>
+                            <li><strong>Columnas calculadas:</strong> Nuevas columnas que creas en las tablas usando fórmulas.</li>
                         </ul>
                     </div>
                     <div class="w-full md:w-1/2 mt-8 md:mt-0 flex justify-center">
@@ -283,85 +274,89 @@
                 </div>
             </div>
 
-            <!-- Diapositiva 5: Ejemplo de Tabla Dinámica Interactiva -->
+            <!-- Diapositiva 5: Relaciones entre Tablas -->
             <div id="slide-5" class="slide">
-                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Ejemplo de Tabla Dinámica</h3>
-                <div class="w-full max-w-5xl">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-4 space-y-2 md:space-y-0 md:space-x-4">
-                        <div class="flex items-center space-x-2 w-full md:w-auto">
-                            <label for="sort-by" class="text-sm font-medium text-gray-700">Ordenar por:</label>
-                            <select id="sort-by" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
-                                <option value="nombre">Nombre</option>
-                                <option value="precio">Precio</option>
-                                <option value="fecha">Fecha</option>
-                            </select>
-                        </div>
-                        <div class="flex items-center space-x-2 w-full md:w-auto">
-                            <label for="filter-by" class="text-sm font-medium text-gray-700">Filtrar por producto:</label>
-                            <select id="filter-by" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
-                                <option value="todos">Todos</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto shadow-lg rounded-xl">
-                        <table id="dynamic-table" class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre del Producto</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio Unitario</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Ingreso</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- Contenido de la tabla se insertará aquí por JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Relaciones entre Tablas</h3>
+                <p class="text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl mb-4">
+                    Las <strong>relaciones</strong> son la base de un modelo de datos. Conectan tablas y permiten el análisis de datos desde múltiples fuentes, ya que definen cómo se vincula la información.
+                </p>
+                <p class="text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl">
+                    Se establecen a través de una columna común, como un <strong>ID</strong> único en cada tabla, lo que permite combinar datos y obtener información valiosa de manera eficiente.
+                </p>
+            </div>
+
+            <!-- Diapositiva 6: Relación Uno a Uno -->
+            <div id="slide-6" class="slide">
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Relación Uno a Uno (1:1)</h3>
+                <p class="text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl mb-8">
+                    Una relación donde un registro en una tabla se vincula con un único registro en otra tabla.
+                </p>
+                <div class="relationship-diagram">
+                    <img src="https://azghell.github.io/II_BTP_A/Ofimatica_I/imagenes/one-to-one.png" alt="Diagrama de relación uno a uno" class="relationship-image">
                 </div>
             </div>
-            
-            <!-- Diapositiva 6: Pasos para crear una Tabla Dinámica (Parte 1) -->
-            <div id="slide-6" class="slide">
-                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¿Cómo crear una Tabla Dinámica?</h3>
+
+            <!-- Diapositiva 7: Relación Uno a Muchos -->
+            <div id="slide-7" class="slide">
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Relación Uno a Muchos (1:M)</h3>
+                <p class="text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl mb-8">
+                    El tipo de relación más común, donde un registro en la primera tabla puede estar asociado con varios registros en la segunda tabla.
+                </p>
+                <div class="relationship-diagram">
+                    <img src="https://azghell.github.io/II_BTP_A/Ofimatica_I/imagenes/one-to-many.png" alt="Diagrama de relación uno a muchos" class="relationship-image">
+                </div>
+            </div>
+
+            <!-- Diapositiva 8: Relación Muchos a Muchos -->
+            <div id="slide-8" class="slide">
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Relación Muchos a Muchos (M:M)</h3>
+                <p class="text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl mb-8">
+                    Una relación donde múltiples registros en una tabla pueden estar asociados con múltiples registros en otra tabla. Requiere una tabla intermedia para funcionar correctamente.
+                </p>
+                <div class="relationship-diagram">
+                    <img src="https://azghell.github.io/II_BTP_A/Ofimatica_I/imagenes/many-to-many-relationship.png" alt="Diagrama de relación muchos a muchos" class="relationship-image">
+                </div>
+            </div>
+
+            <!-- Diapositiva 9: ¿Qué es Power Pivot? -->
+            <div id="slide-9" class="slide">
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¿Qué es Power Pivot?</h3>
+                <p class="text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl">
+                    <strong>Power Pivot</strong> es un complemento integrado en Excel que te permite crear modelos de datos sofisticados. Es una herramienta poderosa para manejar grandes volúmenes de información y realizar análisis profundos a través de las relaciones entre tablas y el uso de fórmulas avanzadas conocidas como DAX (Data Analysis Expressions).
+                </p>
+            </div>
+
+            <!-- Diapositiva 10: ¿Cómo crear un Modelo de Datos? -->
+            <div id="slide-10" class="slide">
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¿Cómo crear un Modelo de Datos?</h3>
                 <div class="w-full max-w-4xl">
                     <div class="infographic-step">
                         <div class="infographic-number">1</div>
                         <div class="infographic-text">
-                            <p class="text-lg"><strong>Selecciona tus datos:</strong> Asegúrate de que tu tabla original no tenga filas o columnas vacías. Selecciona todas las celdas que contienen tus datos, incluyendo los encabezados de las columnas.</p>
+                            <p class="text-lg"><strong>Cargar los datos:</strong> Importa tus tablas desde Excel, una base de datos o un archivo. Luego, ve a <strong>"Power Pivot"</strong> y haz clic en <strong>"Agregar a Modelo de datos"</strong>.</p>
                         </div>
                     </div>
                     <div class="infographic-step">
                         <div class="infographic-number">2</div>
                         <div class="infographic-text">
-                            <p class="text-lg"><strong>Inserta la tabla dinámica:</strong> Ve al menú <strong>"Insertar"</strong> y haz clic en <strong>"Tabla dinámica"</strong>. La aplicación te sugerirá un rango de datos que puedes confirmar.</p>
+                            <p class="text-lg"><strong>Crear relaciones:</strong> En la vista de diagrama, haz clic y arrastra desde una columna clave de una tabla (ej. `ProductoID`) a la columna correspondiente en la otra tabla.</p>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Diapositiva 7: Pasos para crear una Tabla Dinámica (Parte 2) -->
-            <div id="slide-7" class="slide">
-                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¿Cómo crear una Tabla Dinámica?</h3>
-                <div class="w-full max-w-4xl">
-                    <div class="infographic-step">
-                        <div class="infographic-number">3</div>
-                        <div class="infographic-text">
-                            <p class="text-lg"><strong>Diseña tu tabla:</strong> En el panel de "Campos de tabla dinámica", arrastra los campos (columnas) a las áreas de <strong>"Filas"</strong>, <strong>"Columnas"</strong>, <strong>"Valores"</strong> y <strong>"Filtros"</strong>, según lo que necesites analizar.</p>
-                        </div>
-                    </div>
-                    <div class="infographic-step">
-                        <div class="infographic-number">4</div>
-                        <div class="infographic-text">
-                            <p class="text-lg"><strong>Analiza y personaliza:</strong> Tu tabla dinámica se actualizará automáticamente. Puedes cambiar el tipo de cálculo (suma, promedio, conteo) y aplicar filtros para una visualización más detallada.</p>
-                        </div>
-                    </div>
-                </div>
+            
+            <!-- Diapositiva 11: Beneficios Prácticos -->
+            <div id="slide-11" class="slide">
+                <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Beneficios Clave</h3>
+                <ul class="mt-2 sm:mt-4 text-left text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl list-disc list-inside space-y-2 sm:space-y-4">
+                    <li><strong>Análisis rápido:</strong> Las tablas dinámicas funcionan mucho más rápido con un modelo de datos.</li>
+                    <li><strong>Informes completos:</strong> Puedes crear informes que muestren las ventas por categoría de producto, incluso si esa información está en otra tabla.</li>
+                    <li><strong>Datos centralizados:</strong> Mantén la información de cada tema en una tabla separada y bien organizada.</li>
+                </ul>
             </div>
 
-            <!-- Diapositiva 8: Cuestionario -->
-            <div id="slide-8" class="slide">
+            <!-- Diapositiva 12: Cuestionario -->
+            <div id="slide-12" class="slide">
                 <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¡Pon a prueba tus conocimientos!</h3>
                 <div id="quiz-container" class="bg-gray-100 p-4 sm:p-8 rounded-lg shadow-md max-w-3xl w-full text-center">
                     <div id="quiz-question" class="text-base sm:text-2xl font-semibold mb-2 sm:mb-6 text-gray-800"></div>
@@ -370,30 +365,30 @@
                 </div>
             </div>
 
-            <!-- Diapositiva 9: Resumen -->
-            <div id="slide-9" class="slide">
+            <!-- Diapositiva 13: Resumen -->
+            <div id="slide-13" class="slide">
                 <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Resumen</h3>
                 <ul class="mt-2 sm:mt-4 text-left text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl list-disc list-inside space-y-2 sm:space-y-4">
-                    <li><strong>Las tablas dinámicas son herramientas de resumen y análisis.</strong></li>
-                    <li><strong>Permiten visualizar los datos desde diferentes perspectivas.</strong></li>
-                    <li><strong>Sus componentes clave son: Filas, Columnas, Valores y Filtros.</strong></li>
-                    <li><strong>La creación es un proceso simple de selección y arrastre de campos.</strong></li>
+                    <li>Un <strong>modelo de datos</strong> conecta varias tablas para un análisis integral.</li>
+                    <li>Permite trabajar con <strong>grandes volúmenes de datos</strong> de manera eficiente.</li>
+                    <li>Los <strong>componentes clave</strong> son: Tablas, Relaciones y Medidas.</li>
+                    <li>Se crea en <strong>Power Pivot</strong> y permite análisis complejos en tablas dinámicas.</li>
                 </ul>
             </div>
 
-            <!-- Diapositiva 10: Tarea -->
-            <div id="slide-10" class="slide">
+            <!-- Diapositiva 14: Tarea -->
+            <div id="slide-14" class="slide">
                 <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">Asignación de Tareas</h3>
                 <div class="bg-gray-100 p-4 sm:p-8 rounded-lg shadow-inner max-w-3xl text-left">
                     <p class="text-base sm:text-lg text-gray-700 mb-2 sm:mb-4 font-bold">Tarea:</p>
                     <p class="text-sm sm:text-base text-gray-700 mb-2 sm:mb-4">
-                        En una hoja de cálculo, crea una tabla de datos de ventas con al menos 10 registros. Las columnas deben incluir: ID de Venta, Producto, Región, Cantidad Vendida, y Precio Unitario. A partir de esa tabla, crea una tabla dinámica que muestre las ventas totales por región.
+                        En Excel, crea dos tablas: una llamada "Ventas" (con ID_Venta, ProductoID, Cantidad) y otra llamada "Productos" (con ProductoID, NombreProducto). Agrega ambas al modelo de datos y crea una relación usando `ProductoID`. Luego, haz una tabla dinámica que muestre la cantidad total vendida por `NombreProducto`.
                     </p>
                 </div>
             </div>
 
-            <!-- Diapositiva 11: Fin de la Presentación -->
-            <div id="slide-11" class="slide">
+            <!-- Diapositiva 15: Fin de la Presentación -->
+            <div id="slide-15" class="slide">
                 <h3 class="text-xl sm:text-3xl mb-4 sm:mb-6 text-blue-500">¡Gracias!</h3>
                 <p class="text-base sm:text-xl text-gray-700 leading-relaxed max-w-3xl">
                     ¿Tienen alguna pregunta?
@@ -406,7 +401,7 @@
             <button id="prev-btn" class="nav-button bg-blue-500 hover:bg-blue-600 text-white rounded-full px-4 py-2 text-sm sm:text-base">Anterior</button>
             <button id="next-btn" class="nav-button bg-blue-500 hover:bg-blue-600 text-white rounded-full px-4 py-2 text-sm sm:text-base">Siguiente</button>
         </div>
-        <div id="slide-counter" class="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 font-semibold text-gray-400 z-10 text-xs sm:text-base">1 / 11</div>
+        <div id="slide-counter" class="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 font-semibold text-gray-400 z-10 text-xs sm:text-base">1 / 15</div>
     </main>
 
     <!-- Pie de página -->
@@ -435,101 +430,27 @@
 
         const quizQuestions = [
             {
-                question: "¿Qué es una 'celda' en una hoja de cálculo?",
-                options: ["Un grupo de filas y columnas", "La intersección de una fila y una columna", "Una fila completa", "Una columna completa"],
-                correctAnswer: "La intersección de una fila y una columna"
+                question: "¿Qué es un modelo de datos en Excel?",
+                options: ["Un tipo de gráfico", "Una colección de tablas relacionadas", "Una función de búsqueda", "Una plantilla de formato"],
+                correctAnswer: "Una colección de tablas relacionadas"
             },
             {
-                question: "¿Cuál es una 'mala práctica' al diseñar tablas?",
-                options: ["Usar encabezados claros", "Aplicar colores para mejor visualización", "Evitar filas y columnas vacías", "Combinar celdas"],
-                correctAnswer: "Combinar celdas"
+                question: "¿Qué herramienta de Excel se usa para crear relaciones en un modelo de datos?",
+                options: ["Tablas Dinámicas", "Power Query", "Power Pivot", "Formato Condicional"],
+                correctAnswer: "Power Pivot"
             },
             {
-                question: "¿Para qué se utiliza el formato condicional?",
-                options: ["Para cambiar la fuente de toda la tabla", "Para aplicar formato basado en el valor de las celdas", "Para combinar celdas", "Para sumar automáticamente los valores"],
-                correctAnswer: "Para aplicar formato basado en el valor de las celdas"
+                question: "¿Qué es una 'medida' en el modelo de datos?",
+                options: ["Una fila de datos", "Una columna de texto", "Un cálculo usando fórmulas DAX", "Un tipo de filtro"],
+                correctAnswer: "Un cálculo usando fórmulas DAX"
             },
             {
-                question: "¿Qué elemento de una tabla describe el contenido de cada columna?",
-                options: ["La última fila", "El pie de página", "Los encabezados", "El borde de la tabla"],
-                correctAnswer: "Los encabezados"
-            },
-            {
-                question: "¿Cuál es un beneficio clave de usar tablas dinámicas?",
-                options: ["Solo se pueden usar en Excel", "Permiten resumir y analizar datos rápidamente", "Se actualizan automáticamente", "Solo se pueden usar para hacer gráficos"],
-                correctAnswer: "Permiten resumir y analizar datos rápidamente"
-            },
-            {
-                question: "¿Qué área de una tabla dinámica se usa para filtrar los datos mostrados?",
-                options: ["Filas", "Columnas", "Valores", "Filtros"],
-                correctAnswer: "Filtros"
+                question: "¿Cuál es el beneficio principal de usar un modelo de datos con múltiples tablas?",
+                options: ["Simplifica la entrada de datos", "Permite analizar grandes volúmenes de datos rápidamente", "Se eliminan las fórmulas de la hoja de cálculo", "Mejora la estética de la tabla"],
+                correctAnswer: "Permite analizar grandes volúmenes de datos rápidamente"
             }
         ];
         let currentQuizQuestionIndex = 0;
-
-        const tableData = [
-            { id: 1, nombre: 'Laptop', cantidad: 15, precio: 1200, fecha: '2025-01-15' },
-            { id: 2, nombre: 'Mouse', cantidad: 50, precio: 25, fecha: '2025-01-18' },
-            { id: 3, nombre: 'Teclado', cantidad: 30, precio: 75, fecha: '2025-01-20' },
-            { id: 4, nombre: 'Monitor', cantidad: 22, precio: 300, fecha: '2025-02-01' },
-            { id: 5, nombre: 'Webcam', cantidad: 10, precio: 50, fecha: '2025-02-05' },
-            { id: 6, nombre: 'Laptop', cantidad: 8, precio: 1250, fecha: '2025-02-10' },
-            { id: 7, nombre: 'Mouse', cantidad: 45, precio: 28, fecha: '2025-02-12' },
-            { id: 8, nombre: 'Teclado', cantidad: 25, precio: 80, fecha: '2025-02-15' },
-            { id: 9, nombre: 'Monitor', cantidad: 18, precio: 320, fecha: '2025-02-20' },
-            { id: 10, nombre: 'Webcam', cantidad: 12, precio: 55, fecha: '2025-02-25' }
-        ];
-
-        function renderTable(data) {
-            const tableBody = document.querySelector('#dynamic-table tbody');
-            tableBody.innerHTML = '';
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">${item.id}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${item.nombre}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${item.cantidad}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">$${item.precio}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${item.fecha}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        function populateFilters() {
-            const filterSelect = document.getElementById('filter-by');
-            const productNames = [...new Set(tableData.map(item => item.nombre))];
-            productNames.forEach(name => {
-                const option = document.createElement('option');
-                option.value = name;
-                option.textContent = name;
-                filterSelect.appendChild(option);
-            });
-        }
-
-        function updateTable() {
-            const sortBy = document.getElementById('sort-by').value;
-            const filterBy = document.getElementById('filter-by').value;
-            
-            let filteredData = tableData;
-            if (filterBy !== 'todos') {
-                filteredData = tableData.filter(item => item.nombre === filterBy);
-            }
-            
-            let sortedData = [...filteredData];
-            if (sortBy === 'nombre') {
-                sortedData.sort((a, b) => a.nombre.localeCompare(b.nombre));
-            } else if (sortBy === 'precio') {
-                sortedData.sort((a, b) => a.precio - b.precio);
-            } else if (sortBy === 'fecha') {
-                sortedData.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
-            }
-
-            renderTable(sortedData);
-        }
-
-        document.getElementById('sort-by').addEventListener('change', updateTable);
-        document.getElementById('filter-by').addEventListener('change', updateTable);
 
         function updateQuizDisplay() {
             const quizQuestionElement = document.getElementById('quiz-question');
@@ -610,9 +531,7 @@
 
             currentSlideIndex = index;
 
-            if (currentSlideIndex === 4) { // Diapositiva del ejemplo interactivo
-                updateTable();
-            } else if (currentSlideIndex === 7) { // Diapositiva del cuestionario
+            if (currentSlideIndex === 11) { // Diapositiva del cuestionario (anteriormente index 12, ahora 11)
                 currentQuizQuestionIndex = 0;
                 updateQuizDisplay();
             }
@@ -667,7 +586,6 @@
             if (currentYearSpan) {
                 currentYearSpan.textContent = new Date().getFullYear();
             }
-            populateFilters();
             showSlide(0);
         });
     </script>
