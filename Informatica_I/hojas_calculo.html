@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación: Hojas de Cálculo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        html { font-size: 80%; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: translateY(0);} }
+        @keyframes fadeOutDown { from { opacity: 1; transform: translateY(0);} to { opacity: 0; transform: translateY(20px);} }
+        .slide {
+            display: none;
+            animation-duration: 0.5s;
+            animation-fill-mode: forwards;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            padding: 2rem; box-sizing: border-box; background-color: white;
+        }
+        .slide.active {
+            display: flex;
+            animation-name: fadeInUp;
+            position: absolute;
+            z-index: 10;
+        }
+        .nav-button {
+            background-color: #4F46E5; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem;
+            font-weight: 600; transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer;
+        }
+        .nav-button:hover { background-color: #4338CA; transform: translateY(-2px);}
+        .nav-button:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+        .nav-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;}
+        .mobile-menu { transition: transform 0.3s ease-out; transform: translateX(100%);}
+        .mobile-menu.open { transform: translateX(0);}
+        .slide h1 { font-size: 2.5rem;}
+        .slide h2 { font-size: 2rem;}
+        .slide p, .slide ul { font-size: 1.1rem; max-width: 800px; margin: 0 auto;}
+        .slide img { max-width: 80%; height: auto;}
+        .content-image-style { border-radius: 0.75rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); margin-top: 1.5rem;}
+        .cover-logo { box-shadow: none !important;}
+        @media (max-width: 768px) {
+            html { font-size: 75%;}
+            .slide h1 { font-size: 2rem;}
+            .slide h2 { font-size: 1.75rem;}
+            .slide p, .slide ul { font-size: 1rem; padding: 0 1rem;}
+            .slide { padding: 1rem;}
+        }
+        @media (max-width: 480px) {
+            html { font-size: 70%;}
+            .slide h1 { font-size: 1.75rem;}
+            .slide h2 { font-size: 1.5rem;}
+            .slide p, .slide ul { font-size: 0.9rem;}
+            .slide img { max-width: 95%;}
+        }
+        .quiz-option-button { transition: background 0.2s, color 0.2s, border 0.2s; }
+    </style>
+</head>
+<body class="font-['Inter'] bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Desktop Navigation (Encabezado) -->
+    <header id="header" class="bg-white shadow-md py-4 px-6 sticky top-0 z-50 hidden md:block">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="https://azghell.github.io/IMA-Informatica" class="flex items-center space-x-2 text-gray-900 hover:text-indigo-600 transition duration-300">
+                <img src="https://azghell.github.io/IMA-Informatica/imagenes/logo.png" alt="Logo ISEMED" style="width: 180px; height: auto;">
+            </a>
+            <span class="font-extrabold text-2xl text-center flex-grow">Area de Informatica</span>
+            <nav class="flex space-x-6">
+                <a href="https://azghell.github.io/IMA-Informatica" class="text-gray-600 hover:text-indigo-600 font-medium transition duration-300">Inicio</a>
+                <div class="relative group">
+                    <button class="text-gray-600 hover:text-indigo-600 font-medium transition duration-300 focus:outline-none flex items-center">
+                        Asignaturas
+                        <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 invisible group-hover:visible group-focus-within:visible">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Informática I</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ofimática I</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Informática Aplicada I</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Análisis y Diseño I</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Diseño Web II</a>
+                    </div>
+                </div>
+                <a href="/fundamentos_ii.pdf" class="text-gray-600 hover:text-indigo-600 font-medium transition duration-300">Contenido de clase</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation (Encabezado para móviles) -->
+    <header id="mobile-header" class="bg-white shadow-md py-4 px-4 flex justify-between items-center md:hidden">
+        <a href="https://azghell.github.io/IMA-Informatica" class="flex items-center space-x-2 text-gray-900 hover:text-indigo-600 transition duration-300">
+            <img src="https://azghell.github.io/IMA-Informatica/imagenes/logo.png" alt="Logo ISEMED" style="width: 180px; height: auto;">
+            <span class="font-extrabold text-xl">Area de Informatica</span>
+        </a>
+        <button id="mobile-menu-button" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+        <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-50 p-6 flex flex-col">
+            <button id="close-mobile-menu" class="self-end text-gray-600 hover:text-indigo-600 focus:outline-none mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <nav class="flex flex-col space-y-4">
+                <a href="https://azghell.github.io/IMA-Informatica" class="text-gray-800 hover:text-indigo-600 font-medium text-lg transition duration-300">Inicio</a>
+                <div class="relative">
+                    <button id="mobile-asignaturas-button" class="text-gray-800 hover:text-indigo-600 font-medium text-lg transition duration-300 focus:outline-none flex items-center justify-between w-full">
+                        Asignaturas
+                        <svg class="ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-asignaturas-dropdown" class="hidden mt-2 pl-4 flex flex-col space-y-2">
+                        <a href="#" class="block text-base text-gray-700 hover:text-indigo-600">Informática I</a>
+                        <a href="#" class="block text-base text-gray-700 hover:bg-gray-100">Ofimática I</a>
+                        <a href="#" class="block text-base text-gray-700 hover:bg-gray-100">Informática Aplicada I</a>
+                        <a href="#" class="block text-base text-gray-700 hover:bg-gray-100">Análisis y Diseño I</a>
+                        <a href="#" class="block text-base text-gray-700 hover:bg-gray-100">Diseño Web II</a>
+                    </div>
+                </div>
+                <a href="/fundamentos_ii.pdf" class="text-gray-800 hover:text-indigo-600 font-medium text-lg transition duration-300">Contenido de clase</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center relative">
+        <div id="presentation-container" class="relative w-full max-w-4xl bg-white rounded-lg shadow-xl overflow-hidden min-h-[60vh] flex flex-col justify-between">
+
+            <!-- Slide 1: Portada -->
+            <div id="slide-1" class="slide active">
+                <img src="https://azghell.github.io/IMA-Informatica/imagenes/logo.png" alt="Logo de la Institución" style="width: 400px; height: auto;" class="mx-auto mb-8 cover-logo">
+                <h1 class="text-indigo-700 font-extrabold text-4xl mb-4">Hojas de Cálculo</h1>
+                <h3 class="text-2xl text-gray-700 mb-2">Informática I</h3>
+                <p class="text-xl text-gray-600 mb-2">Décimo A</p>
+                <p class="text-xl text-gray-600 mb-2">Docente: Pablo Antonio Peña</p>
+                <p class="text-xl text-gray-600 mb-2">San Pedro Sula</p>
+                <p class="text-xl text-gray-600">12 de octubre del 2025</p>
+            </div>
+
+            <!-- Slide 2: Introducción a las Hojas de Cálculo -->
+            <div id="slide-2" class="slide">
+                <h2 class="text-indigo-600 font-bold mb-4">1. ¿Qué es una Hoja de Cálculo?</h2>
+                <p class="text-lg text-gray-700 mb-6">Una hoja de cálculo es una aplicación informática que permite organizar, analizar y presentar datos numéricos y alfanuméricos en tablas.</p>
+                <img src="../II_BTP_A/Ofimatica_I/imagenes/ejemplo-hoja-de-calculo.png" alt="Ejemplo de Hoja de Cálculo" class="max-w-md mx-auto content-image-style">
+                <ul class="list-disc list-inside text-left text-base text-gray-700 mt-6 space-y-2">
+                    <li>Se compone de <strong>celdas</strong> organizadas en <strong>filas</strong> y <strong>columnas</strong>.</li>
+                    <li>Ideal para contabilidad, presupuestos, análisis estadístico y más.</li>
+                </ul>
+            </div>
+
+            <!-- Slide 3: Interfaz de una Hoja de Cálculo -->
+            <div id="slide-3" class="slide">
+                <h2 class="text-indigo-600 font-bold mb-4">2. Interfaz Principal</h2>
+                <p class="text-lg text-gray-700 mb-6">Familiaricémonos con los componentes clave de una hoja de cálculo.</p>
+                <img src="../II_BTP_A/Ofimatica_I/imagenes/interfaz-hoja-de-calculo.png" alt="Interfaz de una Hoja de Cálculo" class="max-w-xl mx-auto content-image-style">
+                <ul class="list-disc list-inside text-left text-base text-gray-700 mt-6 space-y-2">
+                    <li><strong>Barra de Fórmulas:</strong> Para introducir y editar datos o fórmulas.</li>
+                    <li><strong>Celdas, Filas y Columnas:</strong> Unidades básicas de almacenamiento de datos.</li>
+                    <li><strong>Pestañas de Hoja:</strong> Para navegar entre diferentes hojas de trabajo.</li>
+                </ul>
+            </div>
+
+            <!-- Slide 4: Entrada y Formato de Datos -->
+            <div id="slide-4" class="slide">
+                <h2 class="text-indigo-600 font-bold mb-4">3. Entrada y Formato de Datos</h2>
+                <p class="text-lg text-gray-700 mb-6">Aprende a introducir diferentes tipos de datos y a darles el formato adecuado.</p>
+                <img src="../II_BTP_A/Ofimatica_I/imagenes/formato-de-datos.png" alt="Formato de Datos en Hoja de Cálculo" class="max-w-md mx-auto content-image-style">
+                <ul class="list-disc list-inside text-left text-base text-gray-700 mt-6 space-y-2">
+                    <li><strong>Tipos de Datos:</strong> Texto, Números, Fechas, Fórmulas.</li>
+                    <li><strong>Formato de Celdas:</strong> Moneda, Porcentaje, Alineación, Bordes, Colores.</li>
+                    <li><strong>Atajo:</strong> `Ctrl + 1` para abrir el cuadro de diálogo de formato de celdas.</li>
+                </ul>
+            </div>
+
+            <!-- Slide 5: Fórmulas Básicas -->
+            <div id="slide-5" class="slide">
+                <h2 class="text-indigo-600 font-bold mb-4">4. Fórmulas Básicas</h2>
+                <p class="text-lg text-gray-700 mb-6">Las fórmulas son expresiones que realizan cálculos en tus datos.</p>
+                <img src="../II_BTP_A/Ofimatica_I/imagenes/formulas-basicas.png" alt="Ejemplo de Fórmulas Básicas" class="max-w-md mx-auto content-image-style">
+                <div class="bg-gray-100 p-4 rounded-md mt-6 w-full max-w-xl text-left text-sm font-mono">
+                    <pre><code class="language-excel">=A1+B1        // Suma
+=C2-D2        // Resta
+=E3*F3        // Multiplicación
+=G4/H4        // División
+=SUMA(A1:A10) // Suma de un rango
+</code></pre>
+                </div>
+                <p class="text-base text-gray-500 mt-4">Todas las fórmulas comienzan con el signo `=`. </p>
+            </div>
+
+            <!-- Slide 6: Funciones Básicas -->
+            <div id="slide-6" class="slide">
+                <h2 class="text-indigo-600 font-bold mb-4">5. Funciones Básicas</h2>
+                <p class="text-lg text-gray-700 mb-6">Las funciones son fórmulas predefinidas que realizan cálculos complejos.</p>
+                <img src="../II_BTP_A/Ofimatica_I/imagenes/funciones-basicas.png" alt="Ejemplo de Funciones Básicas" class="max-w-md mx-auto content-image-style">
+                <div class="bg-gray-100 p-4 rounded-md mt-6 w-full max-w-xl text-left text-sm font-mono">
+                    <pre><code class="language-excel">=SUMA(A1:A5)      // Suma el rango
+=PROMEDIO(B1:B5)   // Calcula el promedio
+=CONTAR(C1:C10)    // Cuenta celdas con números
+=MAX(D1:D7)        // Encuentra el valor máximo
+=MIN(E1:E7)        // Encuentra el valor mínimo
+</code></pre>
+                </div>
+                <p class="text-base text-gray-500 mt-4">Las funciones simplifican cálculos repetitivos.</p>
+            </div>
+
+            <!-- Slide 7: Ordenamiento y Filtrado de Datos -->
+            <div id="slide-7" class="slide">
+                <h2 class="text-indigo-600 font-bold mb-4">6. Ordenamiento y Filtrado de Datos</h2>
+                <p class="text-lg text-gray-700 mb-6">Organiza y visualiza tus datos de manera eficiente.</p>
+                <img src="../II_BTP_A/Ofimatica_I/imagenes/ordenamiento-y-filtrado.PNG" alt="Ordenamiento y Filtrado de Datos" class="max-w-md mx-auto content-image-style">
+                <ul class="list-disc list-inside text-left text-base text-gray-700 mt-6 space-y-2">
+                    <li><strong>Ordenar:</strong> Reorganiza los datos en orden ascendente o descendente.</li>
+                    <li><strong>Filtrar:</strong> Muestra solo los datos que cumplen con criterios específicos.</li>
+                    <li>Herramientas esenciales para el análisis de grandes conjuntos de datos.</li>
+                </ul>
+            </div>
+
+            <!-- Slide 8: Ejercicio Práctico 1: Presupuesto Simple -->
+            <div id="slide-8" class="slide">
+                <h2 class="text-indigo-600 font-bold mb-4">Ejercicio Práctico 1: Presupuesto Simple</h2>
+                <p class="text-lg text-gray-700 mb-6">Crea una hoja de cálculo para un presupuesto personal mensual.</p>
+                <img src="../II_BTP_A/Ofimatica_I/imagenes/presupuesto-simple.png" alt="Ejemplo de Presupuesto Simple" class="max-w-md mx-auto content-image-style">
+                <ul class="list-disc list-inside text-left text-base text-gray-700 mt-6 space-y-2">
+                    <li>Columnas: `Categoría`, `Ingresos`, `Gastos`.</li>
+                    <li>Usa fórmulas para calcular el `Total Ingresos`, `Total Gastos` y `Balance`.</li>
+                    <li>Aplica formato de moneda y bordes.</li>
+                </ul>
+            </div>
+
+            <!-- Slide 9: Ejercicio Práctico 2: Control de Inventario -->
+            <div id="slide-9" class="slide">
+                <h2 class="text-indigo-600 font-bold mb-4">Ejercicio Práctico 2: Control de Inventario</h2>
+                <p class="text-lg text-gray-700 mb-6">Diseña una hoja de cálculo para gestionar un inventario básico de productos.</p>
+                <img src="../II_BTP_A/Ofimatica_I/imagenes/control-inventario.png" alt="Ejemplo de Control de Inventario" class="max-w-md mx-auto content-image-style">
+                <ul class="list-disc list-inside text-left text-base text-gray-700 mt-6 space-y-2">
+                    <li>Columnas: `ID Producto`, `Nombre`, `Cantidad`, `Precio Unitario`, `Valor Total`.</li>
+                    <li>Calcula el `Valor Total` (`Cantidad * Precio Unitario`).</li>
+                    <li>Usa la función `SUMA` para el `Valor Total del Inventario`.</li>
+                    <li>Ordena los productos por `Cantidad` (ascendente/descendente).</li>
+                </ul>
+            </div>
+
+            <!-- Slide 10: Quiz de Hojas de Cálculo -->
+            <div id="slide-10" class="slide">
+                <h2 class="text-indigo-700 font-extrabold mb-4">¡Pon a prueba tus conocimientos!</h2>
+                <div id="quiz-container" class="bg-gray-100 p-4 sm:p-8 rounded-lg shadow-md max-w-3xl w-full text-center mx-auto">
+                    <div id="quiz-question" class="text-base sm:text-2xl font-semibold mb-2 sm:mb-6 text-gray-800"></div>
+                    <div id="quiz-options" class="flex flex-col space-y-2 sm:space-y-4"></div>
+                    <div id="quiz-feedback" class="mt-4 sm:mt-6 text-sm sm:text-lg font-bold"></div>
+                </div>
+            </div>
+
+            <!-- Slide 11: Asignación de Tareas -->
+            <div id="slide-11" class="slide">
+                <h2 class="text-indigo-700 font-extrabold mb-4">Asignación de Tareas</h2>
+                <p class="text-xl text-gray-600 mb-6">Elaboración de un control de notas o inventario simple que incluya entrada, formato y uso de al menos 3 funciones básicas.</p>
+                <p class="text-lg text-gray-500">Fecha de entrega: 19/07/2025</p>
+                <p class="text-lg text-gray-500">Ponderación: 5%</p>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between w-full p-4 mt-auto">
+                <button id="prev-slide" class="nav-button flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    Anterior
+                </button>
+                <div class="flex items-center space-x-4">
+                    <button id="fullscreen-button" title="Pantalla Completa"
+                            class="nav-button flex items-center bg-gray-500 hover:bg-gray-600 p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h2a1 1 0 010 2H5v1a1 1 0 01-2 0V5zm10-1h2a1 1 0 011 1v1a1 1 0 11-2 0V5h-1a1 1 0 110-2zm-9 8a1 1 0 012 0v1h1a1 1 0 110 2H4a1 1 0 01-1-1v-2zm12 0a1 1 0 01-1 1h-1a1 1 0 110-2h1v-1a1 1 0 112 0v2z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <span id="slide-counter" class="text-gray-600 font-medium text-lg flex items-center">1 / 11</span>
+                </div>
+                <button id="next-slide" class="nav-button flex items-center">
+                    Siguiente
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer" class="bg-gray-900 text-gray-300 py-6 px-6 mt-8 flex justify-center items-center">
+        <div class="container mx-auto text-center text-sm">
+            <p class="flex items-center justify-center">
+                &copy;&nbsp;<span id="current-year"></span>&nbsp;Instituto Maria Auxiliadora - Area de Informatica ISEMED. Todos los derechos reservados.
+                <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" style="width: 50px; height: auto; margin-left: 0.5rem;">
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Mobile Menu Logic ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileAsignaturasButton = document.getElementById('mobile-asignaturas-button');
+        const mobileAsignaturasDropdown = document.getElementById('mobile-asignaturas-dropdown');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+            mobileMenuOverlay.classList.toggle('hidden');
+        }
+
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        closeMobileMenuButton.addEventListener('click', toggleMobileMenu);
+        mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+
+        mobileAsignaturasButton.addEventListener('click', () => {
+            mobileAsignaturasDropdown.classList.toggle('hidden');
+            mobileAsignaturasButton.querySelector('svg').classList.toggle('rotate-180');
+        });
+
+        // --- Presentation Logic Mejorada ---
+        const slides = document.querySelectorAll('.slide');
+        const prevButton = document.getElementById('prev-slide');
+        const nextButton = document.getElementById('next-slide');
+        const slideCounter = document.getElementById('slide-counter');
+        const header = document.getElementById('header');
+        const mobileHeader = document.getElementById('mobile-header');
+        const footer = document.getElementById('footer');
+        const fullscreenButton = document.getElementById('fullscreen-button');
+
+        let currentSlideIndex = 0;
+
+        function updateSlideCounter() {
+            slideCounter.textContent = `${currentSlideIndex + 1} / ${slides.length}`;
+        }
+
+        function updateNavigationButtons() {
+            prevButton.disabled = currentSlideIndex === 0;
+            nextButton.disabled = currentSlideIndex === slides.length - 1;
+        }
+
+        function showSlide(index) {
+            if (index < 0 || index >= slides.length || index === currentSlideIndex) return;
+            slides[currentSlideIndex].classList.remove('active');
+            slides[currentSlideIndex].style.display = 'none';
+            slides[index].classList.add('active');
+            slides[index].style.display = 'flex';
+            currentSlideIndex = index;
+            updateSlideCounter();
+            updateNavigationButtons();
+
+            // Iniciar quiz si es la diapositiva del quiz
+            if (currentSlideIndex === 9) {
+                currentQuizQuestionIndex = 0;
+                updateQuizDisplay();
+            }
+        }
+
+        function nextSlide() { showSlide(currentSlideIndex + 1); }
+        function prevSlide() { showSlide(currentSlideIndex - 1); }
+
+        prevButton.addEventListener('click', prevSlide);
+        nextButton.addEventListener('click', nextSlide);
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') nextSlide();
+            else if (event.key === 'ArrowLeft') prevSlide();
+        });
+
+        // --- Pantalla Completa: Ocultar encabezado y pie de página automáticamente ---
+        function isFullscreenNow() {
+            // Para F11 y API Fullscreen
+            return window.innerHeight === screen.height || !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+        }
+
+        function hideHeaderFooter() {
+            if (header) header.style.display = "none";
+            if (mobileHeader) mobileHeader.style.display = "none";
+            if (footer) footer.style.display = "none";
+        }
+
+        function showHeaderFooter() {
+            if (header) header.style.display = "";
+            if (mobileHeader) mobileHeader.style.display = "";
+            if (footer) footer.style.display = "";
+        }
+
+        function handleFullscreenChange() {
+            if (isFullscreenNow()) {
+                hideHeaderFooter();
+                document.body.classList.add('h-screen', 'w-screen', 'overflow-hidden');
+            } else {
+                showHeaderFooter();
+                document.body.classList.remove('h-screen', 'w-screen', 'overflow-hidden');
+            }
+        }
+
+        fullscreenButton.addEventListener('click', () => {
+            const presentationContainer = document.getElementById('presentation-container');
+            if (!isFullscreenNow()) {
+                if (presentationContainer.requestFullscreen) {
+                    presentationContainer.requestFullscreen();
+                } else if (presentationContainer.webkitRequestFullscreen) {
+                    presentationContainer.webkitRequestFullscreen();
+                } else if (presentationContainer.msRequestFullscreen) {
+                    presentationContainer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        });
+
+        // Detectar pantalla completa automáticamente (API y F11)
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+        window.addEventListener('resize', handleFullscreenChange);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentYearSpan = document.getElementById('current-year');
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+            slides.forEach((slide, idx) => {
+                if (idx === 0) {
+                    slide.classList.add('active');
+                    slide.style.display = 'flex';
+                } else {
+                    slide.classList.remove('active');
+                    slide.style.display = 'none';
+                }
+            });
+            currentSlideIndex = 0;
+            updateSlideCounter();
+            updateNavigationButtons();
+            // Si ya está en fullscreen al cargar, ocultar header/footer
+            if (isFullscreenNow()) hideHeaderFooter();
+        });
+
+        // --- Quiz de Hojas de Cálculo ---
+        const quizQuestions = [
+            {
+                question: "¿Qué es una hoja de cálculo?",
+                options: [
+                    "Un programa para editar imágenes",
+                    "Una aplicación para organizar y analizar datos en tablas",
+                    "Un editor de texto avanzado",
+                    "Un navegador web"
+                ],
+                correctAnswer: "Una aplicación para organizar y analizar datos en tablas"
+            },
+            {
+                question: "¿Cómo se llama la barra donde se escriben fórmulas en Excel?",
+                options: [
+                    "Barra de estado",
+                    "Barra de herramientas",
+                    "Barra de fórmulas",
+                    "Barra de menú"
+                ],
+                correctAnswer: "Barra de fórmulas"
+            },
+            {
+                question: "¿Cuál es el símbolo que debe iniciar toda fórmula en una hoja de cálculo?",
+                options: [
+                    "+",
+                    "=",
+                    "-",
+                    "#"
+                ],
+                correctAnswer: "="
+            },
+            {
+                question: "¿Qué función se usa para sumar un rango de celdas?",
+                options: [
+                    "PROMEDIO",
+                    "SUMA",
+                    "CONTAR",
+                    "MAX"
+                ],
+                correctAnswer: "SUMA"
+            },
+            {
+                question: "¿Cuál de los siguientes es un tipo de dato que puedes ingresar en una celda?",
+                options: [
+                    "Texto",
+                    "Imagen",
+                    "Hipervínculo",
+                    "Todos los anteriores"
+                ],
+                correctAnswer: "Todos los anteriores"
+            },
+            {
+                question: "¿Qué atajo abre el cuadro de formato de celdas en la mayoría de hojas de cálculo?",
+                options: [
+                    "Ctrl + F",
+                    "Ctrl + 1",
+                    "Ctrl + C",
+                    "Ctrl + S"
+                ],
+                correctAnswer: "Ctrl + 1"
+            },
+            {
+                question: "¿Qué hace la función =PROMEDIO(A1:A10)?",
+                options: [
+                    "Suma los valores de A1 a A10",
+                    "Cuenta las celdas de A1 a A10",
+                    "Calcula el promedio de los valores de A1 a A10",
+                    "Muestra el valor máximo de A1 a A10"
+                ],
+                correctAnswer: "Calcula el promedio de los valores de A1 a A10"
+            },
+            {
+                question: "¿Para qué sirve el filtrado de datos?",
+                options: [
+                    "Para ocultar filas o columnas",
+                    "Para mostrar solo los datos que cumplen ciertos criterios",
+                    "Para cambiar el formato de los datos",
+                    "Para sumar datos automáticamente"
+                ],
+                correctAnswer: "Para mostrar solo los datos que cumplen ciertos criterios"
+            },
+            {
+                question: "¿Qué operador se usa para multiplicar en una fórmula?",
+                options: [
+                    "x",
+                    "*",
+                    "&",
+                    "%"
+                ],
+                correctAnswer: "*"
+            },
+            {
+                question: "¿Cuál es la función para encontrar el valor máximo en un rango?",
+                options: [
+                    "MIN",
+                    "MAX",
+                    "CONTAR",
+                    "SI"
+                ],
+                correctAnswer: "MAX"
+            }
+        ];
+        let currentQuizQuestionIndex = 0;
+
+        function updateQuizDisplay() {
+            const quizQuestionElement = document.getElementById('quiz-question');
+            const quizOptionsElement = document.getElementById('quiz-options');
+            const quizFeedbackElement = document.getElementById('quiz-feedback');
+
+            if (currentQuizQuestionIndex >= quizQuestions.length) {
+                quizQuestionElement.textContent = "¡Cuestionario completado!";
+                quizOptionsElement.innerHTML = '';
+                quizFeedbackElement.textContent = '';
+                return;
+            }
+
+            const currentQuestion = quizQuestions[currentQuizQuestionIndex];
+            quizQuestionElement.textContent = currentQuestion.question;
+            quizOptionsElement.innerHTML = '';
+            quizFeedbackElement.textContent = '';
+
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.className = "quiz-option-button w-full px-6 py-3 rounded-xl border border-indigo-400 bg-indigo-50 text-indigo-700 font-semibold transition-colors duration-200 hover:bg-indigo-100";
+                button.onclick = () => checkAnswer(option);
+                quizOptionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const currentQuestion = quizQuestions[currentQuizQuestionIndex];
+            const quizFeedback = document.getElementById('quiz-feedback');
+            const buttons = document.querySelectorAll('#quiz-options .quiz-option-button');
+            const isCorrect = selectedOption === currentQuestion.correctAnswer;
+
+            buttons.forEach(button => {
+                button.disabled = true;
+                if (button.textContent === currentQuestion.correctAnswer) {
+                    button.classList.add('bg-green-200', 'text-green-800', 'border-green-400');
+                } else if (button.textContent === selectedOption) {
+                    button.classList.add('bg-red-200', 'text-red-800', 'border-red-400');
+                }
+            });
+
+            if (isCorrect) {
+                quizFeedback.textContent = '¡Correcto!';
+                quizFeedback.classList.remove('text-red-500');
+                quizFeedback.classList.add('text-green-500');
+            } else {
+                quizFeedback.textContent = 'Incorrecto. La respuesta correcta es: ' + currentQuestion.correctAnswer;
+                quizFeedback.classList.remove('text-green-500');
+                quizFeedback.classList.add('text-red-500');
+            }
+
+            setTimeout(() => {
+                currentQuizQuestionIndex++;
+                updateQuizDisplay();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
