@@ -67,6 +67,11 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: height 0.3s, max-height 0.3s;
+        }
+        #presentation-container.fullscreen {
+            height: 100vh !important;
+            max-height: 100vh !important;
         }
     </style>
 </head>
@@ -306,6 +311,7 @@
             mobileAsignaturasDropdown.classList.toggle('hidden');
             mobileAsignaturasButton.querySelector('svg').classList.toggle('rotate-180');
         });
+
         // --- Presentation Logic Mejorada ---
         const slides = document.querySelectorAll('.slide');
         const prevButton = document.getElementById('prev-slide');
@@ -315,7 +321,10 @@
         const mobileHeader = document.getElementById('mobile-header');
         const footer = document.getElementById('footer');
         const fullscreenButton = document.getElementById('fullscreen-button');
+        const presentationContainer = document.getElementById('presentation-container');
         let currentSlideIndex = 0;
+        let isReallyFullscreen = false;
+
         function updateSlideCounter() {
             slideCounter.textContent = `${currentSlideIndex + 1} / ${slides.length}`;
         }
@@ -346,31 +355,39 @@
             if (event.key === 'ArrowRight') nextSlide();
             else if (event.key === 'ArrowLeft') prevSlide();
         });
+
         // --- Pantalla Completa: Ocultar encabezado y pie de página automáticamente ---
         function isFullscreenNow() {
-            return window.innerHeight === screen.height || !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+            // Considera fullscreen si el contenedor ocupa toda la pantalla (API o F11 o zoom)
+            const fsEl = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+            // Si está en fullscreen API, o si el contenedor ocupa casi toda la ventana (por F11 o zoom)
+            const rect = presentationContainer.getBoundingClientRect();
+            const tolerance = 8; // px
+            const coversScreen = Math.abs(rect.width - window.innerWidth) < tolerance && Math.abs(rect.height - window.innerHeight) < tolerance;
+            return !!fsEl || coversScreen;
         }
         function hideHeaderFooter() {
             if (header) header.style.display = "none";
             if (mobileHeader) mobileHeader.style.display = "none";
             if (footer) footer.style.display = "none";
+            presentationContainer.classList.add('fullscreen');
         }
         function showHeaderFooter() {
             if (header) header.style.display = "";
             if (mobileHeader) mobileHeader.style.display = "";
             if (footer) footer.style.display = "";
+            presentationContainer.classList.remove('fullscreen');
         }
         function handleFullscreenChange() {
             if (isFullscreenNow()) {
                 hideHeaderFooter();
-                document.body.classList.add('h-screen', 'w-screen', 'overflow-hidden');
+                isReallyFullscreen = true;
             } else {
                 showHeaderFooter();
-                document.body.classList.remove('h-screen', 'w-screen', 'overflow-hidden');
+                isReallyFullscreen = false;
             }
         }
         fullscreenButton.addEventListener('click', () => {
-            const presentationContainer = document.getElementById('presentation-container');
             if (!isFullscreenNow()) {
                 if (presentationContainer.requestFullscreen) {
                     presentationContainer.requestFullscreen();
@@ -394,6 +411,18 @@
         document.addEventListener('mozfullscreenchange', handleFullscreenChange);
         document.addEventListener('MSFullscreenChange', handleFullscreenChange);
         window.addEventListener('resize', handleFullscreenChange);
+
+        // Detectar zoom o F11 y ajustar header/footer
+        setInterval(() => {
+            if (isFullscreenNow() && !isReallyFullscreen) {
+                hideHeaderFooter();
+                isReallyFullscreen = true;
+            } else if (!isFullscreenNow() && isReallyFullscreen) {
+                showHeaderFooter();
+                isReallyFullscreen = false;
+            }
+        }, 400);
+
         document.addEventListener('DOMContentLoaded', () => {
             const currentYearSpan = document.getElementById('current-year');
             if (currentYearSpan) {
@@ -413,6 +442,7 @@
             updateNavigationButtons();
             if (isFullscreenNow()) hideHeaderFooter();
         });
+
         // --- Quiz de Hojas de Cálculo ---
         const quizQuestions = [
             {
