@@ -186,14 +186,14 @@
 </head>
 <body class="font-inter antialiased text-gray-900 bg-gray-50">
 
-    <header id="main-header" class="bg-white shadow-md py-2 px-4 md:px-6 fixed w-full z-50">
+    <header id="main-header" class="bg-white shadow-md py-4 px-4 sm:px-6 fixed w-full z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-2">
-                <img src="imagenes/logo.png" alt="Logo" class="h-12 w-auto">
-                <span class="text-xl md:text-2xl font-bold text-blue-800">Area de Informatica</span>
-            </a>
+            <div class="flex items-center space-x-2">
+                <img src="imagenes/logo.png" alt="Logo" class="h-10 sm:h-12 w-auto">
+                <span class="text-lg sm:text-xl font-bold text-blue-800">Area de Informatica</span>
+            </div>
 
-            <nav class="hidden md:flex items-center space-x-6">
+            <nav class="hidden lg:flex items-center space-x-4">
                 <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Inicio</a>
                 <div class="relative group">
                     <button class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none">
@@ -213,14 +213,13 @@
                 </div>
                 <a href="pseudocode.html" target="_blank" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Pseudocódigo</a>
                 <a href="https://wa.me/50488422786" target="_blank" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">Contacto</a>
+                <button id="install-button" class="hidden bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                  Instalar
+                </button>
+                <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" class="h-8 w-auto">
             </nav>
 
-            <button id="install-button" class="hidden bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Instalar
-            </button>
-            <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" width="120" height="auto" class="hidden md:block">
-
-            <div class="md:hidden">
+            <div class="lg:hidden">
                 <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path id="mobile-menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -229,141 +228,126 @@
             </div>
         </div>
 
-        <div id="mobile-menu-overlay" class="hidden">
-            <button id="mobile-menu-close-button" class="absolute top-4 right-6 text-gray-700 focus:outline-none">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-            <nav class="flex flex-col space-y-5 mt-12 w-full px-5">
-                <a href="index.html" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Inicio</a>
-                <div class="w-full">
-                    <button id="mobile-courses-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 flex justify-between items-center transition-colors duration-200 border-b border-gray-200">
+        <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-white z-40 lg:hidden">
+            <div class="flex justify-end p-4">
+                <button id="mobile-menu-close-button" class="text-gray-700 focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <nav class="flex flex-col items-center space-y-6 mt-8">
+                <a href="index.html" class="text-gray-800 hover:text-blue-600 font-semibold text-xl transition-colors duration-200" onclick="closeMobileMenu()">Inicio</a>
+                <div class="w-full px-4">
+                    <button id="mobile-courses-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-xl py-2 flex justify-center items-center transition-colors duration-200">
                         Cursos
-                        <span id="mobile-courses-arrow" class="transform transition-transform duration-300">&#9656;</span>
+                        <span id="mobile-courses-arrow" class="ml-2 transform transition-transform duration-300">&#9662;</span>
                     </button>
-                    <div id="mobile-grades-container" class="mobile-menu-item-container hidden-height">
-                        <div class="pl-3 pt-1 flex flex-col space-y-2" id="mobile-grades-menu">
-                            </div>
+                    <div id="mobile-grades-container" class="hidden mt-2 bg-gray-50 rounded-lg shadow-inner">
+                        <div class="p-4 flex flex-col space-y-2" id="mobile-grades-menu"></div>
                     </div>
                 </div>
-                <div class="w-full">
-                    <button id="mobile-additional-resources-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 flex justify-between items-center transition-colors duration-200">
+                <div class="w-full px-4">
+                    <button id="mobile-additional-resources-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-xl py-2 flex justify-center items-center transition-colors duration-200">
                         Recursos Adicionales
-                        <span id="mobile-additional-resources-arrow" class="transform transition-transform duration-300">&#9656;</span>
+                        <span id="mobile-additional-resources-arrow" class="ml-2 transform transition-transform duration-300">&#9662;</span>
                     </button>
-                    <div id="mobile-additional-resources-container" class="mobile-menu-item-container hidden-height">
-                        <div class="pl-3 pt-1 flex flex-col space-y-2" id="mobile-additional-resources-menu">
-                            </div>
+                    <div id="mobile-additional-resources-container" class="hidden mt-2 bg-gray-50 rounded-lg shadow-inner">
+                        <div class="p-4 flex flex-col space-y-2" id="mobile-additional-resources-menu"></div>
                     </div>
                 </div>
-                <a href="pseudocode.js" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Pseudocódigo</a>
-                <a href="https://wa.me/50488422786" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl text-center py-2 transition-colors duration-200" onclick="closeMobileMenu()">Contacto</a>
+                <a href="pseudocode.html" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl transition-colors duration-200" onclick="closeMobileMenu()">Pseudocódigo</a>
+                <a href="https://wa.me/50488422786" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl transition-colors duration-200" onclick="closeMobileMenu()">Contacto</a>
+                <button id="mobile-install-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg">
+                  Instalar
+                </button>
+                <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" class="h-10 w-auto mt-4">
             </nav>
         </div>
     </header>
 
-    <main class="pt-20">
-        <section class="relative bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20 md:py-32">
-            <div class="container mx-auto px-6 text-center z-10">
-                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-up">
+    <main class="pt-24 sm:pt-28">
+        <section class="bg-gradient-to-r from-purple-600 to-blue-500 text-white py-20 sm:py-28">
+            <div class="container mx-auto px-4 sm:px-6 text-center">
+                <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight mb-4 animate-fade-in-up">
                     Bienvenidos
                 </h1>
-                <p class="text-lg md:text-xl max-w-3xl mx-auto opacity-90 animate-fade-in-up animation-delay-2000">
+                <p class="text-md sm:text-lg max-w-2xl mx-auto opacity-90 animate-fade-in-up" style="animation-delay: 0.2s;">
                     Formando corazones con alegría, fe, esperanza y tecnología.
                 </p>
             </div>
-            <div class="absolute inset-0 overflow-hidden">
-                <div class="absolute w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob top-1/4 left-1/4"></div>
-                <div class="absolute w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000 bottom-1/4 right-1/4"></div>
-                <div class="absolute w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000 top-1/2 right-1/2"></div>
-            </div>
         </section>
 
-        <section class="py-16 md:py-24">
-            <div class="container mx-auto px-6 text-center">
-                <h2 id="main-content-title" class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">
+        <section class="py-16 sm:py-24 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 text-center">
+                <h2 id="main-content-title" class="text-3xl sm:text-4xl font-bold text-gray-800 mb-12">
                     Contenido y Actividades
                 </h2>
 
-                <div id="main-content-sections" class="flex flex-col lg:flex-row justify-center items-start gap-12">
-                    <div id="download-section" class="w-full lg:w-1/2 max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8">
+                <div id="main-content-sections" class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
+                    <!-- Contenido de Clases Card -->
+                    <div id="download-section" class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-center">
+                        <h3 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
                             Contenido de Clases
                         </h3>
-                        <div id="content-back-button-container" class="text-left mb-6 hidden">
+                        <div id="content-back-button-container" class="w-full text-left mb-4 hidden">
                             <button id="content-back-button" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">
                                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                                 Volver
                             </button>
                         </div>
-
-                        <div id="content-display-area" class="min-h-[200px] flex flex-col justify-center items-center">
-                            </div>
+                        <div id="content-display-area" class="min-h-[150px] flex flex-col justify-center items-center w-full">
+                            <!-- Buttons will be dynamically inserted here -->
+                        </div>
                     </div>
 
-                    <div id="activity-section" class="w-full lg:w-1/2 max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8">
+                    <!-- Actividades Card -->
+                    <div id="activity-section" class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-center">
+                        <h3 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
                             Actividades
                         </h3>
-
-                        <div id="initial-activity-menu" class="flex flex-col items-center justify-center min-h-[200px]">
-                            <button id="show-activities-button" class="px-8 py-4 rounded-xl font-bold text-xl
-                                        bg-purple-600 text-white hover:bg-purple-700
-                                        transition-all duration-300 ease-in-out
-                                        shadow-lg hover:shadow-xl transform hover:-translate-y-1
-                                        focus:outline-none focus:ring-4 focus:ring-purple-300">
+                        <div id="initial-activity-menu" class="flex flex-col items-center justify-center min-h-[150px]">
+                            <button id="show-activities-button" class="px-8 py-3 rounded-xl font-bold text-lg bg-purple-600 text-white hover:bg-purple-700 transition-all duration-300 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-purple-300">
                                 Ver Actividades Prácticas
                             </button>
                         </div>
-
-                        <div id="game-list-menu" class="hidden flex-col items-center justify-center min-h-[300px] animate-fade-in-down">
-                            <h4 class="text-xl font-semibold text-gray-700 mb-6">Selecciona una actividad:</h4>
-                            <div class="grid grid-cols-1 gap-4 w-full max-w-sm">
-                                <button id="select-peripherals-game-button" class="px-6 py-3 rounded-xl font-semibold text-lg
-                                            bg-blue-500 text-white hover:bg-blue-600
-                                            transition-all duration-300 ease-in-out
-                                            shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-300">
+                        <div id="game-list-menu" class="hidden flex-col items-center justify-center min-h-[150px] w-full animate-fade-in-down">
+                            <h4 class="text-xl font-semibold text-gray-700 mb-4">Selecciona una actividad:</h4>
+                            <div class="grid grid-cols-1 gap-3 w-full max-w-xs">
+                                <button id="select-peripherals-game-button" class="w-full px-4 py-2.5 rounded-xl font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none focus:ring-4 focus:ring-blue-300">
                                     Periféricos Entrada/Salida
                                 </button>
-                                <button id="select-webmaster-quiz-button" class="px-6 py-3 rounded-xl font-semibold text-lg
-                                            bg-teal-500 text-white hover:bg-teal-600
-                                            transition-all duration-300 ease-in-out
-                                            shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-teal-300">
+                                <button id="select-webmaster-quiz-button" class="w-full px-4 py-2.5 rounded-xl font-semibold bg-teal-500 text-white hover:bg-teal-600 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none focus:ring-4 focus:ring-teal-300">
                                     WebMaster Quiz
                                 </button>
-                                <button id="select-dexterity-game-button" class="px-6 py-3 rounded-xl font-semibold text-lg
-                                            bg-orange-500 text-white hover:bg-orange-600
-                                            transition-all duration-300 ease-in-out
-                                            shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-orange-300">
+                                <button id="select-dexterity-game-button" class="w-full px-4 py-2.5 rounded-xl font-semibold bg-orange-500 text-white hover:bg-orange-600 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none focus:ring-4 focus:ring-orange-300">
                                     Destreza en el Teclado
                                 </button>
-                                </div>
-                            <button id="back-to-main-activities-button" class="mt-8 px-6 py-3 rounded-xl font-semibold text-base
-                                        bg-gray-600 text-white hover:bg-gray-700
-                                        transition-all duration-300 ease-in-out
-                                        shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-300">
+                            </div>
+                            <button id="back-to-main-activities-button" class="mt-6 px-5 py-2.5 rounded-xl font-semibold bg-gray-600 text-white hover:bg-gray-700 transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none focus:ring-4 focus:ring-gray-300">
                                 Volver
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div id="dynamically-loaded-game-container" class="hidden max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xl border border-gray-200 mt-10">
-                    </div>
+                <!-- Game Container -->
+                <div id="dynamically-loaded-game-container" class="hidden max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 mt-10">
+                    <!-- Game content will be loaded here -->
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-6 text-center">
-            <p class="text-base mb-4">
+    <footer class="bg-gray-900 text-white py-8 sm:py-10">
+        <div class="container mx-auto px-4 sm:px-6 text-center">
+            <p class="text-sm sm:text-base text-gray-400 mb-4">
                 &copy; <span id="current-year"></span> Instituto Maria Auxiliadora - Area de Informatica ISEMED. Todos los derechos reservados.
             </p>
-            <div class="flex justify-center space-x-6">
-                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Privacidad</a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Términos</a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Soporte</a>
+            <div class="flex justify-center space-x-4 sm:space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Privacidad</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Términos</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Soporte</a>
             </div>
         </div>
     </footer>
@@ -582,10 +566,10 @@
             button.textContent = text;
             button.onclick = onClickHandler;
             button.className = `
-                px-5 py-2.5 rounded-xl font-semibold text-base
+                px-6 py-3 rounded-xl font-bold text-base
                 bg-blue-600 text-white hover:bg-blue-700
                 transition-all duration-300 ease-in-out
-                shadow-lg hover:shadow-xl transform hover:-translate-y-1
+                shadow-md hover:shadow-lg transform hover:-translate-y-1
                 focus:outline-none focus:ring-4 focus:ring-blue-300
                 ${className}
             `;
@@ -601,115 +585,52 @@
         const mobileCoursesToggle = document.getElementById('mobile-courses-toggle');
         const mobileCoursesArrow = document.getElementById('mobile-courses-arrow');
         const mobileGradesContainer = document.getElementById('mobile-grades-container');
-        const mobileGradesMenu = document.getElementById('mobile-grades-menu');
 
         const mobileAdditionalResourcesToggle = document.getElementById('mobile-additional-resources-toggle');
         const mobileAdditionalResourcesArrow = document.getElementById('mobile-additional-resources-arrow');
         const mobileAdditionalResourcesContainer = document.getElementById('mobile-additional-resources-container');
-        const mobileAdditionalResourcesMenu = document.getElementById('mobile-additional-resources-menu');
-
-
-        let activeMobileGradeElement = null; // Stores the currently open grade container in mobile menu
-        let activeMobileSubjectElement = null; // Stores the currently open subject container in mobile menu
 
         function toggleMobileMenu() {
+            const isHidden = mobileMenuOverlay.classList.contains('hidden');
             mobileMenuOverlay.classList.toggle('hidden');
-            mobileMenuOverlay.classList.toggle('mobile-menu-overlay'); // Apply overlay styles
-            mobileMenuIcon.setAttribute('d', mobileMenuOverlay.classList.contains('hidden') ? 'M4 6h16M4 12h16M4 18h16' : 'M6 18L18 6M6 6l12 12');
+            mobileMenuIcon.setAttribute('d', isHidden ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16');
 
-            // Reset mobile menu state when closing
-            if (mobileMenuOverlay.classList.contains('hidden')) {
-                mobileGradesContainer.classList.remove('visible-height');
-                mobileGradesContainer.classList.add('hidden-height');
-                mobileCoursesArrow.classList.remove('rotate-90');
-                mobileCoursesArrow.classList.add('rotate-0');
-
-                mobileAdditionalResourcesContainer.classList.remove('visible-height');
-                mobileAdditionalResourcesContainer.classList.add('hidden-height');
-                mobileAdditionalResourcesArrow.classList.remove('rotate-90');
-                mobileAdditionalResourcesArrow.classList.add('rotate-0');
-
-                // Close any open sub-menus
-                if (activeMobileGradeElement) {
-                    activeMobileGradeElement.classList.remove('visible-height');
-                    activeMobileGradeElement.classList.add('hidden-height');
-                    activeMobileGradeElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
-                    activeMobileGradeElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
-                    activeMobileGradeElement = null;
-                }
-                if (activeMobileSubjectElement) {
-                    activeMobileSubjectElement.classList.remove('visible-height');
-                    activeMobileSubjectElement.classList.add('hidden-height');
-                    activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
-                    activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
-                    activeMobileSubjectElement = null;
-                }
+            // When closing the main menu, also close any open sub-menus
+            if (!isHidden) {
+                mobileGradesContainer.classList.add('hidden');
+                mobileCoursesArrow.classList.remove('rotate-180');
+                mobileAdditionalResourcesContainer.classList.add('hidden');
+                mobileAdditionalResourcesArrow.classList.remove('rotate-180');
             }
         }
 
         function closeMobileMenu() {
-            mobileMenuOverlay.classList.add('hidden');
-            mobileMenuOverlay.classList.remove('mobile-menu-overlay');
-            mobileMenuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-            // Reset mobile menu state
-            mobileGradesContainer.classList.remove('visible-height');
-            mobileGradesContainer.classList.add('hidden-height');
-            mobileCoursesArrow.classList.remove('rotate-90');
-            mobileCoursesArrow.classList.add('rotate-0');
-
-            mobileAdditionalResourcesContainer.classList.remove('visible-height');
-            mobileAdditionalResourcesContainer.classList.add('hidden-height');
-            mobileAdditionalResourcesArrow.classList.remove('rotate-90');
-            mobileAdditionalResourcesArrow.classList.add('rotate-0');
-
-            if (activeMobileGradeElement) {
-                activeMobileGradeElement.classList.remove('visible-height');
-                activeMobileGradeElement.classList.add('hidden-height');
-                activeMobileGradeElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
-                activeMobileGradeElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
-                activeMobileGradeElement = null;
-            }
-            if (activeMobileSubjectElement) {
-                activeMobileSubjectElement.classList.remove('visible-height');
-                activeMobileSubjectElement.classList.add('hidden-height');
-                activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
-                activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
-                activeMobileSubjectElement = null;
+            if (!mobileMenuOverlay.classList.contains('hidden')) {
+                toggleMobileMenu();
             }
         }
 
         mobileMenuButton.addEventListener('click', toggleMobileMenu);
         mobileMenuCloseButton.addEventListener('click', toggleMobileMenu);
 
-        // Close mobile menu when clicking outside
-        document.addEventListener('mousedown', (event) => {
-            if (!mobileMenuOverlay.classList.contains('hidden') && !mobileMenuOverlay.contains(event.target) && !mobileMenuButton.contains(event.target)) {
-                closeMobileMenu();
+        mobileCoursesToggle.addEventListener('click', () => {
+            mobileGradesContainer.classList.toggle('hidden');
+            mobileCoursesArrow.classList.toggle('rotate-180');
+            // Ensure the other menu is closed
+            if (!mobileAdditionalResourcesContainer.classList.contains('hidden')) {
+                mobileAdditionalResourcesContainer.classList.add('hidden');
+                mobileAdditionalResourcesArrow.classList.remove('rotate-180');
             }
         });
 
-        mobileCoursesToggle.addEventListener('click', () => {
-            mobileGradesContainer.classList.toggle('hidden-height');
-            mobileGradesContainer.classList.toggle('visible-height');
-            mobileCoursesArrow.classList.toggle('rotate-90');
-            mobileCoursesArrow.classList.toggle('rotate-0');
-            // Close other top-level mobile menus
-            mobileAdditionalResourcesContainer.classList.remove('visible-height');
-            mobileAdditionalResourcesContainer.classList.add('hidden-height');
-            mobileAdditionalResourcesArrow.classList.remove('rotate-90');
-            mobileAdditionalResourcesArrow.classList.add('rotate-0');
-        });
-
         mobileAdditionalResourcesToggle.addEventListener('click', () => {
-            mobileAdditionalResourcesContainer.classList.toggle('hidden-height');
-            mobileAdditionalResourcesContainer.classList.toggle('visible-height');
-            mobileAdditionalResourcesArrow.classList.toggle('rotate-90');
-            mobileAdditionalResourcesArrow.classList.toggle('rotate-0');
-            // Close other top-level mobile menus
-            mobileGradesContainer.classList.remove('visible-height');
-            mobileGradesContainer.classList.add('hidden-height');
-            mobileCoursesArrow.classList.remove('rotate-90');
-            mobileCoursesArrow.classList.add('rotate-0');
+            mobileAdditionalResourcesContainer.classList.toggle('hidden');
+            mobileAdditionalResourcesArrow.classList.toggle('rotate-180');
+            // Ensure the other menu is closed
+            if (!mobileGradesContainer.classList.contains('hidden')) {
+                mobileGradesContainer.classList.add('hidden');
+                mobileCoursesArrow.classList.remove('rotate-180');
+            }
         });
 
 
@@ -812,84 +733,50 @@
 
         // Function to render mobile navigation menu (Presentations)
         function renderMobileNav() {
-            mobileGradesMenu.innerHTML = ''; // Clear previous content
-            mobileAdditionalResourcesMenu.innerHTML = ''; // Clear previous content
+            const mobileGradesMenu = document.getElementById('mobile-grades-menu');
+            const mobileAdditionalResourcesMenu = document.getElementById('mobile-additional-resources-menu');
+            mobileGradesMenu.innerHTML = '';
+            mobileAdditionalResourcesMenu.innerHTML = '';
 
             // Render 'Cursos' from presentationData
             presentationData.forEach(gradeData => {
                 const gradeToggle = document.createElement('button');
-                gradeToggle.className = 'w-full text-gray-700 hover:text-blue-600 font-semibold text-lg text-left py-2 flex justify-between items-center transition-colors duration-200 border-b border-gray-200';
+                gradeToggle.className = 'w-full text-gray-800 hover:text-blue-600 font-semibold text-lg text-left py-2 flex justify-between items-center transition-colors duration-200';
                 gradeToggle.innerHTML = `${gradeData.grade} <span class="transform transition-transform duration-300">&#9656;</span>`;
                 mobileGradesMenu.appendChild(gradeToggle);
 
                 const subjectsContainer = document.createElement('div');
-                subjectsContainer.className = 'mobile-menu-item-container hidden-height pl-4';
+                subjectsContainer.className = 'hidden pl-4';
                 mobileGradesMenu.appendChild(subjectsContainer);
 
-                gradeToggle.addEventListener('click', () => {
-                    // Close currently active grade element if different
-                    if (activeMobileGradeElement && activeMobileGradeElement !== subjectsContainer) {
-                        activeMobileGradeElement.classList.remove('visible-height');
-                        activeMobileGradeElement.classList.add('hidden-height');
-                        activeMobileGradeElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
-                        activeMobileGradeElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
-                    }
-                    // Toggle current grade element
-                    subjectsContainer.classList.toggle('hidden-height');
-                    subjectsContainer.classList.toggle('visible-height');
+                gradeToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    subjectsContainer.classList.toggle('hidden');
                     gradeToggle.querySelector('span').classList.toggle('rotate-90');
-                    gradeToggle.querySelector('span').classList.toggle('rotate-0');
-                    activeMobileGradeElement = subjectsContainer.classList.contains('visible-height') ? subjectsContainer : null;
-
-                    // Close other top-level mobile menus
-                    mobileAdditionalResourcesContainer.classList.remove('visible-height');
-                    mobileAdditionalResourcesContainer.classList.add('hidden-height');
-                    mobileAdditionalResourcesArrow.classList.remove('rotate-90');
-                    mobileAdditionalResourcesArrow.classList.add('rotate-0');
-
-                    // Close any open subject sub-menus when a grade is closed or a new grade is opened
-                    if (activeMobileSubjectElement) {
-                        activeMobileSubjectElement.classList.remove('visible-height');
-                        activeMobileSubjectElement.classList.add('hidden-height');
-                        activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
-                        activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
-                        activeMobileSubjectElement = null;
-                    }
                 });
 
                 gradeData.subjects.forEach(subjectData => {
                     const subjectToggle = document.createElement('button');
-                    subjectToggle.className = 'w-full text-gray-600 hover:text-blue-500 font-medium text-base text-left py-2 flex justify-between items-center transition-colors duration-200 border-b border-gray-100';
+                    subjectToggle.className = 'w-full text-gray-700 hover:text-blue-500 font-medium text-base text-left py-2 flex justify-between items-center transition-colors duration-200';
                     subjectToggle.innerHTML = `${subjectData.name} <span class="transform transition-transform duration-300">&#9656;</span>`;
                     subjectsContainer.appendChild(subjectToggle);
 
                     const topicsContainer = document.createElement('div');
-                    topicsContainer.className = 'mobile-menu-item-container hidden-height pl-4';
+                    topicsContainer.className = 'hidden pl-4';
                     subjectsContainer.appendChild(topicsContainer);
 
-                    subjectToggle.addEventListener('click', () => {
-                        // Close currently active subject element if different
-                        if (activeMobileSubjectElement && activeMobileSubjectElement !== topicsContainer) {
-                            activeMobileSubjectElement.classList.remove('visible-height');
-                            activeMobileSubjectElement.classList.add('hidden-height');
-                            activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
-                            activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
-                        }
-                        // Toggle current subject element
-                        topicsContainer.classList.toggle('hidden-height');
-                        topicsContainer.classList.toggle('visible-height');
+                    subjectToggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        topicsContainer.classList.toggle('hidden');
                         subjectToggle.querySelector('span').classList.toggle('rotate-90');
-                        subjectToggle.querySelector('span').classList.toggle('rotate-0');
-                        activeMobileSubjectElement = topicsContainer.classList.contains('visible-height') ? topicsContainer : null;
                     });
 
                     subjectData.topics.forEach(topic => {
                         const topicLink = document.createElement('a');
-                        topicLink.href = topic.file; // Use topic.file (HTML) for presentations
-                        // topicLink.target = '_blank'; // REMOVED: No longer opens in new tab
-                        topicLink.className = 'block px-2 py-1 text-gray-500 hover:text-blue-400 text-sm transition-colors duration-200';
+                        topicLink.href = topic.file;
+                        topicLink.className = 'block px-2 py-1.5 text-gray-600 hover:text-blue-400 text-sm transition-colors duration-200';
                         topicLink.textContent = topic.title;
-                        topicLink.onclick = closeMobileMenu; // Close menu when a topic is clicked
+                        topicLink.onclick = closeMobileMenu;
                         topicsContainer.appendChild(topicLink);
                     });
                 });
@@ -898,83 +785,43 @@
             // Render 'Recursos Adicionales' for mobile
             additionalResourcesData.forEach(resourceCategory => {
                 const categoryToggle = document.createElement('button');
-                categoryToggle.className = 'w-full text-gray-700 hover:text-blue-600 font-semibold text-lg text-left py-2 flex justify-between items-center transition-colors duration-200 border-b border-gray-200';
+                categoryToggle.className = 'w-full text-gray-800 hover:text-blue-600 font-semibold text-lg text-left py-2 flex justify-between items-center transition-colors duration-200';
                 categoryToggle.innerHTML = `${resourceCategory.category} <span class="transform transition-transform duration-300">&#9656;</span>`;
                 mobileAdditionalResourcesMenu.appendChild(categoryToggle);
 
                 const itemsContainer = document.createElement('div');
-                itemsContainer.className = 'mobile-menu-item-container hidden-height pl-4';
+                itemsContainer.className = 'hidden pl-4';
                 mobileAdditionalResourcesMenu.appendChild(itemsContainer);
 
-                categoryToggle.addEventListener('click', () => {
-                    // Close currently active category element if different
-                    if (activeMobileGradeElement && activeMobileGradeElement !== itemsContainer) {
-                        activeMobileGradeElement.classList.remove('visible-height');
-                        activeMobileGradeElement.classList.add('hidden-height');
-                        activeMobileGradeElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
-                        activeMobileGradeElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
-                    }
-                    // Toggle current category element
-                    itemsContainer.classList.toggle('hidden-height');
-                    itemsContainer.classList.toggle('visible-height');
+                categoryToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    itemsContainer.classList.toggle('hidden');
                     categoryToggle.querySelector('span').classList.toggle('rotate-90');
-                    categoryToggle.querySelector('span').classList.toggle('rotate-0');
-                    activeMobileGradeElement = itemsContainer.classList.contains('visible-height') ? itemsContainer : null;
-
-                    // Close other top-level mobile menus
-                    mobileGradesContainer.classList.remove('visible-height');
-                    mobileGradesContainer.classList.add('hidden-height');
-                    mobileCoursesArrow.classList.remove('rotate-90');
-                    mobileCoursesArrow.classList.add('rotate-0');
-
-                    // Close any open sub-menus
-                    if (activeMobileSubjectElement) {
-                        activeMobileSubjectElement.classList.remove('visible-height');
-                        activeMobileSubjectElement.classList.add('hidden-height');
-                        activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.remove('rotate-90');
-                        activeMobileSubjectElement.previousElementSibling.querySelector('span').classList.add('rotate-0');
-                        activeMobileSubjectElement = null;
-                    }
                 });
 
                 resourceCategory.items.forEach(item => {
                     const itemLink = document.createElement('a');
-                    if (item.action === 'load-peripherals-game') {
+                    if (item.action) {
                         itemLink.href = '#';
-                        itemLink.dataset.action = 'load-peripherals-game';
                         itemLink.onclick = (e) => {
                             e.preventDefault();
-                            loadPeripheralsGameFromHeader();
+                            if (item.action === 'load-peripherals-game') loadPeripheralsGameFromHeader();
+                            if (item.action === 'load-webmaster-quiz') loadWebMasterQuizFromHeader();
+                            if (item.action === 'load-dexterity-game') loadDexterityGameFromHeader();
                             closeMobileMenu();
                         };
-                    } else if (item.action === 'load-webmaster-quiz') { // Nuevo juego
-                        itemLink.href = '#';
-                        itemLink.dataset.action = 'load-webmaster-quiz';
-                        itemLink.onclick = (e) => {
-                            e.preventDefault();
-                            loadWebMasterQuizFromHeader();
-                            closeMobileMenu();
-                        };
-                    } else if (item.action === 'load-dexterity-game') { // New game
-                        itemLink.href = '#';
-                        itemLink.dataset.action = 'load-dexterity-game';
-                        itemLink.onclick = (e) => {
-                            e.preventDefault();
-                            loadDexterityGameFromHeader();
-                            closeMobileMenu();
-                        };
-                    }
-                    else {
+                    } else {
                         itemLink.href = item.file;
                         itemLink.target = '_blank';
+                        itemLink.onclick = closeMobileMenu;
                     }
-                    itemLink.className = 'block px-2 py-1 text-gray-500 hover:text-blue-400 text-sm transition-colors duration-200';
+                    itemLink.className = 'block px-2 py-1.5 text-gray-600 hover:text-blue-400 text-sm transition-colors duration-200';
                     itemLink.textContent = item.title;
-                    itemLink.onclick = closeMobileMenu; // Close menu when a topic is clicked
                     itemsContainer.appendChild(itemLink);
                 });
             });
         }
+
 
         // --- Content Download Section Logic ---
         const contentDisplayArea = document.getElementById('content-display-area');
@@ -1006,12 +853,12 @@
             contentBackButtonContainer.classList.add('hidden');
             contentDisplayArea.innerHTML = '';
             const gridDiv = document.createElement('div');
-            gridDiv.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-lg'; // Adjust grid layout as needed
+            gridDiv.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full';
             downloadContentData.forEach(gradeData => {
                 const button = createCustomButton(gradeData.grade, () => {
                     selectedGradeData = gradeData;
                     animateContentTransition(renderDownloadSubjects);
-                }, 'w-full');
+                }, 'w-full text-sm');
                 gridDiv.appendChild(button);
             });
             contentDisplayArea.appendChild(gridDiv);
@@ -1020,18 +867,18 @@
 
         function renderDownloadSubjects() {
             if (!selectedGradeData) {
-                renderDownloadGrades(); // Fallback if no subject is selected
+                renderDownloadGrades(); // Fallback
                 return;
             }
             contentBackButtonContainer.classList.remove('hidden');
             contentDisplayArea.innerHTML = '';
             const gridDiv = document.createElement('div');
-            gridDiv.className = 'grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-lg'; // Adjust grid layout as needed
-            selectedGradeData.subjects.forEach(subjectData => { // Corrected: iterate over selectedGradeData.subjects
+            gridDiv.className = 'grid grid-cols-1 sm:grid-cols-2 gap-4 w-full';
+            selectedGradeData.subjects.forEach(subjectData => {
                 const button = createCustomButton(subjectData.name, () => {
                     selectedSubjectData = subjectData;
                     animateContentTransition(renderDownloadTopics);
-                }, 'w-full');
+                }, 'w-full text-sm');
                 gridDiv.appendChild(button);
             });
             contentDisplayArea.appendChild(gridDiv);
@@ -1040,28 +887,28 @@
 
         function renderDownloadTopics() {
             if (!selectedSubjectData) {
-                renderDownloadSubjects(); // Fallback if no subject is selected
+                renderDownloadSubjects(); // Fallback
                 return;
             }
             contentBackButtonContainer.classList.remove('hidden');
             contentDisplayArea.innerHTML = '';
             const gridDiv = document.createElement('div');
-            gridDiv.className = 'grid grid-cols-1 gap-3 w-full max-w-lg'; // Adjust grid layout as needed
+            gridDiv.className = 'grid grid-cols-1 gap-3 w-full max-w-md';
             selectedSubjectData.topics.forEach(topic => {
                 const link = document.createElement('a');
-                link.href = topic.file; // Use topic.file (PDF) for downloads
-                link.target = '_blank'; // Ensure PDF opens in a new tab
+                link.href = topic.file;
+                link.target = '_blank';
                 link.className = `
-                    flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl font-semibold text-base
+                    flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl font-semibold text-sm
                     bg-green-600 text-white hover:bg-green-700
                     transition-all duration-300 ease-in-out
-                    shadow-lg hover:shadow-xl transform hover:-translate-y-1
+                    shadow-md hover:shadow-lg transform hover:-translate-y-0.5
                     focus:outline-none focus:ring-4 focus:ring-green-300
                     w-full
                 `;
                 link.textContent = topic.title;
                 link.innerHTML += `
-                    <svg class="w-5 h-5 ml-2 -mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l3-3m-3 3l-3-3m0 6h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                     </svg>
                 `;
@@ -1074,13 +921,13 @@
         contentBackButton.addEventListener('click', () => {
             animateContentTransition(() => {
                 if (currentContentView === 'subjects') {
-                    renderDownloadGrades(); // Go back to download grades
+                    renderDownloadGrades();
                     selectedGradeData = null;
                 } else if (currentContentView === 'topics') {
-                    renderDownloadSubjects(); // Go back to download subjects
+                    renderDownloadSubjects();
                     selectedSubjectData = null;
                 } else {
-                    renderInitialContentButton(); // Should go back to initial download button
+                    renderInitialContentButton();
                 }
             });
         });
@@ -1103,215 +950,83 @@
         const gameDataStorage = {
             localStorageKey: 'gameProgressData',
 
-            // Loads all game data from Local Storage
             loadAllGameData() {
                 try {
                     const data = localStorage.getItem(this.localStorageKey);
                     return data ? JSON.parse(data) : {};
                 } catch (e) {
-                    console.error("Error loading game data from localStorage:", e);
+                    console.error("Error loading game data:", e);
                     return {};
                 }
             },
-
-            // Saves all game data to Local Storage
             saveAllGameData(data) {
                 try {
                     localStorage.setItem(this.localStorageKey, JSON.stringify(data));
                 } catch (e) {
-                    console.error("Error saving game data to localStorage:", e);
+                    console.error("Error saving game data:", e);
                 }
             },
-
-            // Saves a single game session for a specific gameId
             saveGameSession(gameId, sessionData) {
                 const allGameData = this.loadAllGameData();
-                if (!allGameData[gameId]) {
-                    allGameData[gameId] = [];
-                }
+                if (!allGameData[gameId]) allGameData[gameId] = [];
                 allGameData[gameId].push(sessionData);
                 this.saveAllGameData(allGameData);
             },
-
-            // Gets the history of sessions for a specific gameId
             getGameHistory(gameId) {
-                const allGameData = this.loadAllGameData();
-                return allGameData[gameId] || [];
-            },
-
-            // Gets the total number of attempts for a specific gameId
-            getTotalAttempts(gameId) {
-                return this.getGameHistory(gameId).length;
-            },
-
-            // Gets the best score for a specific gameId
-            getBestScore(gameId) {
-                const history = this.getGameHistory(gameId);
-                if (history.length === 0) {
-                    return 0;
-                }
-                return Math.max(...history.map(session => session.score));
+                return this.loadAllGameData()[gameId] || [];
             }
         };
 
         // --- Functions for Activity Section Flow ---
         function showMainContentSections() {
             mainContentSections.classList.remove('hidden');
-            mainContentSections.classList.add('flex');
+            mainContentSections.classList.add('grid');
             dynamicallyLoadedGameContainer.classList.add('hidden');
             mainContentTitle.textContent = 'Contenido y Actividades';
-            renderInitialActivityButton(); // Ensure activity menu is reset
+            renderInitialActivityButton();
         }
 
-        // Function to load the peripherals game HTML and JS
-        async function loadPeripheralsGame() {
-            // Hide the header immediately when loading the game
+        async function loadGame(gameName, gameTitle, htmlFile, jsFile, initFunction) {
             mainHeader.classList.add('header-hidden');
-
-            mainContentSections.classList.add('hidden'); // Hide both download and initial activity sections
-            mainContentSections.classList.remove('flex');
-            dynamicallyLoadedGameContainer.classList.remove('hidden'); // Show only the game container
-            mainContentTitle.textContent = 'Juego de Periféricos'; // Update main title
+            mainContentSections.classList.add('hidden');
+            mainContentSections.classList.remove('grid');
+            dynamicallyLoadedGameContainer.classList.remove('hidden');
+            mainContentTitle.textContent = gameTitle;
 
             try {
-                const htmlResponse = await fetch('juegos/perifericos.html');
-                const gameHtml = await htmlResponse.text();
-                dynamicallyLoadedGameContainer.innerHTML = gameHtml;
+                const htmlResponse = await fetch(htmlFile);
+                dynamicallyLoadedGameContainer.innerHTML = await htmlResponse.text();
 
-                // Dynamically load the game's JavaScript
                 const script = document.createElement('script');
-                script.src = 'js/perifericos_juego.js';
+                script.src = jsFile;
                 script.onload = () => {
-                    // Once the script is loaded, initialize the game elements and pass gameDataStorage
-                    if (window.initializePeripheralsGame) {
-                        window.initializePeripheralsGame(gameDataStorage); // Pass the storage object
+                    if (window[initFunction]) {
+                        window[initFunction](gameDataStorage);
                     }
                 };
-                // Append the script to the body or the game container
                 dynamicallyLoadedGameContainer.appendChild(script);
-
             } catch (error) {
-                console.error('Error al cargar el juego de periféricos:', error);
-                dynamicallyLoadedGameContainer.innerHTML = '<p class="text-red-500">Error al cargar el juego. Por favor, inténtalo de nuevo más tarde.</p>';
-                // Optionally, provide a button to return to main content
+                console.error(`Error al cargar ${gameName}:`, error);
+                dynamicallyLoadedGameContainer.innerHTML = `<p class="text-red-500">Error al cargar el juego. Inténtalo de nuevo más tarde.</p>`;
                 const errorButton = createCustomButton('Volver al Inicio', showMainContentSections, 'mt-4');
                 dynamicallyLoadedGameContainer.appendChild(errorButton);
             }
         }
 
-        // Function to load the WebMaster Quiz HTML and JS (NEW)
-        async function loadWebMasterQuiz() {
-            // Hide the header immediately when loading the game
-            mainHeader.classList.add('header-hidden');
+        const loadPeripheralsGame = () => loadGame('Peripherals Game', 'Juego de Periféricos', 'juegos/perifericos.html', 'js/perifericos_juego.js', 'initializePeripheralsGame');
+        const loadWebMasterQuiz = () => loadGame('WebMaster Quiz', 'WebMaster Quiz', 'juegos/webmaster_quiz.html', 'js/webmaster_quiz_juego.js', 'initQuizGame');
+        const loadDexterityGame = () => loadGame('Dexterity Game', 'Destreza en el Teclado', 'juegos/destreza_teclado.html', 'js/destreza_teclado.js', 'initDexterityGame');
 
-            mainContentSections.classList.add('hidden'); // Hide both download and initial activity sections
-            mainContentSections.classList.remove('flex');
-            dynamicallyLoadedGameContainer.classList.remove('hidden'); // Show only the game container
-            mainContentTitle.textContent = 'WebMaster Quiz'; // Update main title
+        const loadPeripheralsGameFromHeader = () => { showMainContentSections(); loadPeripheralsGame(); };
+        const loadWebMasterQuizFromHeader = () => { showMainContentSections(); loadWebMasterQuiz(); };
+        const loadDexterityGameFromHeader = () => { showMainContentSections(); loadDexterityGame(); };
 
-            try {
-                const htmlResponse = await fetch('juegos/webmaster_quiz.html');
-                const gameHtml = await htmlResponse.text();
-                dynamicallyLoadedGameContainer.innerHTML = gameHtml;
-
-                // Dynamically load the game's JavaScript
-                const script = document.createElement('script');
-                script.src = 'js/webmaster_quiz_juego.js';
-                script.onload = () => {
-                    // Once the script is loaded, initialize the game elements and pass gameDataStorage
-                    if (window.initQuizGame) {
-                        window.initQuizGame(gameDataStorage); // Pass the storage object
-                    }
-                };
-                // Append the script to the body or the game container
-                dynamicallyLoadedGameContainer.appendChild(script);
-
-            } catch (error) {
-                console.error('Error al cargar el WebMaster Quiz:', error);
-                dynamicallyLoadedGameContainer.innerHTML = '<p class="text-red-500">Error al cargar el quiz. Por favor, inténtalo de nuevo más tarde.</p>';
-                // Optionally, provide a button to return to main content
-                const errorButton = createCustomButton('Volver al Inicio', showMainContentSections, 'mt-4');
-                dynamicallyLoadedGameContainer.appendChild(errorButton);
-            }
-        }
-
-        // Function to load the new Keyboard Dexterity Game HTML and JS
-        async function loadDexterityGame() {
-            // Hide the header immediately when loading the game
-            mainHeader.classList.add('header-hidden');
-
-            mainContentSections.classList.add('hidden'); // Hide both download and initial activity sections
-            mainContentSections.classList.remove('flex');
-            dynamicallyLoadedGameContainer.classList.remove('hidden'); // Show only the game container
-            mainContentTitle.textContent = 'Destreza en el Teclado'; // Update main title
-
-            try {
-                const htmlResponse = await fetch('juegos/destreza_teclado.html'); // Path to the new game HTML
-                const gameHtml = await htmlResponse.text();
-                dynamicallyLoadedGameContainer.innerHTML = gameHtml;
-
-                // Dynamically load the game's JavaScript
-                const script = document.createElement('script');
-                script.src = 'js/destreza_teclado.js'; // Path to the new game JS
-                script.onload = () => {
-                    // Once the script is loaded, initialize the game elements
-                    if (window.initDexterityGame) {
-                        window.initDexterityGame(); // Call the initialization function for the new game
-                    }
-                };
-                // Append the script to the body or the game container
-                dynamicallyLoadedGameContainer.appendChild(script);
-
-            } catch (error) {
-                console.error('Error al cargar el juego de Destreza en el Teclado:', error);
-                dynamicallyLoadedGameContainer.innerHTML = '<p class="text-red-500">Error al cargar el juego. Por favor, inténtalo de nuevo más tarde.</p>';
-                // Optionally, provide a button to return to main content
-                const errorButton = createCustomButton('Volver al Inicio', showMainContentSections, 'mt-4');
-                dynamicallyLoadedGameContainer.appendChild(errorButton);
-            }
-        }
-
-
-        // This function will be called from the header menu to load the peripherals game
-        function loadPeripheralsGameFromHeader() {
-            showMainContentSections(); // Ensure main content areas are visible first
-            loadPeripheralsGame(); // Then load the game itself
-        }
-
-        // This function will be called from the header menu to load the new game (NEW)
-        function loadWebMasterQuizFromHeader() {
-            showMainContentSections(); // Ensure main content areas are visible first
-            loadWebMasterQuiz(); // Then load the game itself
-        }
-
-        // This function will be called from the header menu to load the new game (Dexterity Game)
-        function loadDexterityGameFromHeader() {
-            showMainContentSections(); // Ensure main content areas are visible first
-            loadDexterityGame(); // Then load the game itself
-        }
-
-        // This function will be called by the game's JavaScript to return to the main content
         window.returnToMainContent = function() {
-            // Show the header immediately when returning to main content
             mainHeader.classList.remove('header-hidden');
-
-            dynamicallyLoadedGameContainer.innerHTML = ''; // Clear game content
-            // Remove any dynamically added script tags to prevent re-initialization issues
-            const oldPeripheralScript = document.querySelector('script[src="js/perifericos_juego.js"]');
-            if (oldPeripheralScript) {
-                oldPeripheralScript.remove();
-            }
-            const oldWebMasterQuizScript = document.querySelector('script[src="js/webmaster_quiz_juego.js"]'); // NEW
-            if (oldWebMasterQuizScript) { // NEW
-                oldWebMasterQuizScript.remove(); // NEW
-            } // NEW
-            const oldDexterityScript = document.querySelector('script[src="js/destreza_teclado.js"]'); // New game script
-            if (oldDexterityScript) {
-                oldDexterityScript.remove();
-            }
-
-            showMainContentSections(); // Return to the main content layout
-            renderInitialActivityButton(); // Show the initial "Ver Actividades Prácticas" button
+            dynamicallyLoadedGameContainer.innerHTML = '';
+            document.querySelectorAll('script[src^="js/"]').forEach(s => s.remove());
+            showMainContentSections();
+            renderInitialActivityButton();
         };
 
         function renderInitialActivityButton() {
@@ -1319,7 +1034,6 @@
             initialActivityMenu.classList.add('flex');
             gameListMenu.classList.add('hidden');
             gameListMenu.classList.remove('flex');
-            // dynamicallyLoadedGameContainer.classList.add('hidden'); // This is handled by showMainContentSections
         }
 
         function renderActivityList() {
@@ -1327,70 +1041,75 @@
             initialActivityMenu.classList.remove('flex');
             gameListMenu.classList.remove('hidden');
             gameListMenu.classList.add('flex');
-            dynamicallyLoadedGameContainer.classList.add('hidden'); // Ensure game is hidden
-            mainContentTitle.textContent = 'Actividades'; // Update main title
+            mainContentTitle.textContent = 'Actividades';
         }
 
         // Event Listeners for Activity Section Navigation
         showActivitiesButton.addEventListener('click', renderActivityList);
-        selectPeripheralsGameButton.addEventListener('click', loadPeripheralsGame); // Call load function
-        selectWebMasterQuizButton.addEventListener('click', loadWebMasterQuiz); // NEW: Call load function for WebMaster Quiz
-        selectDexterityGameButton.addEventListener('click', loadDexterityGame); // NEW: Call load function for Dexterity Game
+        selectPeripheralsGameButton.addEventListener('click', loadPeripheralsGame);
+        selectWebMasterQuizButton.addEventListener('click', loadWebMasterQuiz);
+        selectDexterityGameButton.addEventListener('click', loadDexterityGame);
         backToMainActivitiesButton.addEventListener('click', renderInitialActivityButton);
 
         // --- Header Hide/Show on Scroll Logic ---
         const mainHeader = document.getElementById('main-header');
         let lastScrollTop = 0;
-        const scrollThreshold = 50; // Pixels to scroll before header hides/shows
+        const scrollThreshold = 50;
 
         window.addEventListener('scroll', () => {
             const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
             if (currentScrollTop > lastScrollTop && currentScrollTop > mainHeader.offsetHeight + scrollThreshold) {
-                // Scrolling down
                 mainHeader.classList.add('header-hidden');
             } else if (currentScrollTop < lastScrollTop) {
-                // Scrolling up
                 mainHeader.classList.remove('header-hidden');
             }
-            lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+            lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
         });
-
 
         // --- Initialize on DOMContentLoaded ---
         document.addEventListener('DOMContentLoaded', () => {
             let deferredPrompt;
             const installButton = document.getElementById('install-button');
+            const mobileInstallButton = document.getElementById('mobile-install-button');
+
+            const showInstallButton = () => {
+                installButton.classList.remove('hidden');
+                mobileInstallButton.classList.remove('hidden'); // Show on mobile too
+            };
+
+            const hideInstallButton = () => {
+                installButton.classList.add('hidden');
+                mobileInstallButton.classList.add('hidden'); // Hide on mobile too
+            };
 
             window.addEventListener('beforeinstallprompt', (e) => {
-              e.preventDefault();
-              deferredPrompt = e;
-              installButton.classList.remove('hidden');
+                e.preventDefault();
+                deferredPrompt = e;
+                showInstallButton();
             });
 
-            installButton.addEventListener('click', (e) => {
-              deferredPrompt.prompt();
-              deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                  console.log('User accepted the install prompt');
-                } else {
-                  console.log('User dismissed the install prompt');
-                }
-                deferredPrompt = null;
-                installButton.classList.add('hidden');
-              });
-            });
+            const installApp = () => {
+                if (!deferredPrompt) return;
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                    hideInstallButton();
+                });
+            };
 
-            // Set current year in footer
+            installButton.addEventListener('click', installApp);
+            mobileInstallButton.addEventListener('click', installApp);
+
             document.getElementById('current-year').textContent = new Date().getFullYear();
-
-            // Render desktop and mobile navigation menus
             renderDesktopNav();
             renderMobileNav();
-
-            // Initialize content sections: show download initial button and activity initial button
             renderInitialContentButton();
-            renderInitialActivityButton(); // This will also ensure main content sections are visible
+            renderInitialActivityButton();
         });
     </script>
 </body>
