@@ -184,13 +184,13 @@
         }
     </style>
 </head>
-<body class="font-inter antialiased text-gray-900 bg-gray-50">
+<body class="font-inter antialiased text-gray-900 bg-gray-50 flex flex-col min-h-screen">
 
-    <header id="main-header" class="bg-white shadow-md py-4 px-4 sm:px-6 fixed w-full z-50">
+    <header id="main-header" class="bg-white shadow-md py-6 px-4 sm:px-6 fixed w-full z-50">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <img src="imagenes/logo.png" alt="Logo" class="h-10 sm:h-12 w-auto">
-                <span class="text-lg sm:text-xl font-bold text-blue-800">Area de Informatica</span>
+                <img src="imagenes/logo.png" alt="Logo" class="h-12 sm:h-16 w-auto">
+                <span class="text-xl sm:text-2xl font-bold text-blue-800">Area de Informatica</span>
             </div>
 
             <nav class="hidden lg:flex items-center space-x-4">
@@ -228,46 +228,57 @@
             </div>
         </div>
 
-        <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-white z-40 lg:hidden">
-            <div class="flex justify-end p-4">
-                <button id="mobile-menu-close-button" class="text-gray-700 focus:outline-none">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
+        <!-- Mobile Menu Wrapper -->
+        <div id="mobile-menu-wrapper" class="hidden fixed inset-0 z-50 lg:hidden">
+            <!-- Backdrop -->
+            <div id="mobile-menu-backdrop" class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out opacity-0"></div>
+
+            <!-- Menu Panel -->
+            <div id="mobile-menu-panel" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white shadow-xl overflow-y-auto transition-transform duration-300 ease-in-out transform translate-x-full">
+                <div class="flex justify-end p-4">
+                    <button id="mobile-menu-close-button" class="text-gray-700 focus:outline-none">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <nav class="flex flex-col space-y-4 px-6">
+                    <a href="index.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg transition-colors duration-200" onclick="closeMobileMenu()">Inicio</a>
+                    <div class="w-full">
+                        <button id="mobile-courses-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-lg py-2 flex justify-between items-center transition-colors duration-200">
+                            <span>Cursos</span>
+                            <svg id="mobile-courses-arrow" class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div id="mobile-grades-container" class="hidden mt-2 pl-4 border-l-2 border-gray-200">
+                            <div class="flex flex-col space-y-2" id="mobile-grades-menu"></div>
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <button id="mobile-additional-resources-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-lg py-2 flex justify-between items-center transition-colors duration-200">
+                            <span>Recursos Adicionales</span>
+                            <svg id="mobile-additional-resources-arrow" class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div id="mobile-additional-resources-container" class="hidden mt-2 pl-4 border-l-2 border-gray-200">
+                            <div class="flex flex-col space-y-2" id="mobile-additional-resources-menu"></div>
+                        </div>
+                    </div>
+                    <a href="pseudocode.html" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-lg transition-colors duration-200" onclick="closeMobileMenu()">Pseudocódigo</a>
+                    <a href="https://wa.me/50488422786" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-lg transition-colors duration-200" onclick="closeMobileMenu()">Contacto</a>
+                    <div class="pt-4">
+                        <button id="mobile-install-button" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg">
+                          Instalar
+                        </button>
+                    </div>
+                    <div class="flex justify-center pt-4">
+                        <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" class="h-10 w-auto">
+                    </div>
+                </nav>
             </div>
-            <nav class="flex flex-col items-center space-y-6 mt-8">
-                <a href="index.html" class="text-gray-800 hover:text-blue-600 font-semibold text-xl transition-colors duration-200" onclick="closeMobileMenu()">Inicio</a>
-                <div class="w-full px-4">
-                    <button id="mobile-courses-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-xl py-2 flex justify-center items-center transition-colors duration-200">
-                        Cursos
-                        <span id="mobile-courses-arrow" class="ml-2 transform transition-transform duration-300">&#9662;</span>
-                    </button>
-                    <div id="mobile-grades-container" class="hidden mt-2 bg-gray-50 rounded-lg shadow-inner">
-                        <div class="p-4 flex flex-col space-y-2" id="mobile-grades-menu"></div>
-                    </div>
-                </div>
-                <div class="w-full px-4">
-                    <button id="mobile-additional-resources-toggle" class="w-full text-gray-800 hover:text-blue-600 font-semibold text-xl py-2 flex justify-center items-center transition-colors duration-200">
-                        Recursos Adicionales
-                        <span id="mobile-additional-resources-arrow" class="ml-2 transform transition-transform duration-300">&#9662;</span>
-                    </button>
-                    <div id="mobile-additional-resources-container" class="hidden mt-2 bg-gray-50 rounded-lg shadow-inner">
-                        <div class="p-4 flex flex-col space-y-2" id="mobile-additional-resources-menu"></div>
-                    </div>
-                </div>
-                <a href="pseudocode.html" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl transition-colors duration-200" onclick="closeMobileMenu()">Pseudocódigo</a>
-                <a href="https://wa.me/50488422786" target="_blank" class="text-gray-800 hover:text-blue-600 font-semibold text-xl transition-colors duration-200" onclick="closeMobileMenu()">Contacto</a>
-                <button id="mobile-install-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg">
-                  Instalar
-                </button>
-                <img src="imagenes/bandera-de-honduras.png" alt="Bandera de Honduras" class="h-10 w-auto mt-4">
-            </nav>
         </div>
     </header>
 
-    <main class="pt-24 sm:pt-28">
-        <section class="bg-gradient-to-r from-purple-600 to-blue-500 text-white py-20 sm:py-28">
+    <main class="pt-28 sm:pt-32 flex-grow">
+        <section class="bg-gradient-to-r from-purple-600 to-blue-500 text-white py-16 sm:py-20">
             <div class="container mx-auto px-4 sm:px-6 text-center">
                 <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight mb-4 animate-fade-in-up">
                     Bienvenidos
@@ -579,8 +590,9 @@
         // --- Header (Mobile Menu) Logic ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenuCloseButton = document.getElementById('mobile-menu-close-button');
-        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-        const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+        const mobileMenuWrapper = document.getElementById('mobile-menu-wrapper');
+        const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+        const mobileMenuPanel = document.getElementById('mobile-menu-panel');
 
         const mobileCoursesToggle = document.getElementById('mobile-courses-toggle');
         const mobileCoursesArrow = document.getElementById('mobile-courses-arrow');
@@ -590,28 +602,32 @@
         const mobileAdditionalResourcesArrow = document.getElementById('mobile-additional-resources-arrow');
         const mobileAdditionalResourcesContainer = document.getElementById('mobile-additional-resources-container');
 
-        function toggleMobileMenu() {
-            const isHidden = mobileMenuOverlay.classList.contains('hidden');
-            mobileMenuOverlay.classList.toggle('hidden');
-            mobileMenuIcon.setAttribute('d', isHidden ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16');
+        function openMobileMenu() {
+            mobileMenuWrapper.classList.remove('hidden');
+            // Use requestAnimationFrame to ensure the transition is applied after the element is visible
+            requestAnimationFrame(() => {
+                mobileMenuBackdrop.classList.remove('opacity-0');
+                mobileMenuPanel.classList.remove('translate-x-full');
+            });
+        }
 
-            // When closing the main menu, also close any open sub-menus
-            if (!isHidden) {
+        function closeMobileMenu() {
+            mobileMenuBackdrop.classList.add('opacity-0');
+            mobileMenuPanel.classList.add('translate-x-full');
+            // Wait for the transition to finish before hiding the wrapper
+            setTimeout(() => {
+                mobileMenuWrapper.classList.add('hidden');
+                // Reset sub-menus
                 mobileGradesContainer.classList.add('hidden');
                 mobileCoursesArrow.classList.remove('rotate-180');
                 mobileAdditionalResourcesContainer.classList.add('hidden');
                 mobileAdditionalResourcesArrow.classList.remove('rotate-180');
-            }
+            }, 300); // Should match the transition duration
         }
 
-        function closeMobileMenu() {
-            if (!mobileMenuOverlay.classList.contains('hidden')) {
-                toggleMobileMenu();
-            }
-        }
-
-        mobileMenuButton.addEventListener('click', toggleMobileMenu);
-        mobileMenuCloseButton.addEventListener('click', toggleMobileMenu);
+        mobileMenuButton.addEventListener('click', openMobileMenu);
+        mobileMenuCloseButton.addEventListener('click', closeMobileMenu);
+        mobileMenuBackdrop.addEventListener('click', closeMobileMenu);
 
         mobileCoursesToggle.addEventListener('click', () => {
             mobileGradesContainer.classList.toggle('hidden');
@@ -1001,7 +1017,12 @@
                 script.src = jsFile;
                 script.onload = () => {
                     if (window[initFunction]) {
-                        window[initFunction](gameDataStorage);
+                        // The dexterity game does not use the storage object, so call it without arguments.
+                        if (initFunction === 'initDexterityGame') {
+                            window[initFunction]();
+                        } else {
+                            window[initFunction](gameDataStorage);
+                        }
                     }
                 };
                 dynamicallyLoadedGameContainer.appendChild(script);
@@ -1112,16 +1133,16 @@
             renderInitialActivityButton();
         });
     </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('SW registered: ', registration);
+          }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+        });
+      }
+    </script>
 </body>
 </html>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').then(registration => {
-        console.log('SW registered: ', registration);
-      }).catch(registrationError => {
-        console.log('SW registration failed: ', registrationError);
-      });
-    });
-  }
-</script>
